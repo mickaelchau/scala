@@ -50,7 +50,7 @@ object Recursion {
   }
 
   def main(argv:Array[String]):Unit = {
-    val longList = List.tabulate(5673)(n => 0)
+    val longList = List.tabulate(12)(n => 0)
     println(s"sum = ${sumIntegersBySimpleRecursion(longList)}")
   }
 }

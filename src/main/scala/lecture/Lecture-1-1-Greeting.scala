@@ -22,11 +22,11 @@
 package lecture
 
 object Greeting {
-  def hello() = {
+  def hello():Unit = {
     println("hello world ")
   }
 
-  def main(argv:Array[String]) = {
+  def main(argv:Array[String]):Unit = {
 
   }
 }
