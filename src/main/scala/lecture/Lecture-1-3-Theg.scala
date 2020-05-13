@@ -184,11 +184,12 @@ object Theg {
   //   produces Map output
   //   uses + to extend Map
   //   uses + to extend Set
-  //   omits initialization of Map, just uses Map() and .getOrElse
+  //   omits initialization of Map, just uses Map()
+  //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_8(edges: List[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]()) {
+    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
-        adj + (src -> (adj.getOrElse(src, Set()) + dst))
+        adj + (src -> (adj(src) + dst))
     }
   }
 
@@ -198,11 +199,12 @@ object Theg {
   //   produces Map output
   //   uses + to extend Map
   //   uses + to extend Set
-  //   omits initialization of Map, just uses Map() and .getOrElse
+  //   omits initialization of Map, just uses Map()
+  //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_9(edges: Array[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]()) {
+    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
-        adj + (src -> (adj.getOrElse(src, Set()) + dst))
+        adj + (src -> (adj(src) + dst))
     }
   }
 
@@ -212,11 +214,12 @@ object Theg {
   //   produces Map output
   //   uses + to extend Map
   //   uses + to extend Set
-  //   omits initialization of Map, just uses Map() and .getOrElse
+  //   omits initialization of Map, just uses Map()
+  //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_10(edges: Seq[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]()) {
+    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
-        adj + (src -> (adj.getOrElse(src, Set()) + dst))
+        adj + (src -> (adj(src) + dst))
     }
   }
 
@@ -226,34 +229,35 @@ object Theg {
   //   produces Map output
   //   uses + to extend Map
   //   uses + to extend Set
-  //   omits initialization of Map, just uses Map() and .getOrElse
+  //   omits initialization of Map, just uses Map()
+  //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_11[V](edges: Seq[(V, V)]): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]()) {
+    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
-        adj + (src -> (adj.getOrElse(src, Set[V]()) + dst))
+        adj + (src -> (adj(src) + dst))
     }
   }
 
   // same as makeAdj_11, but assumes UNDIRECTED edges
   def makeAdj_12[V](edges: Seq[(V, V)]): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]()) {
+    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
         adj +
-          (src -> (adj.getOrElse(src, Set[V]()) + dst)) +
-          (dst -> (adj.getOrElse(dst, Set[V]()) + src))
+          (src -> (adj(src) + dst)) +
+          (dst -> (adj(dst) + src))
     }
   }
 
   // combine makeAdj_11 and makeAdj_12 with a Boolean indicating
   // whether edges are interpreted as DIRECTED or UNDIRECTED
   def makeAdj_13[V](edges: Seq[(V, V)], directed: Boolean): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]()) {
+    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
-        val m1 = adj + (src -> (adj.getOrElse(src, Set[V]()) + dst))
+        val m1 = adj + (src -> (adj(src) + dst))
         if (directed)
           m1
         else
-          m1 + (dst -> (adj.getOrElse(dst, Set[V]()) + src))
+          m1 + (dst -> (adj(dst) + src))
     }
   }
 
