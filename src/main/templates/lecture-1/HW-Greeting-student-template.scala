@@ -33,7 +33,7 @@ object Greeting {
     println(???)
   }
 
-  def main(argv:Array[String]) = {
+  def main(argv:Array[String]):Unit = {
 
   }
 }

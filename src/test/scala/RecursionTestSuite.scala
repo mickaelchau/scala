@@ -19,9 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+import homework.Recursion._
 import lecture.Recursion._
 import org.scalatest._
-import homework.Recursion._
 
 // This test suite accompanies the lecture section called "Recursion".
 // The tests are intended to test the student's completion of
