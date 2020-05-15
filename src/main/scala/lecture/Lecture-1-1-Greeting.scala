@@ -28,6 +28,5 @@ object Greeting {
 
   def main(argv:Array[String]):Unit = {
 
-    
   }
 }

@@ -45,7 +45,7 @@ object Theg {
 
     @scala.annotation.tailrec
     def recur(edges: List[(Int, Int)], adj: Array[Set[Int]]): Array[Set[Int]] = {
-      if (edges.isEmpty)
+      if (edges.isEmpty) // if (edges == List())
         adj
       else {
         val (src, dst) = edges.head
@@ -185,7 +185,7 @@ object Theg {
   //   uses + to extend Map
   //   uses + to extend Set
   //   omits initialization of Map, just uses Map()
-  //   uses .withDefaultValue rather than  .getOrElse
+  //   * uses .withDefaultValue rather than  .getOrElse
   def makeAdj_8(edges: List[(Int, Int)]): Map[Int, Set[Int]] = {
     edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>

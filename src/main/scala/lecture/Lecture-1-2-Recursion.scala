@@ -31,6 +31,7 @@ object Recursion {
   }
 
   def sumIntegersByTailRecursion(ints: List[Int]): Int = {
+    @scala.annotation.tailrec
     def sumRest(acc: Int, rest: List[Int]): Int = {
       rest match {
         case List() => acc
@@ -50,7 +51,7 @@ object Recursion {
   }
 
   def main(argv:Array[String]):Unit = {
-    val longList = List.tabulate(12)(n => 0)
+    val longList = List.tabulate(12)(n => 0) // List.fill(...)(...)
     println(s"sum = ${sumIntegersBySimpleRecursion(longList)}")
   }
 }
