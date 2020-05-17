@@ -33,26 +33,7 @@ object FixedPoint {
     improve(initial)
   }
 
-  def flatten(xs:List[Int]):List[Int] = {
-    xs match {
-      case List() => xs
-      case head::Nil => xs
-      case x1::x2::tail => if (x1 <= x2)
-        x1 :: flatten(x2::tail)
-      else
-        flatten(x1::Math.abs(x2)+Math.abs(x1)::tail)
-    }
-  }
-
   def main(argv:Array[String]):Unit = {
 
-    println(
-      fixedPoint(List(-16, 0, -1, 7, 17, 5, -12, 16),
-                 flatten,
-                 (x:List[Int],y:List[Int])=> x==y
-                 )
-      )
   }
-
-
 }

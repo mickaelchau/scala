@@ -69,4 +69,9 @@ object Calculus {
     else
       limit(sumRectangles, (right - left) / 2, test)(0.0)
   }
+
+  def main(argv:Array[String]):Unit = {
+    println(almostEqual(0.001)(0, limit(cos,0.1,almostEqual(0.0001))(Pi/2)))
+
+  }
 }

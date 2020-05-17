@@ -23,13 +23,20 @@ def derivative(f:Double=>Double,dx:Double,test:(Double,Double)=>Boolean)(x:Doubl
   limit(estimate,dx:Double,test)(0)
 }
 
-
 def integral(f:Double=>Double,left:Double,right:Double,test:(Double,Double)=>Boolean):Double = {
   def sumRectangles(partitionWidth: Double): Double = {
     val numPartitions = ((right - left) / partitionWidth).floor.toInt
     (1 to numPartitions).foldLeft(0.0)( (acc, i) => acc + f(left + i * partitionWidth) * partitionWidth )
   }
-  limit(sumRectangles,(right - left)/2,test)(0)
+  //limit(sumRectangles,(right - left)/2,test)(0)
+
+  if (right == left)
+    0.0
+  else if (right < left)
+    - integral(f, right, left, test)
+  else
+    limit(sumRectangles,(right - left)/2,test)(0)
+
 }
 
 for {n <- 0 to 20
