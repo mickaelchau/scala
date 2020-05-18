@@ -45,3 +45,13 @@ for {n <- 0 to 20
      s2 = integral(cos,0,x,almostEqual(0.00001))
      delta = s1 - s2
      } println(s"$x  delta= $delta")
+
+def doubleRange(lower:Double, upper:Double, steps:Int) = {
+  val step = (upper - lower)/steps
+    for { i <- (0 to steps).view
+          x = lower+ i*step
+          } yield x.min(upper)
+}
+(for {x <- doubleRange(-Pi, Pi, 21)
+     c = cos(x)} println(s"x=$x cos(x)=$c"))
+
