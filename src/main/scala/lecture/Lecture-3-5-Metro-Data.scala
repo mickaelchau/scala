@@ -402,6 +402,7 @@ object MetroData {
     ("Étienne Marcel", 347, 412 ))
 
   val legData = List( // (source, destination, time-in-seconds)
+    // source and destination are indices into stationPositions Array
     (0, 238, 41 ),
     (0, 159, 46 ),
     (1, 12, 36 ),
