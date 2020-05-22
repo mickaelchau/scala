@@ -34,8 +34,6 @@ object BinarySearch {
     def recur(left:Double, right:Double, depth:Int):Option[Double] = {
       val mid = (left + right)/2.0
       val fm = f(mid)
-      val fl = f(left)
-      val fr = f(right)
 
       if (depth >= maxDepth)
         None
