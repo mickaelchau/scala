@@ -36,7 +36,6 @@ def integral(f:Double=>Double,left:Double,right:Double,test:(Double,Double)=>Boo
     - integral(f, right, left, test)
   else
     limit(sumRectangles,(right - left)/2,test)(0)
-
 }
 
 for {n <- 0 to 20

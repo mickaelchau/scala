@@ -23,7 +23,6 @@ def derivative(f:Double=>Double,dx:Double,test:(Double,Double)=>Boolean)(x:Doubl
   limit(estimate,dx:Double,test)(0)
 }
 
-
 val cos_est:Double=>Double = derivative(sin,0.01,almostEqual(0.000001)) // cos
 val poly_est:Double=>Double = derivative(x => x*x + 3*x + 1,0.01,almostEqual(0.00001)) // 2*x + 3
 
@@ -33,7 +32,6 @@ for {n <- 0 to 20
      c2 = cos_est(x)
      delta = c1 - c2
      } println(s"$x  delta= $delta")
-
 
 //derivative(sin)(Pi/2)
 //derivative(x => x*x + 3*x + 1)(1)
