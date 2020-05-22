@@ -2,7 +2,6 @@ import scala.math._
 
 // find a root of the given function within the given range
 def binSearch(left:Double,right:Double,f:Double=>Double,epsilon:Double,maxDepth:Int):Option[Double] = {
-
   def recur(left:Double,right:Double,depth:Int):Option[Double] = {
     val m = (left + right) / 2
     val fm = f(m)

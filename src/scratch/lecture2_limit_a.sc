@@ -13,6 +13,7 @@ limit4(cos,0.1,0.0001,0.0)
 limit4(sin,0.1,0.0001,0.0)
 limit4(cos,0.1,0.00001,Pi/4)
 
+// function which returns a function
 def limit(dx: Double, dy: Double) = {
   limit4(_,dx,dy,_)
 }
