@@ -14,9 +14,10 @@ def binSearch(left:Double,right:Double,f:Double=>Double,epsilon:Double):Option[D
     else
       recur(left, m)
   }
-  if (f(left) <=0 && f(right) >=0)
+
+  if (f(left) <=0 && f(right) >=0) // increasing
     Some(recur(left,right))
-  else if (f(left) >=0 && f(right) <=0)
+  else if (f(left) >=0 && f(right) <=0) // decreasing
     Some(recur(right,left))
   else
     None
