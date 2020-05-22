@@ -26,4 +26,3 @@ def binSearch(left:Double,right:Double,f:Double=>Double,epsilon:Double,maxDepth:
 binSearch(-Pi/10, Pi/20, sin, 0.0001,32)
 binSearch(-Pi/10, Pi/20, cos, 0.0001,32)
 binSearch(-10.0,10.0,x=>10-x*x*x,0.0001,32)
-

@@ -15,4 +15,3 @@ def binSearch(left:Double,right:Double,f:Double=>Double,epsilon:Double):Double =
 }
 
 binSearch(-Pi/10, Pi/20, sin, .0001)
-
