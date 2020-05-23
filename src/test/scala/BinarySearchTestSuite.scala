@@ -20,7 +20,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import homework.BinarySearch._
-import lecture.BinarySearch._
+//import lecture.BinarySearch._
 import org.scalatest.FunSuite
 
 import scala.math._
@@ -37,27 +37,6 @@ class BinarySearchTestSuite extends FunSuite {
     assert(almostEqual(0.5)(100.1, 100.2))
     assert(almostEqual(0.1)(1000.01, 1000.05))
     assert(!almostEqual(0.01)(0.001, 0.101))
-  }
-
-  test("bin search") {
-
-    assert(None != binSearch(-1.5, 1.0, sin, 0.0001, 20))
-    assert(None != binSearch(-1.0, 1.0, sin, 0.000001, 30))
-
-    // given function does not equal 0.0 in the given interval
-    assert(None == binSearch(1.0, 2.0, (x: Double) => 3.0, 0.001, 20))
-
-    assert(None != binSearch(-1.0, 1.0, sin, 0.1, 0.0001, 20))
-
-    // interval reversed
-    assert(None != binSearch(1.0, -1.0, sin, 0.1, 0.0001, 20))
-
-    // given function does not equal 20.3 in the given interval
-    assert(None == binSearch(1.0, -1.0, sin, 20.3, 0.001, 20))
-
-    // not enough iterations allowed
-    assert(None == binSearch(-0.9, 0.72, sin, 0.000001, 2))
-
   }
 
   test("boolean search") {
