@@ -20,12 +20,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import org.scalatest.FunSuite
-import lecture.Polynomial._
 import scala.math._
 
 class PolynomialTestSuite extends FunSuite {
 
-  import lecture.Polynomial._
+  import homework.Polynomial._
 
   val polynomials: Array[POLY] = Array(one,
                                        zero,
