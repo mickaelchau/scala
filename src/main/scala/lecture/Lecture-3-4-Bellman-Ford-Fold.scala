@@ -22,19 +22,20 @@
 package lecture
 
 trait BellmanFord[A] extends ProtoGraph[A] {
+  type DP = (Map[A, Int], Map[A, A])
 
   ///////////////////
   // Bellman-Ford single source shortest path
   ///////////////////
 
-  def bellmanFord(source: A, weight: Edge[A] => Int): (Map[A, Int], Map[A, A]) = {
+  def bellmanFord(source: A, weight: Edge[A] => Int): DP = {
     // DP is a pair of two Maps.
     //   1) the total weight calculated so far from source to a given vertex.
     //   2) the predecessors (u -> v) where the shortest path yet calculated
     //        from source to v, has u as the penultimate vertex.
     //type DP = (Map[A, Int], Map[A, A])
 
-    def relax(edge: Edge[A], dp: DP[A]): DP[A] = {
+    def relax(edge: Edge[A], dp: DP): DP = {
       val (distance, predecessor) = dp
       val Edge(u, v) = edge
       lazy val w = weight(edge)
@@ -67,10 +68,10 @@ trait BellmanFord[A] extends ProtoGraph[A] {
     // The outer foldLeft, effectively loops |Vertices|-1 times,
     //   as required by the Bellman-Ford algorithm.
     //   The inner foldLeft relaxes each of the edges.
-    (1 until Vertices.size).foldLeft((Map(source -> 0), Map()): DP[A]) {
-      (dp: DP[A], _: Int) => {
+    (1 until Vertices.size).foldLeft((Map(source -> 0), Map()): DP) {
+      (dp: DP, _: Int) => {
         edges.foldLeft(dp) {
-          (dp: DP[A], edge: Edge[A]) => relax(edge, dp)
+          (dp: DP, edge: Edge[A]) => relax(edge, dp)
         }
       }
     }
@@ -98,4 +99,3 @@ trait BellmanFord[A] extends ProtoGraph[A] {
     tracePredecessors(List(dst))
   }
 }
-
