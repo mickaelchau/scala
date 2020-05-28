@@ -40,25 +40,29 @@ class HistogramTestSuite extends FunSuite {
     Histogram.fromSet(Set("a", "b"))
   }
   test("append") {
-    assert(Histogram(List(1,1,2,2,3,3,3)).data ==
+    assert(Histogram(List(1,1,2,2,3,3,3)) sameElements
                        (Histogram(List(1,2,3)) ++ Histogram(List(1,2,3,3))))
   }
-  test("printing"){
-    assert(s"${Histogram(List("a","b","b","a","b"))}"  == "[2 of a & 3 of b]")
+  test("printing") {
+    assert(s"${Histogram(List("a", "b", "b", "a", "b"))}" == "[2 of a & 3 of b]")
 
-    for{(h,str) <- List((Histogram(List("a","b","b","a","b")),
-                          "[2 of a & 3 of b]")
+    for {(h, str) <- List((Histogram(List("a", "b", "b", "a", "b")),
+                            "[2 of a & 3 of b]")
 
-                          ,( Histogram(List("a","b","b","a","b")) ++ Histogram(List("a","a","a")),
-                          "[3 of b & 5 of a]")
-                        ,(Histogram(List()),"[]")
-                        )} assert(s"$h" == str)
+                          , (Histogram(List("a", "b", "b", "a", "b")) ++ Histogram(List("a", "a", "a")),
+                            "[3 of b & 5 of a]")
+
+                          , (Histogram(List()), "[]")
+
+                          , (Histogram(Array(4.0, 4.0, 3.0, 4.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)),
+                            "[1 of 1.0 & 2 of 2.0 & 4 of 3.0 & 6 of 4.0]"   )
+                          )} assert(s"$h" == str)
   }
 
   test("frequency") {
-    assert(Histogram(List("a","b","b","a","b")).frequency("a") == 2)
-    assert(Histogram(List("a","b","b","a","b")).frequency("z") == 0)
-    assert(Histogram(List("a","b","b","a","b")).frequency("b") == 3)
+    assert(Histogram(List("a", "b", "b", "a", "b")).frequency("a") == 2)
+    assert(Histogram(List("a", "b", "b", "a", "b")).frequency("z") == 0)
+    assert(Histogram(List("a", "b", "b", "a", "b")).frequency("b") == 3)
   }
   test("frequent") {
     assert(Histogram(List("a","b","b","a","b")).mostFrequent == Set("b"))

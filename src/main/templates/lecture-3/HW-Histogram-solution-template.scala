@@ -28,14 +28,9 @@ package homework
 //   but without performing any mutating operation.
 
 case class Histogram[A](items:Seq[A]) {
-  val data: Map[A, Int] = items.groupBy(i => i).map{
-    case (i,is) => i -> is.size
-  }
-  val byFreq = data.toList.groupBy(_._2).map{
-    case (freq,pairs) => freq -> pairs.map{_._1}.toSet
-  }
-  val mostCommonFrequency:Option[Int] = byFreq.map{case (k,v) => k}.reduceOption(scala.math.max)
-  val leastCommonFrequency:Option[Int] = byFreq.map{case (k,v) => k}.reduceOption(scala.math.min)
+
+  // implement as many vars and defs as necessary to make the implmentation of
+  //  Histogram understandable and well structured.
 
   // When a Histogram is printed, it is surrounded by square brackets [...]
   // Histogram(List("a")) ==> "[1 of a]"
@@ -45,47 +40,42 @@ case class Histogram[A](items:Seq[A]) {
   // Histogram(List("a","b","b","a","c")) ==> "[1 of c & 2 of a & 2 of b]"  ;; if the same frequency appears multiple times,
   // Between the brackets is 0 or more occurrences of the form x of y, where x is an integer ,
   //      and y is the printed representation of the object of type A
-  override def toString = data.toArray.sortBy(_._2)
-    .map{case (k,v) => s"$v of $k"}
-    .mkString("[", " & ", "]")
+
 
   // is the set of given elements of this histogram the same as for
   //    another, that, histogram.  I.e., the same elements with the
   //    same frequencies, but the order might be different.
   def sameElements(that:Histogram[A]):Boolean = {
-    data == that.data
+    ???
   }
 
   // The set of elements occurring most often. This is a set of items, each of type A,
   //   all of which appear the same number of times, and no other element appears more often or as often.
-  val mostFrequent:Set[A] = mostCommonFrequency.map{byFreq}.getOrElse(Set())
+  val mostFrequent:Set[A] = ???
 
   // The set of elements occurring least often. This is a set of items, each of type A,
   //   all of which appear the same number of times, and no other element appears less often or as often.
-  val leastFrequent:Set[A] = leastCommonFrequency.map{byFreq}.getOrElse(Set())
+  val leastFrequent:Set[A] = ???
 
   // given an item, return an Int >= 0 designating how many times that
   //  item appears in the items
   def frequency(item:A):Int = {
-    data.getOrElse(item,0)
+    ???
   }
 
   // ++ appends a given Histogram with the original one
   //  Histogram(List("a","b")) ++ Histogram(List("a","c"))
   //
-  def ++(that:Histogram[A]):Histogram[A] = Histogram(this.items ++ that.items)
+  def ++(that:Histogram[A]):Histogram[A] = ???
 
 }
 
 object Histogram {
   def fromSet[A](items:Set[A]):Histogram[A] = {
-    Histogram(items.toSeq)
+    ???
   }
 
   def main(argv:Array[String]):Unit = {
-    println(Histogram(List("a", "a", "b","b","b")))
-    println(Histogram(Array(4.0, 4.0, 3.0, 4.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)))
-    println(Histogram(Array(5.0, 3.0, 3.0, 4.0, 4.0, 3.0, 4.0, 1.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)).data)
-    println(Histogram(Array(5.0, 3.0, 3.0, 4.0, 4.0, 3.0, 4.0, 1.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)).byFreq)
+    ???
   }
 }

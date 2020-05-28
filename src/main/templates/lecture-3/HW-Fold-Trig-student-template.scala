@@ -22,10 +22,6 @@
 package homework
 
 object FoldTrig {
-  def sumTuple(pair: (Double, Double)): Double = {
-    val (m1, m2) = pair
-    m1 + m2
-  }
 
   // The number of terms of each series which are added.
   // You may need to increase this number to make the tests pass
@@ -42,9 +38,13 @@ object FoldTrig {
   //  The body of the foldLeft, does not simply calculate the sum, but rather calculates
   //  a pair (sum, nextTerm),  with nextTerm = term * x/n
   def exp(x: Double): Double = {
-    sumTuple((1 to nTerms).foldLeft((0.0, 1.0)) {
-      case ((sum, term), n) => (sum + term, (term * x/n))
-    })
+    val t0 = 1.0
+    val (acc, _) = (1 to nTerms).foldLeft((t0, t0)) {
+      case ((sum, prev), n) =>
+        val tn = prev * x / n
+        (sum + tn, tn)
+    }
+    acc
   }
 
   //           1    x^2   x^4   x^6
@@ -60,9 +60,13 @@ object FoldTrig {
   //       to obtain the next?  It is no longer x/n as before.
   //  4) the iteration variable should traverse the even integers, (0, 2, 4 ...)
   def cos(x: Double): Double = {
-    sumTuple((??? to ??? by 2).foldLeft((???, ???)) {
-      case ((sum, term), n) => (sum + ???, term * ???)
-    })
+    val t0 = ???
+    val (sum,_) = (??? to ??? by 2).foldLeft((t0, t0)) {
+      case ((sum, prev), n) =>
+        val tn = ???
+        (sum + ???, ???)
+    }
+    ???
   }
 
   //          x^1   x^3   x^5   x^7
@@ -75,9 +79,12 @@ object FoldTrig {
   // Also be careful that the iteration variable must traverse the odd integers
   // rather than the even integers as before.
   def sin(x: Double): Double = {
-    sumTuple((??? to ??? by ???).foldLeft((???, ???)) {
-      case ((sum, term), n) => ???
-    })
+    val t0 = ???
+    val (???,???) = (??? to ??? by ???).foldLeft((???, ???)) {
+      case ((sum, prev), n) =>
+        val tn = ???
+        (??? + ???, ???)
+    }
+    ???
   }
-
 }
