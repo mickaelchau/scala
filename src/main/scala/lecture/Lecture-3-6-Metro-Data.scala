@@ -401,7 +401,8 @@ object MetroData {
     ("Église de Pantin", 484, 563 ),
     ("Étienne Marcel", 347, 412 ))
 
-  val legData = List( // (source, destination, time-in-seconds)
+  val legData = List(
+    // (source, destination, time-in-seconds)
     // source and destination are indices into stationPositions Array
     (0, 238, 41 ),
     (0, 159, 46 ),
@@ -1116,6 +1117,7 @@ object MetroData {
     (374, 134, 53 ),
     (375, 165, 33 ),
     (375, 310, 28 ),
+    // changing metro lines at a station
     (7, 8, 120 ),
     (8, 7, 120 ),
     (13, 14, 120 ),
