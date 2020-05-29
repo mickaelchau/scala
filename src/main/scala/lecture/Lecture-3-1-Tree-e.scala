@@ -19,12 +19,11 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture_d
+package lecture_e
 
-// implement contains function in companion object,
-//   but allow runtime error because of non exhaustive pattern match
+// fix pattern matching error with sealed class
 
-abstract class Tree[A]
+sealed abstract class Tree[A]
 
 case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
   override def toString():String = {

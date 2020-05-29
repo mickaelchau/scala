@@ -21,36 +21,21 @@
 
 package lecture_c
 
-sealed abstract class Tree[A] {
-  def leafData():List[A]
-}
+// implement toString for more readable representation of a Tree
+
+abstract class Tree[A]
 
 case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
   override def toString():String = {
     branches.map(_.toString).mkString("[",", ","]")
   }
-
-  def leafData():List[A] = {
-    branches.flatMap(b => b.leafData()) // or    branches.flatMap(_.leafData())
-  }
 }
 
 case class TreeLeaf[A](data:A) extends Tree[A] {
   override def toString():String = data.toString
-
-  def leafData():List[A] = List(data)
 }
 
 object Tree {
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-        // RUNTIME error because of missing case, pattern match not exhaustive
-        // but also compile time warning becau7se sealed abstract class
-      //case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
-    }
-  }
 
   def main(argv:Array[String]):Unit = {
     val t3 = TreeLeaf(3.0)
@@ -64,8 +49,7 @@ object Tree {
 
     val t = TreeNode(List(t3456,t3456,t6,t3))
 
-    println(contains(t,6.0))
-    println(contains(t,7.0))
+    println(t)
   }
 
 }
