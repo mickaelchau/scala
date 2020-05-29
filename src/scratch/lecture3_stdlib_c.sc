@@ -1,3 +1,5 @@
+// manipulating lists of tuples
+
 def isEven(i:Int):Boolean = i % 2 == 0
 def isOdd(i:Int):Boolean = ! isEven(i)
 

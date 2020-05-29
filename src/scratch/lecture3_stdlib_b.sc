@@ -1,3 +1,5 @@
+// manipulating sequences of numbers
+
 def isEven(i:Int):Boolean = i % 2 == 0
 def isOdd(i:Int):Boolean = ! isEven(i)
 
@@ -23,4 +25,3 @@ data.filter(_ > 100)
 //data.filter(_ > 100).reduce{ (acc,i) => min(acc, i)}
 data.filter(isOdd).reduceOption{ (acc,i) => min(acc, i)}
 data.filter(_ > 100).reduceOption{ (acc,i) => min(acc, i)}
-
