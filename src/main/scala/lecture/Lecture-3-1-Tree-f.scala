@@ -19,9 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture_f
-
 // implement leafData using flatMap
+
+package lecture_f
 
 sealed abstract class Tree[A] {
   def leafData():List[A]
@@ -66,5 +66,4 @@ object Tree {
 
     println(t)
   }
-
 }
