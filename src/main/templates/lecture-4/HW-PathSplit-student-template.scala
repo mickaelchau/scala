@@ -20,7 +20,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 package homework
 
-import lecture.graph._
+import lecture.Graph._
 import lecture.Metro._
 import lecture.MetroData._
 

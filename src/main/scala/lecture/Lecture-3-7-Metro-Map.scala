@@ -124,7 +124,7 @@ object multiColorShortestPathMetroMap extends metroMap {
     val Some(shortestPath: List[Station]) = metroGraph.BFshortestPath(toStation, fromStation)(legTimes)
     val p: Path[Station] = Path.verticesToPath(shortestPath)
 
-    val paths = splitPathForMetro(p)
+    val paths: Seq[Path[Station]] = splitPathForMetro(p)
     val colors = Array(DarkOrange, Red, Blue, Gold, Orange, Violet)
     val multiColorRoutes = paths.foldLeft((0, Set[Line]())) {
       case ((colorIndex, lines), Path(_, edges)) =>
