@@ -1,7 +1,7 @@
 #!/bin/csh -f
 
 alias STDERR 'bash -c "cat - 1>&2"'
-cd ~/Repos/scalain-e-student
+cd ~/Repos/scala-e-student
 
 if (! -d .git/) then
   echo must run in top level dir of git repo | STDERR
