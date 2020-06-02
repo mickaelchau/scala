@@ -40,7 +40,6 @@ case class Graph[A](override val Vertices: Set[A], override val Edges: Set[(A, A
     with FloydWarshall[A]{
 }
 
-
 object Graph {
   def verticesToEdges[A](vertices:List[A]):Set[Edge[A]] = {
     val Path(_,edges) = Path.verticesToPath(vertices)
