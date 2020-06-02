@@ -26,28 +26,49 @@ import java.nio.file.Files.createTempFile
 import scalafx.scene.image.WritableImage
 import scala.math._
 
-class PetersEarthMap(borders:Boolean = true,
+class PetersEarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
+                     locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
+                     width:Int=360, height:Int=180, // size in pixels of the image file
+                     borders:Boolean = true,
                      legend:Boolean = false,
                      palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette)
-  extends EarthMap(borders=borders,legend=legend,palette=palette) {
+  extends EarthMap(locationLL=locationLL,locationUR=locationUR,
+    width=width,height=height,borders=borders,legend=legend,palette=palette) {
+
   // peters projection
   override def project(loc: Location): (Double, Double) = (90 * sin(toRadians(loc.lat)) -> loc.lon)
-
   override def invProject(lat: Double, lon: Double): Location = Location(toDegrees(asin(lat / 90)), lon)
 }
 
-class EarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
-               locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
-               width:Int=360, height:Int=180, // size in pixels of the image file
-               borders:Boolean=true,
-               legend:Boolean=false,
-               palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette) {
-  val Location(latMin: Double, lonMin: Double) = locationLL
-  val Location(latMax: Double, lonMax: Double) = locationUR
+class SimpleEarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
+                     locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
+                     width:Int=360, height:Int=180, // size in pixels of the image file
+                     borders:Boolean = true,
+                     legend:Boolean = false,
+                     palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette)
+  extends EarthMap(locationLL=locationLL,locationUR=locationUR,
+    width=width,height=height,borders=borders,legend=legend,palette=palette) {
 
   // simple projection
   def project(loc: Location):(Double,Double) = (loc.lat -> loc.lon)
   def invProject(lat: Double, lon: Double):Location = Location(lat,lon)
+}
+
+abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
+                        locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
+                        width:Int=360, height:Int=180, // size in pixels of the image file
+                        borders:Boolean=true,
+                        legend:Boolean=false,
+                        palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette) {
+  val Location(latMin: Double, lonMin: Double) = locationLL
+  val Location(latMax: Double, lonMax: Double) = locationUR
+
+  // projection
+  // project is a function which takes a location on the globe, and reprojects it to
+  //   a deformation of the glob.  The return value (lat,lon) of project is assumed to be
+  //   interpretable as a location.  I.e., -90 <= lat <= 90 and -180 <= lon < 180
+  def project(loc: Location):(Double,Double)
+  def invProject(lat: Double, lon: Double):Location
 
   // degrees/pixel
   val pixelDeltaDegree: Double = 0.5 * (latMax - latMin) / width
@@ -121,9 +142,9 @@ class EarthMap(locationLL:Location=Location(-90,-180), // location on the globe 
   }
 
   def calcGeodesicPixels(loc1: Location, loc2: Location): Set[(Int, Int)] = {
-    val epsilon = 0.0001 // degrees
-    val xy1 = locationToXy(loc1)
-    val xy2 = locationToXy(loc2)
+    val epsilon = 0.0001 // km^2
+    val xy1: Option[(Int, Int)] = locationToXy(loc1)
+    val xy2: Option[(Int, Int)] = locationToXy(loc2)
 
     // if the two locations are close enough that they plot as the same pixel,
     //   then just return a Set of that pixel

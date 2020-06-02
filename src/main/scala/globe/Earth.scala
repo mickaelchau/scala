@@ -25,10 +25,10 @@ case class City(name:String,loc:Location,population:Int)
 
 object Earth {
 
-  import Math._ // scala.Math is deprecated
+  import scala.math._ // scala.Math is deprecated
 
   val earthRadius = 6371.0 // km
-  val earthCircumference = PI * earthRadius * 2
+  val earthCircumference = Pi * earthRadius * 2
   val earthCirumThresh = earthCircumference / 8.0
 
   def deltaSigma(loc1: Location, loc2: Location): Double = {
@@ -41,14 +41,15 @@ object Earth {
     acos(sin(phi1) * sin(phi2) + cos(phi1) * cos(phi2) * cos(lambda1 - lambda2))
   }
 
-  def geodesicDistance(loc1: Location, loc2: Location) = {
+  def geodesicDistance(loc1: Location, loc2: Location): Double = {
     earthRadius * deltaSigma(loc1, loc2)
   }
 
   val rho = earthRadius
 
+  @scala.annotation.tailrec
   def forceLongitude(degrees: Double): Double = {
-    // returns a newly calculated longitude congrent to the
+    // returns a newly calculated longitude congruent to the
     // given one, but which: -180.0 <= degrees < 180.0
     if (degrees < -180)
       forceLongitude(degrees + 360)
@@ -57,7 +58,7 @@ object Earth {
     else
       degrees
   }
-  def sqr(x: Double) = x * x
+  def sqr(x: Double): Double = x * x
 
   def euclidianDistanceSqr(p1: (Double, Double, Double), p2: (Double, Double, Double)): Double = {
     val (x1, y1, z1) = p1
@@ -65,7 +66,7 @@ object Earth {
     sqr(x1 - x2) + sqr(y1 - y2) + sqr(z1 - z2)
   }
 
-  def euclidianDistanceSqr(loc1: Location, loc2: Location) = {
+  def euclidianDistanceSqr(loc1: Location, loc2: Location): Double = {
     val Point3(x1, y1, z1) = Point3(loc1)
     val Point3(x2, y2, z2) = Point3(loc2)
     sqr(x2 - x1) + sqr(y2 - y1) + sqr(z2 - z1)
@@ -103,7 +104,7 @@ object Earth {
     val b = geodesicDistance(x1, x2) / earthRadius
     val c = geodesicDistance(p0, x2) / earthRadius
     val quotient = (cos(c) - cos(a) * cos(b)) / (sin(a) * sin(b))
-    acos(quotient) / PI * 180
+    acos(quotient) / Pi * 180
   }
 
   def intervalsOverlap(interval1: (Double, Double), interval2: (Double, Double)): Boolean = {
@@ -148,30 +149,6 @@ object Earth {
 
   type SEG = (Location, Location)
 
-  def segmentsCrossing(p: SEG, q: SEG): Boolean = {
-    // determine whether two geodesics cross
-    // if the segments share one endpoint but not two, they DO NOT cross
-    // TODO need a case for colinear but overlapping
-    val (p1@Location(p1lat, _), p2@Location(p2lat, _)) = p
-    val (q1@Location(q1lat, _), q2@Location(q2lat, _)) = q
-    //println(s"p1=$p1  p2=$p2  q1=$q1  q2=$q2")
-    //println(s"p1lat=$p1lat  p2lat=$p2lat  q1lat=$q1lat  q2lat=$q2lat")
-    //println(s"intervals overlap? " + intervalsOverlap(longitudeInterval(p1, p2), longitudeInterval(q1, q2)))
-    if ((p1 == q1 || p1 == q2) && p2 != q1 && p2 != q2)
-      false
-    else if ((p2 == q1 || p2 == q2) && p1 != q1 && p1 != q2)
-      false
-    else if (p1lat > 0 && p2lat > 0 && q1lat < 0 && q2lat < 0) // p in north hemisphere does not cross q in south hemisphere
-    false
-      else if (p1lat < 0 && p2lat < 0 && q1lat > 0 && q2lat > 0) // p in south hemisphere does not cross q in north hemisphere
-    false
-      else if (!intervalsOverlap(longitudeInterval(p1, p2), longitudeInterval(q1, q2))) // disjoint latitude intervals do not overlap
-    false
-      else {
-      SimpleIntersection.intersects(p, q)
-    }
-  }
-
   def locationInsideTriangle(center: Location, triangle: List[Location]): Boolean = {
     require(triangle.length == 3)
     triangle.forall { p0: Location => {
@@ -182,6 +159,7 @@ object Earth {
     }
     }
   }
+
   def removeQuotes(str:String) :String = {
     if (str == "")
       str
@@ -218,88 +196,4 @@ object Earth {
          }  yield city -> City(name=city,loc=Location(lat,lon),population=population)).toMap
   }
   val cities: Map[String, City] = parseCities()
-}
-
-case class Point3(x: Double, y: Double, z: Double)
-
-object Point3 {
-  import math._  // scala.Math is deprecated
-  def apply(loc: Location): Point3 = apply(loc.lat, loc.lon)
-
-  // phi = latitude
-  // theta = latitude
-  // calculate 3d coords on the earth
-  def apply(lat: Double, lon: Double): Point3 = {
-    val phi = toRadians(lat)
-    val theta = toRadians(lon)
-    val cp = cos(phi)* Earth.earthRadius
-    val x = cp * cos(theta) // cos(phi) * cos(theta)
-    val y = cp * sin(theta) // cos(phi) * sin(theta)
-    val z = sin(phi) * Earth.earthRadius
-    Point3(x, y, z)
-  }
-}
-
-object SimpleIntersection {
-
-  // https://stackoverflow.com/questions/26668041/
-  // A simpler approach is to express the problem in terms of geometric primitive operations
-  // like the dot product, the cross product, and the triple product. The sign of the
-  // determinant of u, v, and w tells you which side of the plane spanned by v and w
-  // contains u. This enables us to detect when two points are on opposite sites of
-  // a plane. That's equivalent to testing whether a great circle segment crosses
-  // another great circle. Performing this test twice tells us whether two great
-  // circle segments cross each other.
-
-  // The implementation requires no trigonometric functions, no division, no comparisons
-  // with pi, and no special behavior around the poles!
-
-
-  def dot(v1: Point3, v2: Point3): Double = {
-    v1.x * v2.x + v1.y * v2.y + v1.z * v2.z
-  }
-
-  def cross(v1: Point3, v2: Point3): Point3 = {
-    Point3(v1.y * v2.z - v1.z * v2.y,
-           v1.z * v2.x - v1.x * v2.z,
-           v1.x * v2.y - v1.y * v2.x)
-  }
-
-  def det(v1: Point3, v2: Point3, v3: Point3): Double = {
-    dot(v1, cross(v2, v3))
-  }
-
-  case class Pair(v1: Point3, v2: Point3)
-
-  // Returns True if the great circle segment determined by s
-  // straddles the great circle determined by l
-  def straddles(s: Pair, l: Pair): Boolean = {
-    (det(s.v1, l.v1, l.v2) * det(s.v2, l.v1, l.v2)) < 0
-  }
-
-  type SEG = (Location, Location)
-
-  def intersects(seg1: SEG, seg2: SEG): Boolean = {
-    val (loc1, loc2) = seg1
-    val (loc3, loc4) = seg2
-    intersects(Pair(Point3(loc1), Point3(loc2)), Pair(Point3(loc3), Point3(loc4)))
-  }
-
-  // Returns True if the great circle segments determined by a and b
-  // cross each other
-  def intersects(a: Pair, b: Pair): Boolean = {
-    straddles(a, b) && straddles(b, a)
-  }
-
-  def main(argv: Array[String]): Unit = {
-    // Test. Note that we don't need to normalize the vectors.
-    println(intersects(Pair(Point3(1, 0, 1), Point3(-1, 0, 1)),
-                       Pair(Point3(0, 1, 1), Point3(0, -1, 1))))
-
-    println(intersects(Pair(Point3(45, -30), Point3(45, 30)),
-                       Pair(Point3(45, 0), Point3(80, 0))))
-
-    println(intersects(Pair(Point3(45, -30), Point3(45, 30)),
-                       Pair(Point3(45, 0), Point3(46, 0))))
-  }
 }
