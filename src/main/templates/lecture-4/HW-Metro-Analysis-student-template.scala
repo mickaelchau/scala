@@ -104,7 +104,7 @@ object MetroAnalysis {
   //    1) transit time between the stations
   //    2) number of legs in the shortest path between the stations
   //    3) number of metro lines needed to connect the two stations
-  // Distances 1 and 2 can be achieved by examining the 1st value
+  // Distances #1 and #2 can be achieved by examining the 1st value
   //   returned by metroGraph.floydWarshall as shown in functions
   //   stationDistanceTime and stationDistanceLegs shown above.
   // Your task here is to implement stationDistanceTransfers
@@ -116,16 +116,19 @@ object MetroAnalysis {
   // This function takes, pred, as first argument.  pred is the
   // 2nd value returned from metroGraph.floydWarshall()
   def stationDistanceTransfers(pred:Map[(Int,Int),Int],st1:String,st2:String):Int = {
-    import homework.PathSplit.splitPathForMetro
     val Some(ind1) = stationIndex(st1)
     val Some(ind2) = stationIndex(st2)
 
     val Some(shortest) =  metroGraph.FWtracePredecessors(ind1, ind2, pred)
     val path = Path.verticesToPath(shortest)
 
-    // you have written a function to split such a path into
-    //  a sequence of paths, use that function to count the
-    //  number of such paths.
+    // Now path is designates the shortest path from st1 to st2,
+    // examine path to determine how many metro transfers it designates.
+    // A metro transfer is indicated if two consecutive stations have
+    // the same name.   Remember that the Path class allows to to find
+    // the list of stations, each as an integer.  But you want to count
+    // how many times the corresponding strings are equal.
+    // You  may need several lines of code to compute this integer.
     ???
   }
 
@@ -133,7 +136,7 @@ object MetroAnalysis {
   //   if called multiple times, because it calls floydWarshall
   //   every time it is called.
   def stationDistanceTransfers(st1:String,st2:String):Int = {
-    val (dst, pred) = metroGraph.floydWarshall(legTimes)
+    val (_, pred) = metroGraph.floydWarshall(legTimes)
     stationDistanceTransfers(???,???,???)
   }
 
@@ -142,6 +145,8 @@ object MetroAnalysis {
   def maximizeStationBy(f:Edge[Station]=>Int):(String,String) = {
     val (dst,pred) = metroGraph.floydWarshall(f)
 
+    // replace this ??? with several 7 to 15 lines of code to compute the return
+    // value.
     ???
   }
 

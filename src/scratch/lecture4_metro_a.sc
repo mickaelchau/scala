@@ -29,6 +29,7 @@ legData.map{
 }.filter{
   case (src,dst,seconds) => src == dst
 }
+
 // does every transfer take 120 seconds?
 // res5
 legData.map{
@@ -47,7 +48,7 @@ legData.groupBy(_._1).filter{
   case (src,legs) => legs.size == 1
 }
 
-// res 8
+// res 8 -- print names of end stations
 legData.groupBy(_._1).filter{
   case (src,legs) => legs.size == 1
 }.map{
@@ -58,11 +59,21 @@ legData.groupBy(_._1).filter{
 legData.groupBy(_._1).map{
   case (src,legs) if legs.size == 1 => stationPositions(src)._1
   case _ => ""
-}.filter(_ != "")
+}
 
 // res10
+legData.groupBy(_._1).map{
+  case (src,legs) if legs.size == 1 => stationPositions(src)._1
+  case _ => ""
+}.filter(_ != "")
+
+// res11
 legData.groupBy(_._1).flatMap{
   case (src,legs) if legs.size == 1 => Some(stationPositions(src)._1)
   case _ => None
 }
 
+// res12 --- rewrite res11 as for comprehension
+for { (src,legs) <- legData.groupBy(_._1)
+      if legs.size == 1
+      } yield stationPositions(src)._1
