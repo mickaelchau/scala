@@ -19,35 +19,22 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture
+package globe
 
-abstract class ProtoGraph[A](val Vertices: Set[A], val Edges: Set[(A, A)]) {
-  val edges: Set[Edge[A]] = Edges.map(Edge.pairToEdge)
-
-  val Adj: Map[A, Set[A]] = {
-    // vertices which can be reached from v1 with one step
-    def successors(v1: A): Set[A] = {
-      Vertices.filter { v2: A => edges.contains(Edge(v1, v2)) }
-    }
-
-    Vertices.map(v => (v, successors(v))).toMap
-  }
+// lat = y
+// lon = x
+case class Location(lat: Double, lon: Double) {
+  override def toString = f"[$lat%1.1f;$lon%1.1f]"
 }
 
-case class Graph[A](override val Vertices: Set[A], override val Edges: Set[(A, A)])
-  extends ProtoGraph[A](Vertices, Edges)
-    with BellmanFord[A]
-    with FloydWarshall[A]{
-}
-
-
-object Graph {
-  def verticesToEdges[A](vertices:List[A]):Set[Edge[A]] = {
-    val Path(_,edges) = Path.verticesToPath(vertices)
-    edges
-  }
-
-  def main(args: Array[String]): Unit = {
-
+object Location {
+  import math._ // scala.Math is deprecated
+  import Earth.{earthRadius,justifyLocation}
+  def apply(p:Point3):Location = {
+    val Point3(x, y, z) = p
+    val phid = toDegrees(asin(z / earthRadius)) // -90 to 90
+    val thetad = toDegrees(atan2(y,x))
+    //println(s"Location.apply: p=$p phid = $phid  thetad=$thetad")
+    justifyLocation(Location(phid,thetad))
   }
 }

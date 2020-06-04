@@ -23,30 +23,39 @@ package lecture
 
 sealed abstract class Tree[A] {
   def leafData():List[A]
+
+  def apply(a:Int):Int = {
+    a
+  }
 }
 
 case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
   override def toString():String = {
-    branches.map(_.toString).mkString("[",", ","]")
+    branches.map(_.toString()).mkString("[", ",", "]")
   }
-
   def leafData():List[A] = {
-    branches.flatMap(b => b.leafData()) // or    branches.flatMap(_.leafData())
+    branches.flatMap{b => b.leafData()}
   }
 }
 
 case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString():String = data.toString
-
-  def leafData():List[A] = List(data)
+  override def toString():String = {
+    data.toString()
+  }
+  def leafData():List[A] = {
+    List(data)
+  }
 }
 
 object Tree {
+
+  def apply[A](x:Int):TreeLeaf[A] = {
+    ???
+  }
   def contains[A](t:Tree[A],target:A):Boolean = {
     t match {
-      case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
+      case TreeLeaf(data) => target == data
+      case TreeNode(branches) => branches.exists{ b=> contains(b,target)}
     }
   }
 
@@ -62,7 +71,12 @@ object Tree {
 
     val t = TreeNode(List(t3456,t3456,t6,t3))
 
-    println(t)
-  }
+    println(contains(t,6.0))
+    println(contains(t,7.0))
+    println(t.leafData())
 
+    t(1)
+
+  }
 }
+

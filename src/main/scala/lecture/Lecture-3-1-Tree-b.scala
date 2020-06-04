@@ -19,9 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture_b
-
 // generalize from Tree of Int to Tree of any type
+
+package lecture_b
 
 abstract class Tree[A]
 
@@ -45,5 +45,4 @@ object Tree {
 
     println(t)
   }
-
 }

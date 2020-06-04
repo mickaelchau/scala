@@ -19,46 +19,34 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// implement contains function in companion object,
-//   but allow runtime error because of non exhaustive pattern match
+package lecture
 
-package lecture_d
+abstract class ProtoGraph[A](val Vertices: Set[A], val Edges: Set[(A, A)]) {
+  val edges: Set[Edge[A]] = Edges.map(Edge.pairToEdge)
 
-abstract class Tree[A]
-
-case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
-  override def toString():String = {
-    branches.map(_.toString).mkString("[",", ","]")
-  }
-}
-
-case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString():String = data.toString
-}
-
-object Tree {
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-        // RUNTIME error because of missing case, pattern match not exhaustive
-      // case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
+  val Adj: Map[A, Set[A]] = {
+    // vertices which can be reached from v1 with one step
+    def successors(v1: A): Set[A] = {
+      Vertices.filter { v2: A => edges.contains(Edge(v1, v2)) }
     }
+
+    Vertices.map(v => (v, successors(v))).toMap
+  }
+}
+
+case class Graph[A](override val Vertices: Set[A], override val Edges: Set[(A, A)])
+  extends ProtoGraph[A](Vertices, Edges)
+    with BellmanFord[A]
+    with FloydWarshall[A]{
+}
+
+object Graph {
+  def verticesToEdges[A](vertices:List[A]):Set[Edge[A]] = {
+    val Path(_,edges) = Path.verticesToPath(vertices)
+    edges
   }
 
-  def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3.0)
-    val t4 = TreeLeaf(4.0)
-    val t5 = TreeLeaf(5.0)
-    val t6 = TreeLeaf(6.0)
+  def main(args: Array[String]): Unit = {
 
-    val t3456 = TreeNode(List(
-      TreeNode(List(t3,t4)),
-      TreeNode(List(t5,t6))))
-
-    val t = TreeNode(List(t3456,t3456,t6,t3))
-
-    println(contains(t,6.0))
-    println(contains(t,7.0))
   }
 }

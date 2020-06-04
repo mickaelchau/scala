@@ -51,6 +51,10 @@ object Edge {
 case class Path[A](vertices: List[A], edges: Set[Edge[A]]) {
   require(vertices.size > 0, "Path with no vertices is not supported")
   require(edges.forall { edge =>
+    // for each given edge, verify that src,dst are adjacent
+    // in the vertices list.
+    //  TODO need to also verify that for each pair of consecutive vertices
+    //    that an edge exists.
     (vertices.head :: vertices).tails.exists {
       case a :: b :: _ => {
         a == edge.src && b == edge.dst

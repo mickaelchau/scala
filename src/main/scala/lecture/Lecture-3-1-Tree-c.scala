@@ -19,9 +19,9 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture_c
-
 // implement toString for more readable representation of a Tree
+
+package lecture_c
 
 abstract class Tree[A]
 
@@ -51,5 +51,4 @@ object Tree {
 
     println(t)
   }
-
 }

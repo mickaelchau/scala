@@ -19,46 +19,24 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// implement contains function in companion object,
-//   but allow runtime error because of non exhaustive pattern match
+package globe
 
-package lecture_d
+case class Point3(x: Double, y: Double, z: Double)
 
-abstract class Tree[A]
+object Point3 {
+  import math._  // scala.Math is deprecated
+  def apply(loc: Location): Point3 = apply(loc.lat, loc.lon)
 
-case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
-  override def toString():String = {
-    branches.map(_.toString).mkString("[",", ","]")
-  }
-}
-
-case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString():String = data.toString
-}
-
-object Tree {
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-        // RUNTIME error because of missing case, pattern match not exhaustive
-      // case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
-    }
-  }
-
-  def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3.0)
-    val t4 = TreeLeaf(4.0)
-    val t5 = TreeLeaf(5.0)
-    val t6 = TreeLeaf(6.0)
-
-    val t3456 = TreeNode(List(
-      TreeNode(List(t3,t4)),
-      TreeNode(List(t5,t6))))
-
-    val t = TreeNode(List(t3456,t3456,t6,t3))
-
-    println(contains(t,6.0))
-    println(contains(t,7.0))
+  // phi = latitude
+  // theta = latitude
+  // calculate 3d coords on the earth
+  def apply(lat: Double, lon: Double): Point3 = {
+    val phi = toRadians(lat)
+    val theta = toRadians(lon)
+    val cp = cos(phi)* Earth.earthRadius
+    val x = cp * cos(theta) // cos(phi) * cos(theta)
+    val y = cp * sin(theta) // cos(phi) * sin(theta)
+    val z = sin(phi) * Earth.earthRadius
+    Point3(x, y, z)
   }
 }

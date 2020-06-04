@@ -116,7 +116,7 @@ object singleColorShortestPathMetroMap extends metroMap {
 
 object multiColorShortestPathMetroMap extends metroMap {
 
-  import homework.PathSplit.splitPathForMetro
+  /// import homework.PathSplit.splitPathForMetro
 
   def drawMetroMapShortestPath(fromStation: Station, toStation: Station): Unit = {
     // draw a metro map with the shortest path routing between fromStation and toStation
@@ -124,7 +124,7 @@ object multiColorShortestPathMetroMap extends metroMap {
     val Some(shortestPath: List[Station]) = metroGraph.BFshortestPath(toStation, fromStation)(legTimes)
     val p: Path[Station] = Path.verticesToPath(shortestPath)
 
-    val paths = splitPathForMetro(p)
+    val paths: Seq[Path[Station]] = ??? // splitPathForMetro(p)
     val colors = Array(DarkOrange, Red, Blue, Gold, Orange, Violet)
     val multiColorRoutes = paths.foldLeft((0, Set[Line]())) {
       case ((colorIndex, lines), Path(_, edges)) =>
