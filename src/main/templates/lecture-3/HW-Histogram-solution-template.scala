@@ -29,16 +29,17 @@ package homework
 
 case class Histogram[A](items:Seq[A]) {
 
-  // implement as many vars and defs as necessary to make the implmentation of
+  // implement as many vals and defs as necessary to make the implementation of
   //  Histogram understandable and well structured.
+  //  Avoid using mutable variables or mutable data structures.
 
   // When a Histogram is printed, it is surrounded by square brackets [...]
   // Histogram(List("a")) ==> "[1 of a]"
   // Histogram(List("a","b","b")) ==> "[1 of a & 2 of b]"  ;; ordered by INCREASING frequency
   // Histogram(List("a","b","b","a")) ==> "[2 of a & 2 of b]"  ;; if the same frequency appears multiple times,
   //                                                            print in any order
-  // Histogram(List("a","b","b","a","c")) ==> "[1 of c & 2 of a & 2 of b]"  ;; if the same frequency appears multiple times,
-  // Between the brackets is 0 or more occurrences of the form x of y, where x is an integer ,
+  // Histogram(List("a","b","b","a","c")) ==> "[1 of c & 2 of a & 2 of b]"
+  // Between the brackets is 0 or more occurrences of the form x of y, where x is an integer,
   //      and y is the printed representation of the object of type A
 
 
@@ -76,6 +77,6 @@ object Histogram {
   }
 
   def main(argv:Array[String]):Unit = {
-    ???
+
   }
 }
