@@ -3,6 +3,8 @@ import lecture.MetroData._
 stationPositions.take(5)
 legData.take(5)
 
+stationPositions.zipWithIndex.take(5)
+
 // substitute specific station info into leg data
 // res2
 legData.map{
