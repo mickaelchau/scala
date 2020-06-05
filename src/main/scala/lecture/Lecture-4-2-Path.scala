@@ -30,7 +30,6 @@ package lecture
 //   operator overloading
 //   methods ending with : such as ::
 //   class inheritance and traits
-//   lazy variables
 //   Map vs map, and '->' notation
 //   type alias (reminder)
 //   using map to transform data

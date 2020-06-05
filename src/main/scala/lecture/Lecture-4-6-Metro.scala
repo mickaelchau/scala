@@ -74,6 +74,6 @@ object Metro {
     println(s"ls=    $ls")
     println(s"indices= $indices")
     println(s"edges=   $edges")
-    println(s"${edges.size}:\n  " + indices.map(stationName).mkString("[", " ->", "]"))
+    println(s"${edges.size}:\n  " + indices.map(stationName).mkString("[", "->", "]"))
   }
 }

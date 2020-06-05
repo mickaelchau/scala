@@ -30,13 +30,13 @@ import scalafx.scene.shape.Line
 import lecture.Metro._
 import lecture.MetroData._
 
-trait metroMap extends JFXApp {
+trait MetroMap extends JFXApp {
 
   val (maxX: Int, maxY: Int) = stationPositions.foldLeft((0, 0)) {
     case ((maxX, maxY), (_, x, y)) => (math.max(x, maxX), math.max(y, maxY))
   }
-  val (minX: Int, minY: Int) = stationPositions.foldLeft((maxX,maxY)) {
-    case ((minX, minY), (_, x, y)) => (math.min(x,minX), math.min(y,minY))
+  val (minX: Int, minY: Int) = stationPositions.foldLeft((maxX, maxY)) {
+    case ((minX, minY), (_, x, y)) => (math.min(x, minX), math.min(y, minY))
   }
   val drawableLegs: Set[Edge[Station]] = legs.foldLeft(Set[Edge[Station]]()) {
     // uniquify the legs in the sense that either src -> dst is there
@@ -50,7 +50,8 @@ trait metroMap extends JFXApp {
         seen + Edge(src, dst)
     }
   }
-  def edgesToLines(legs:Set[Edge[Station]], color:Color, width:Int):Set[Line] = {
+
+  def edgesToLines(legs: Set[Edge[Station]], color: Color, width: Int): Set[Line] = {
     // convert a Set of edges to a Set of Line objects.  A Line object
     // is something which can be given to JFXApp for plotting in a canvas.
     for {
@@ -71,7 +72,7 @@ trait metroMap extends JFXApp {
     } yield line
   }
 
-  def drawMetroMapShortestPath(fromStation:Station, toStation:Station):Unit
+  def drawMetroMapShortestPath(fromStation: Station, toStation: Station): Unit
 
   def drawMetroMapShortestPath(src: String, dst: String): Unit = {
     val fromIndex = stationIndex(src)
@@ -84,7 +85,7 @@ trait metroMap extends JFXApp {
 
   val metroMapLines: Set[Line] = edgesToLines(drawableLegs, Green, 1)
 
-  def displayMetroMap(routes:Set[Line], fromStation:Station, toStation:Station):Unit = {
+  def displayMetroMap(routes: Set[Line], fromStation: Station, toStation: Station): Unit = {
     stage = new JFXApp.PrimaryStage {
       title.value = s"Paris Metro: from ${stationName(fromStation)} to ${stationName(toStation)}"
       width = maxX - minX // limit width and height to be only the x,y pairs used in the metro map
@@ -97,13 +98,13 @@ trait metroMap extends JFXApp {
   }
 }
 
-object singleColorShortestPathMetroMap extends metroMap {
+object singleColorShortestPathMetroMap extends MetroMap {
 
   def drawMetroMapShortestPath(fromStation: Station, toStation: Station): Unit = {
     // draw a metro map with the shortest path routing between fromStation and toStation
     // highlighted in a single color.
-    val Some(ls:List[Station]) = metroGraph.BFshortestPath(toStation, fromStation)( legTimes)
-    val Path(_, edges:Set[Edge[Station]]) = Path.verticesToPath(ls)
+    val Some(shortestPath:List[Station]) = metroGraph.BFshortestPath(toStation, fromStation)( legTimes)
+    val Path(_, edges:Set[Edge[Station]]) = Path.verticesToPath(shortestPath)
     val routes = edgesToLines(edges, Red, 4)
 
     displayMetroMap(routes, fromStation, toStation)
@@ -114,7 +115,7 @@ object singleColorShortestPathMetroMap extends metroMap {
   drawMetroMapShortestPath(  "Saint-Denis-Université","Créteil-Préfecture")
 }
 
-object multiColorShortestPathMetroMap extends metroMap {
+object multiColorShortestPathMetroMap extends MetroMap {
 
   /// import homework.PathSplit.splitPathForMetro
 
@@ -125,7 +126,7 @@ object multiColorShortestPathMetroMap extends metroMap {
     val p: Path[Station] = Path.verticesToPath(shortestPath)
 
     val paths: Seq[Path[Station]] = ??? // splitPathForMetro(p)
-    val colors = Array(DarkOrange, Red, Blue, Gold, Orange, Violet)
+    val colors = Array(DarkOrange, Blue, Red, Gold, Orange, Violet)
     val multiColorRoutes = paths.foldLeft((0, Set[Line]())) {
       case ((colorIndex, lines), Path(_, edges)) =>
         ((colorIndex + 1) % colors.length, lines ++ edgesToLines(edges, colors(colorIndex), 4))
