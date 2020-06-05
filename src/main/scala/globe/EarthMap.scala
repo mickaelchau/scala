@@ -26,49 +26,15 @@ import java.nio.file.Files.createTempFile
 import scalafx.scene.image.WritableImage
 import scala.math._
 
-class PetersEarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
-                     locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
-                     width:Int=360, height:Int=180, // size in pixels of the image file
-                     borders:Boolean = true,
-                     legend:Boolean = false,
-                     palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette)
-  extends EarthMap(locationLL=locationLL,locationUR=locationUR,
-    width=width,height=height,borders=borders,legend=legend,palette=palette) {
-
-  // peters projection
-  override def project(loc: Location): (Double, Double) = (90 * sin(toRadians(loc.lat)) -> loc.lon)
-  override def invProject(lat: Double, lon: Double): Location = Location(toDegrees(asin(lat / 90)), lon)
-}
-
-class SimpleEarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
-                     locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
-                     width:Int=360, height:Int=180, // size in pixels of the image file
-                     borders:Boolean = true,
-                     legend:Boolean = false,
-                     palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette)
-  extends EarthMap(locationLL=locationLL,locationUR=locationUR,
-    width=width,height=height,borders=borders,legend=legend,palette=palette) {
-
-  // simple projection
-  def project(loc: Location):(Double,Double) = (loc.lat -> loc.lon)
-  def invProject(lat: Double, lon: Double):Location = Location(lat,lon)
-}
-
-abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
-                        locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
-                        width:Int=360, height:Int=180, // size in pixels of the image file
-                        borders:Boolean=true,
-                        legend:Boolean=false,
-                        palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette) {
+case class EarthMap(locationLL:Location=Location(-90,-180), // location on the globe in latitude;longitude
+                    locationUR:Location=Location(90,180), // location on the globe in latitude;longitude
+                    width:Int=360, height:Int=180, // size in pixels of the image file
+                    borders:Boolean=true,
+                    legend:Boolean=false,
+                    projection:Projection = globe.SimpleProjection,
+                    palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette) {
   val Location(latMin: Double, lonMin: Double) = locationLL
   val Location(latMax: Double, lonMax: Double) = locationUR
-
-  // projection
-  // project is a function which takes a location on the globe, and reprojects it to
-  //   a deformation of the glob.  The return value (lat,lon) of project is assumed to be
-  //   interpretable as a location.  I.e., -90 <= lat <= 90 and -180 <= lon < 180
-  def project(loc: Location):(Double,Double)
-  def invProject(lat: Double, lon: Double):Location
 
   // degrees/pixel
   val pixelDeltaDegree: Double = 0.5 * (latMax - latMin) / width
@@ -88,7 +54,7 @@ abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on t
                                                 1.0))
   }
   def drawPoint(loc: Location, measurement: Double): Unit = {
-    drawPoint(loc,palette.chooseColor(measurement))
+    drawPoint(loc, palette.chooseColor(measurement))
   }
 
   def drawPoint(loc: Location, color: Color): Unit = {
@@ -113,7 +79,7 @@ abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on t
     if (lon < lonMin || lon > lonMax || lat < latMin || lat > latMax)
       None
     else {
-      val (latProj, lonProj) = project(Location(lat,lon))
+      val (latProj, lonProj) = projection.project(Location(lat,lon))
       val y = height - round(height * (latProj - latMin) / (latMax - latMin))
       val x = round((width - 1) * (lonProj - lonMin) / (lonMax - lonMin))
       Some((x.toInt.min(width - 1).max(0), y.toInt.min(height - 1).max(0)))
@@ -124,7 +90,7 @@ abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on t
     val (x, y) = xy
     val (lat,lon) = ((height - y) * (latMax - latMin) / height + latMin,
       x * (lonMax - lonMin) / width + lonMin)
-    invProject(lat,lon)
+    projection.invProject(lat,lon)
   }
 
   def drawGeodesic(loc1: Location, loc2: Location): Unit = {
@@ -262,9 +228,10 @@ abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on t
 object EarthMap {
   def colorizeCitiesByPopulation(): Unit = {
     locally {
-      val em = new PetersEarthMap(borders=false,
-                                  legend=true,
-                                  palette=ColorPalette.defaultPopulationColorPalette)
+      val em = EarthMap(borders=false,
+                        legend=true,
+                        projection=PetersProjection,
+                        palette=ColorPalette.defaultPopulationColorPalette)
 
       for { (_,city) <- Earth.cities
             }  em.drawPoint(city.loc,
@@ -275,9 +242,10 @@ object EarthMap {
     }
 
     locally {
-      val em = new PetersEarthMap(borders=false,
-                                  legend=true,
-                                  palette=ColorPalette.defaultPopulationColorPalette)
+      val em = EarthMap(borders=false,
+                        legend=true,
+                        projection=PetersProjection,
+                        palette=ColorPalette.defaultPopulationColorPalette)
 
       for { city <- Earth.cities.map{_._2}.toSeq.sortBy(_.population)
             }  em.drawPoint(city.loc,
@@ -289,7 +257,8 @@ object EarthMap {
   }
 
   def drawLineAndGeodesic():Unit = {
-    val em = new PetersEarthMap(legend=false)
+    val em = EarthMap(legend=false,
+                      projection=SimpleProjection)
 
     em.drawLinePixels(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(250, 100, 130))
     em.drawGeodesic(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(100, 100, 230))

@@ -26,11 +26,11 @@ import java.nio.file.Files.createTempFile
 
 class EarthMapTest extends FunSuite {
   test("earthMap 26") {
-    new SimpleEarthMap().output(createTempFile("test-26-earthMap-",".png"))
+    EarthMap().output(createTempFile("test-26-earthMap-",".png"))
   }
 
   test("EarthMap") {
-    val em = new SimpleEarthMap(Location(-90, -180), Location(90, 180), width = 360, height = 180, borders = true)
+    val em = EarthMap(Location(-90, -180), Location(90, 180), width = 360, height = 180, borders = true)
     assert(em.locationToXy(Location(0, 0)).contains((180, 90)))
     assert(em.locationToXy(Location(-89, 180)).contains((0, 179)))
     assert(Earth.justifyLocation(Location(-91, 0)) == Location(-89, -180))
@@ -42,16 +42,16 @@ class EarthMapTest extends FunSuite {
     assert(em.locationToXy(Location(0, -360)).contains((180, 90)))
   }
   test("EarthMap 42 output") {
-    val em = new SimpleEarthMap(Location(-90, -180), Location(90, 180), 360, 180, borders = true)
+    val em = EarthMap(Location(-90, -180), Location(90, 180), 360, 180, borders = true)
     em.output(createTempFile("test-42-earthMap-",".png"))
   }
   test("EarthMap 46 clipped output") {
-    val em = new SimpleEarthMap(Location(0, 0), Location(90, 180), 360, 180, borders = true)
+    val em = EarthMap(Location(0, 0), Location(90, 180), 360, 180, borders = true)
     em.output(createTempFile("test-46-earthMap-",".png"))
   }
 
   test("some cities 50"){
-    val em = new PetersEarthMap()
+    val em = EarthMap(projection=PetersProjection)
     val cities = Earth.cities.take(50)
     for{ (name1,city1) <- cities
          (name2,city2) <- cities

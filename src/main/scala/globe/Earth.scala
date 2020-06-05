@@ -193,7 +193,9 @@ object Earth {
            populationStr = removeQuotes(parsed(9).trim)
            if populationStr != ""
            population = populationStr.toDouble.toInt
-         }  yield city -> City(name=city,loc=Location(lat,lon),population=population)).toMap
+         }  yield city -> City(name=city,
+                               loc=Location(lat,lon),
+                               population=population)).toMap
   }
   val cities: Map[String, City] = parseCities()
 }
