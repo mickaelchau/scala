@@ -262,35 +262,43 @@ abstract class EarthMap(locationLL:Location=Location(-90,-180), // location on t
 object EarthMap {
   def colorizeCitiesByPopulation(): Unit = {
     locally {
-      val em = new PetersEarthMap(borders=false,legend=true,palette=ColorPalette.defaultPopulationColorPalette)
+      val em = new PetersEarthMap(borders=false,
+                                  legend=true,
+                                  palette=ColorPalette.defaultPopulationColorPalette)
 
-      (for { (_,city) <- Earth.cities
-             }  em.drawPoint(city.loc,city.population.toDouble))
+      for { (_,city) <- Earth.cities
+            }  em.drawPoint(city.loc,
+                            city.population.toDouble)
 
       val tmpFilePath: Path = createTempFile("test-population-earth-map-", ".png")
       em.output(tmpFilePath)
     }
 
     locally {
-      val em = new PetersEarthMap(borders=false,legend=true,palette=ColorPalette.defaultPopulationColorPalette)
+      val em = new PetersEarthMap(borders=false,
+                                  legend=true,
+                                  palette=ColorPalette.defaultPopulationColorPalette)
 
-      (for { city <- Earth.cities.map{_._2}.toSeq.sortBy(_.population)
-             }  em.drawPoint(city.loc,city.population.toDouble))
+      for { city <- Earth.cities.map{_._2}.toSeq.sortBy(_.population)
+            }  em.drawPoint(city.loc,
+                            city.population.toDouble)
 
       val tmpFilePath: Path = createTempFile("test-sorted-population-earth-map-", ".png")
       em.output(tmpFilePath)
     }
   }
 
-  def main(argv: Array[String]): Unit = {
-    locally {
-      val em = new PetersEarthMap(legend=false)
+  def drawLineAndGeodesic():Unit = {
+    val em = new PetersEarthMap(legend=false)
 
-      em.drawLinePixels(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(250, 100, 130))
-      em.drawGeodesic(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(100, 100, 230))
-      val tmpFilePath: Path = createTempFile("test-main-earth-map-", ".png")
-      em.output(tmpFilePath)
-    }
+    em.drawLinePixels(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(250, 100, 130))
+    em.drawGeodesic(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(100, 100, 230))
+    val tmpFilePath: Path = createTempFile("test-main-earth-map-", ".png")
+    em.output(tmpFilePath)
+  }
+
+  def main(argv: Array[String]): Unit = {
+    drawLineAndGeodesic()
     colorizeCitiesByPopulation()
   }
 }
