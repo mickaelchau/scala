@@ -31,6 +31,7 @@ case class EarthMap(locationLL:Location=Location(-90,-180), // location on the g
                     width:Int=360, height:Int=180, // size in pixels of the image file
                     borders:Boolean=true,
                     legend:Boolean=false,
+                    grid:Option[(Double,Double)]=None,
                     projection:Projection = globe.SimpleProjection,
                     palette:ColorPalette = ColorPalette.defaultTemperatureColorPalette) {
   val Location(latMin: Double, lonMin: Double) = locationLL
@@ -39,6 +40,7 @@ case class EarthMap(locationLL:Location=Location(-90,-180), // location on the g
   // degrees/pixel
   val pixelDeltaDegree: Double = 0.5 * (latMax - latMin) / width
   val colorBG: Color = Color(210, 210, 210)
+  val colorLatLon: Color = Color(199,199,199)
   val colorBlack: Color = Color(0, 0, 0)
   private val wimg = new WritableImage(width, height)
   private val pw = wimg.pixelWriter
@@ -102,12 +104,27 @@ case class EarthMap(locationLL:Location=Location(-90,-180), // location on the g
          } setColor(x, y, color)
   }
 
-  def divideGeodesic(loc1: Location, loc2: Location): Set[(Int, Int)] = {
-    val locm = Earth.bisectGeodesic(loc1, loc2)
-    calcGeodesicPixels(loc1, locm) union calcGeodesicPixels(locm, loc2)
+  def calcGeodesicPixels(loc1: Location, loc2: Location): Set[(Int, Int)] = {
+    def divideGeodesic(loc1: Location, loc2: Location): Set[(Int, Int)] = {
+      val locm = Earth.bisectGeodesic(loc1, loc2)
+      calcGeodesicPixels(loc1, locm) union calcGeodesicPixels(locm, loc2)
+    }
+    calcArcPixels(loc1,loc2,divideGeodesic)
   }
 
-  def calcGeodesicPixels(loc1: Location, loc2: Location): Set[(Int, Int)] = {
+  def calcLatitudePixels(loc1: Location, loc2: Location): Set[(Int, Int)] = {
+    require(loc1.lat == loc2.lat)
+    def divideLatLine(loc1: Location, loc2: Location): Set[(Int, Int)] = {
+      require(loc1.lat == loc2.lat)
+      val locm = Location(loc1.lat, (loc1.lon + loc2.lon)/2)
+      calcLatitudePixels(loc1,locm) union calcLatitudePixels(locm,loc2)
+    }
+    calcArcPixels(loc1,loc2,divideLatLine)
+  }
+
+  def calcArcPixels(loc1: Location,
+                    loc2: Location,
+                    divide:(Location,Location)=>Set[(Int,Int)]): Set[(Int, Int)] = {
     val epsilon = 0.0001 // km^2
     val xy1: Option[(Int, Int)] = locationToXy(loc1)
     val xy2: Option[(Int, Int)] = locationToXy(loc2)
@@ -137,14 +154,14 @@ case class EarthMap(locationLL:Location=Location(-90,-180), // location on the g
       if ((dx <= 1 || dx == width - 1) && dy <= 1)
         Set(xy1.get, xy2.get)
       else
-        divideGeodesic(loc1, loc2)
+        divide(loc1, loc2)
     }
     else if (xy1.isEmpty && Earth.euclidianDistanceSqr(loc1, loc2) < epsilon)
       Set(xy2.get)
     else if (xy2.isEmpty && Earth.euclidianDistanceSqr(loc1, loc2) < epsilon)
       Set(xy1.get)
     else {
-      divideGeodesic(loc1, loc2)
+      divide(loc1, loc2)
     }
   }
 
@@ -197,24 +214,58 @@ case class EarthMap(locationLL:Location=Location(-90,-180), // location on the g
     output(fileName, "png")
   }
 
+  def drawLegend():Unit = {
+    val mMin = palette.palette.map{_._1}.min
+    val mMax = palette.palette.map{_._1}.max
+    for{ i <- (0 to 100)
+         x <- (i/100.0 * width/5.0).toInt to ((i+1)/100.0 * width/5.0).toInt
+         measure = if (palette.logScale == false )
+           mMin + i/100*(mMax - mMin)
+         else
+           mMin * pow(pow(mMax / mMin,1.0/100),i)
+         y <- (height - height/30 until height)
+         } setColor(x,y,palette.chooseColor(measure))
+  }
+
+  def drawLongitudeLine(lon:Double) = {
+      drawGeodesic(Location(0,lon),Location(90,lon),colorLatLon)
+      drawGeodesic(Location(0,lon),Location(-90,lon),colorLatLon)
+  }
+
+  def drawLatitudeLine(lat:Double) = {
+    for{ pixels <- List(calcLatitudePixels(Location(lat,-180),Location(lat,-60))
+                        ,calcLatitudePixels(Location(lat,-60),Location(lat,60))
+                        ,calcLatitudePixels(Location(lat,60),Location(lat,180)))
+         (x,y) <- pixels
+         } setColor(x, y, colorLatLon)
+  }
+
+  def drawGrid():Unit = {
+    // draw latitude lines
+    for {pair <- grid
+         (dlat,_) = pair
+         steps = (180 / dlat).round.toInt
+         i <- 0 to steps
+         lat = -90 + i*dlat
+         } drawLatitudeLine(lat)
+    // draw longitude lines
+    for {pair <- grid
+         (_,dlon) = pair
+         steps = (360 / dlon).round.toInt
+         i <- 0 to steps
+         lon = -180 + i*dlon
+         } drawLongitudeLine(lon)
+  }
   def output(fileName: String, format: String): Boolean = {
     if (!fileName.endsWith("." + format))
       output( s"${fileName}.${format}", format)
     else {
+      drawGrid()
       if (borders) {
         Borders.drawBorders(this, drawGeodesic(_, _, colorBlack))
       }
-      if (legend) {
-        val mMin = palette.palette.map{_._1}.min
-        val mMax = palette.palette.map{_._1}.max
-        for{ i <- (0 to 100)
-             measure = if (palette.logScale == false )
-               mMin + i/100*(mMax - mMin)
-             else
-               mMin * pow(pow(mMax / mMin,1.0/100),i)
-             y <- (174 until 179)
-             } setColor(i,y,palette.chooseColor(measure))
-      }
+      if (legend) drawLegend()
+
       import javafx.embed.swing.SwingFXUtils._
       import javax.imageio.ImageIO.write
       val file = new java.io.File(fileName)
@@ -242,8 +293,9 @@ object EarthMap {
     }
 
     locally {
-      val em = EarthMap(borders=false,
+      val em = EarthMap(borders=true,
                         legend=true,
+                        width=1000, height=600,
                         projection=PetersProjection,
                         palette=ColorPalette.defaultPopulationColorPalette)
 
@@ -257,8 +309,11 @@ object EarthMap {
   }
 
   def drawLineAndGeodesic():Unit = {
-    val em = EarthMap(legend=false,
-                      projection=SimpleProjection)
+    val em = EarthMap(legend=false
+                      ,width=1000
+                      ,height=600
+                      ,grid=Some((15.0,20.0))
+                      ,projection=SimpleProjection)
 
     em.drawLinePixels(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(250, 100, 130))
     em.drawGeodesic(Earth.cities("Abu Dhabi").loc, Earth.cities("Auckland").loc, Color(100, 100, 230))
