@@ -44,7 +44,14 @@ class MetroAnalysisTestSuite extends FunSuite {
         }
     })
   }
-
+  test("maximizeStationTransitTime"){
+    assert( List(("Créteil-Préfecture","Saint-Denis-Université"),
+                 ("Saint-Denis-Université","Créteil-Préfecture")).contains(maximizeStationTransitTime()))
+  }
+  test("maximizeStationTransitLegs"){
+    assert( List(("Créteil-Préfecture","Pont de Sèvres"),
+                 ("Pont de Sèvres","Créteil-Préfecture")).contains(maximizeStationTransitLegs()))
+  }
   test("stationsServedBy") {
     val allStations: Set[String] = (for {
       n <- 1 to 5
@@ -80,13 +87,17 @@ class MetroAnalysisTestSuite extends FunSuite {
   }
 
   test("findEndStations") {
+    // Set(Place Balard, Mairie d'Ivry, Boulogne Pont de Saint-Cloud Rond Point Rhin et Danube, Gabriel Péri Asnières-Gennevilliers, Porte Dauphine, La Courneuve 8 Mai 1945, Mairie de Montreuil, Mairie des Lilas, Porte de la Chapelle, Bibliothèque François Mitterand, Château de Vincennes, Porte de Clignancourt, Pont de Levallois Bécon, Mairie d'Issy, Galliéni, Saint-Denis-Université, Pont de Sèvres, Villejuif Louis Aragon, Châtillon-Montrouge, Porte d'Orléans, Grande Arche de la Défense, Bobigny Pablo Picasso, Créteil-Préfecture)
     val ends: Set[String] = findEndStations()
-    assert(ends.size == 28)
+    assert(ends.size == 23)
     ends.map { end =>
       assert(stationIndex(end).nonEmpty, "no such station [$end]")
       assert(metroGraph.Vertices.exists { index =>
         stationName(index) == end &&
-          metroGraph.Adj(index).size == 1
+          metroGraph.Adj(index).size == 1 &&
+          metroGraph.Adj(index).forall{n=>
+            metroGraph.Adj(n).contains(index)
+        }
       }, "$end is not an end station")
     }
   }
