@@ -28,7 +28,7 @@ sealed abstract class Tree[A] {
 }
 
 case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
-  override def toString():String = {
+  override def toString:String = {
     branches.map(_.toString).mkString("[",", ","]")
   }
 
@@ -38,7 +38,7 @@ case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
 }
 
 case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString():String = data.toString
+  override def toString:String = data.toString
 
   def leafData():List[A] = List(data)
 }

@@ -21,8 +21,11 @@
 
 package lecture
 
+import scala.annotation.tailrec
+
 object FixedPoint {
   def fixedPoint[A](initial:A, f:A=>A, goodEnough:(A,A)=>Boolean):A = {
+    @tailrec
     def improve(current:A):A = {
       val nextResult = f(current)
       if (goodEnough(current,nextResult))

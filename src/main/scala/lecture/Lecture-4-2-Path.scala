@@ -21,6 +21,8 @@
 
 package lecture
 
+import scala.annotation.tailrec
+
 // lecture notes
 //   review directed graphs, single source shortest paths
 //     edge reduction, and Bellman-Ford algorithm
@@ -35,17 +37,6 @@ package lecture
 //   using map to transform data
 //   map vs flatMap vs for-comprehension
 //   Array.tabulate(dim)((i: Int) => i*(i+1))
-
-case class Edge[A](src: A, dst: A) {
-  def toSet = Set(src, dst)
-}
-
-object Edge {
-  def pairToEdge[A](pair: (A, A)): Edge[A] = {
-    val (src, dst) = pair
-    Edge(src, dst)
-  }
-}
 
 case class Path[A](vertices: List[A], edges: Set[Edge[A]]) {
   require(vertices.size > 0, "Path with no vertices is not supported")
@@ -83,6 +74,7 @@ object Path {
   // This deduces the set of edges correctly according to the given
   //   order of vertices.
   def verticesToPath[A](vertices: List[A]): Path[A] = {
+    @tailrec
     def deduceEdges(acc: Set[Edge[A]], vertices: List[A]): Set[Edge[A]] = {
       vertices match {
         case _ :: Nil => acc

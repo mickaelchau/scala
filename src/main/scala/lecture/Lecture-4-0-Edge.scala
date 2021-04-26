@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,37 +21,28 @@
 
 package lecture
 
-object Recursion {
-  def sumIntegersBySimpleRecursion(ints: List[Int]): Int = {
-    ints match {
-      case List() => 0
-      // common variable names are also h::t or head::tail  or first::rest
-      case i :: is => i + sumIntegersBySimpleRecursion(is)
-    }
-  }
+// lecture notes
+//   review directed graphs, single source shortest paths
+//     edge reduction, and Bellman-Ford algorithm
+//   parameterized functions and classes
+//   require/ ensuring/ assert
+//   mkString
+//   operator overloading
+//   methods ending with : such as ::
+//   class inheritance and traits
+//   Map vs map, and '->' notation
+//   type alias (reminder)
+//   using map to transform data
+//   map vs flatMap vs for-comprehension
+//   Array.tabulate(dim)((i: Int) => i*(i+1))
 
-  def sumIntegersByTailRecursion(ints: List[Int]): Int = {
-    @scala.annotation.tailrec
-    def sumRest(acc: Int, rest: List[Int]): Int = {
-      rest match {
-        case List() => acc
-        case i :: is => sumRest(acc + i, is)
-      }
-    }
+case class Edge[A](src: A, dst: A) {
+  def toSet = Set(src, dst)
+}
 
-    sumRest(0, ints)
-  }
-
-  def sumIntegersByFold(ints: List[Int]): Int = {
-    ints.fold(0)(_ + _)
-  }
-
-  def genLongList(len: Int, value: Double): List[Double] = {
-    List.tabulate(len)(_ => value)
-  }
-
-  def main(argv: Array[String]): Unit = {
-    val longList = List.tabulate(12)(n => 0) // List.fill(...)(...)
-    println(s"sum = ${sumIntegersBySimpleRecursion(longList)}")
+object Edge {
+  def pairToEdge[A](pair: (A, A)): Edge[A] = {
+    val (src, dst) = pair
+    Edge(src, dst)
   }
 }
