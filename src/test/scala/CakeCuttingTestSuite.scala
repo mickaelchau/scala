@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,9 +21,9 @@
 
 import homework.CakeCutting._
 import lecture.Calculus.almostEqual
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class CakeCuttingTestSuite extends FunSuite {
+class CakeCuttingTestSuite extends AnyFunSuite {
 
   val reference = List((10,0.063281565095552948), (11,0.06218749444597419), (9,0.06212536907689728), (12,0.060378403698454944),
                        (8,0.060024511185408004), (13,0.05756074485919371), (7,0.056474674502400006), (14,0.05392999018345996),

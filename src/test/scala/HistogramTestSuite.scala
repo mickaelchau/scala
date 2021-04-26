@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,21 +19,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
 
 
-class HistogramTestSuite extends FunSuite {
+class HistogramTestSuite extends AnyFunSuite {
   import homework.Histogram
   test("construct"){
     Histogram(List(1,1,2,2,3,3,3))
     Histogram(Seq(1,1,2,2,3,3,3))
-    Histogram(Array(1,1,2,2,3,3,3))
+    Histogram(Vector(1,1,2,2,3,3,3))
     Histogram(List(1.1,1.1,2.2,2.2,3.3,3.3,3.3))
     Histogram(Seq(1.1,1.1,2.2,2.2,3.3,3.3,3.3))
-    Histogram(Array(1.1,1.1,2.2,2.2,3.3,3.3,3.3))
+    Histogram(Vector(1.1,1.1,2.2,2.2,3.3,3.3,3.3))
     Histogram(List("a","a","b","b"))
     Histogram(Seq("a","a","b","b"))
-    Histogram(Array("a","a","b","b"))
+    Histogram(Vector("a","a","b","b"))
   }
   test("from Set"){
     Histogram.fromSet(Set(1,2,3,4))

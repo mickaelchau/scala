@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,11 +21,11 @@
 
 import homework.LimitAtDiscontinuity._
 import lecture.Calculus.almostEqual
-import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
 
-class LimitAtDiscontinuityTestSuite extends FunSuite {
+class LimitAtDiscontinuityTestSuite extends AnyFunSuite {
   test("limit at discontinuity"){
-    assert(almostEqual(0.0015)(4.0, evalLimitAtDiscontinutiy()))
+    assert(almostEqual(0.0015)(4.0, evalLimitAtDiscontinuity()))
   }
 
 }

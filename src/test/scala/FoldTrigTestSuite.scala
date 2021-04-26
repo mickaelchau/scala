@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -20,11 +20,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import homework.FoldTrig.{cos, exp, sin}
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 import scala.math.{Pi, abs}
 
-class FoldTrigTestSuite extends FunSuite {
+class FoldTrigTestSuite extends AnyFunSuite {
 
   test("cos") {
     assert(math.abs(cos(0.0) - 1.0) < .0001)

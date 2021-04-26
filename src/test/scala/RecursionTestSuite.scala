@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,13 +21,13 @@
 
 import homework.Recursion._
 import lecture.Recursion._
-import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
 
 // This test suite accompanies the lecture section called "Recursion".
 // The tests are intended to test the student's completion of
 // homework assignment "Recursion exercise".
 
-class RecursionTestSuite extends FunSuite {
+class RecursionTestSuite extends AnyFunSuite {
   test("simple recursion"){
     assert(0 == sumIntegersBySimpleRecursion(List()))
     assert(0 == sumIntegersBySimpleRecursion(List(0,0,0,0,0,0,0,0,0,0)))

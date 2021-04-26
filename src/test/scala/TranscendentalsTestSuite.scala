@@ -483,111 +483,7 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     val lh = m3.exp() * (m3.identity - m3).exp()
     assert(lh.dist(e1) < .001)
   }
-  test("breeze verify svd"){
-    // verify the behavior of svd
-    import breeze.linalg._
-    import scala.util.Random
-    def maxabsnorm(dim:Int, m:DenseMatrix[Double]):Double = {
-      (0 until dim).foldLeft(math.abs(m(0,0))){(acc:Double,row:Int) =>
-        val x = (0 until dim).foldLeft(math.abs(m(0,0))){
-          (acc:Double,col:Int) => math.max(acc,math.abs(m(row,col)))}
-        math.max(acc,x)
-      }
-    }
-    for{dim <- 1 to 4} {
-      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
-      val svd.SVD(u, s, v) = svd(dm1)
-      val dm2 = u * diag(s) * v
-      val dist:Double = maxabsnorm(dim,dm2 - dm1)
-      assert(dist < 0.001, s"dist=$dist dm1=[$dm1] dm2=[$dm2] diff=[${dm2-dm1}]")
-    }
-  }
-
-  test("breeze verify eig"){
-    // verify the behavior of eigen decomposition
-    import breeze.linalg._
-    import breeze.math._
-    import scala.util.Random
-    val zero:Complex = Complex(0.0,0.0)
-    val one:Complex = Complex(1.0,0.0)
-    def cabs(c:Complex):Double = c.abs
-    def maxabsnorm[T](dim:Int, m:DenseMatrix[T],abs:T=>Double):Double = {
-      (0 until dim).foldLeft(abs(m(0,0))){(acc:Double,row:Int) =>
-        val x = (0 until dim).foldLeft(abs(m(0,0))){
-          (acc:Double,col:Int) => math.max(acc,abs(m(row,col)))}
-        math.max(acc,x)
-      }
-    }
-    def invc(dim:Int, vc:DenseMatrix[Complex]):DenseMatrix[Complex] = {
-      val w:DenseMatrix[Double] = DenseMatrix.tabulate(dim*2, dim*2) {
-        case (j,k) if j < dim && k < dim => vc(j,k).real
-        case (j,k) if j < dim => vc(j,k-dim).imag
-        case (j,k) if k < dim => -1 * vc(j-dim,k).imag
-        case (j,k) =>vc(j-dim,k-dim).real
-      }
-      val winv:DenseMatrix[Double]  = inv(w)
-      val vinvc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k) => Complex(winv(j,k),winv(j,k+dim)))
-      val identc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k) => if (j==k) one else zero)
-      assert(maxabsnorm(dim,vinvc * vc - identc,cabs) < 0.001,
-             s"failed to compute inverse vc=[$vc] vinvc=[$vinvc]")
-      vinvc
-    }
-
-    for{dim <- 1 to 4} {
-      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
-      val eig.Eig(er,ei,v) = eig(dm1)
-      val vc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k)=>Complex(v(j,k),0.0))
-      def dia(k:Int,j:Int):Complex = if (k==j) Complex(er(j),ei(j)) else zero
-      val d:DenseMatrix[Complex] = DenseMatrix.tabulate(dim,dim)(dia)
-      val dm2:DenseMatrix[Complex] = vc * d * invc(dim,vc)
-      val dm1c:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k)=>Complex(dm1(j,k),0.0))
-      assert(maxabsnorm(dim,dm1c - dm2, cabs) < 0.001, s"dim=$dim failed to diagonalize dm1=[$dm1] d=[$d] vc=[$vc]")
-    }
-  }
-  test("breeze verify eig 2"){
-    // verify the behavior of eigen decomposition
-    import breeze.linalg._
-    import scala.util.Random
-    import breeze.linalg.eigSym.DenseEigSym
-
-    def maxabsnorm[T](dim:Int, m:DenseMatrix[T],abs:T=>Double):Double = {
-      (0 until dim).foldLeft(abs(m(0,0))){(acc:Double,row:Int) =>
-        val x = (0 until dim).foldLeft(abs(m(0,0))){
-          (acc:Double,col:Int) => math.max(acc,abs(m(row,col)))}
-        math.max(acc,x)
-      }
-    }
-
-    for{_ <- 1 to 10
-        dim <- 1 to 4} {
-      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
-      val dm = dm1 + dm1.t // to create a symmetric matrix.
-      val e:DenseEigSym = eigSym(dm)
-      val lambda = e.eigenvalues
-      val v = e.eigenvectors
-
-      val dm2:DenseMatrix[Double] = v * diag(lambda) * inv(v)
-      assert(maxabsnorm(dim,dm - dm2, math.abs) < 0.001 )
-    }
-
-  }
-
-  test("exp vs breeze"){
-    import scala.util.Random
-    for {dim <- Seq( 2, 3, 4)
-         k <- 0 to 200 // 0 to 100 * dim * dim
-         m = sqMatrix((0 until dim).map { row =>
-           (0 until dim).map { col =>
-             Random.between(-10.0, 10.0)
-           }.toArray
-         }.toArray)
-         } {
-      val mine = m.exp()
-      val bre = m.expB()
-      assert(m.determinant < 0 || mine.dist(bre) < 0.001, s"m=$m  m.exp=$mine   breeze=$bre")
-    }
-  }
-
+  
   test("exp 2") {
     import scala.util.Random
     for {dim <- Seq(1,2,3)
@@ -608,6 +504,7 @@ class TranscendentalsTestSuite extends AnyFunSuite {
       }
     }
   }
+
   test("exp 3") {
     import scala.util.Random
     for {dim <- Seq(1,2,3)

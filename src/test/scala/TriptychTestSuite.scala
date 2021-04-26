@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,7 +19,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
 
 object TestSupport {
   import homework.Triptych.Card
@@ -100,7 +100,7 @@ object TestSupport {
   }
 }
 
-class TriptychTestSuite extends FunSuite {
+class TriptychTestSuite extends AnyFunSuite {
 
   import TestSupport.{extractTriptychs, isCard, shuffle}
   import homework.Triptych._
@@ -177,15 +177,47 @@ class TriptychTestSuite extends FunSuite {
       case None => assert(false, "findTriptych should have found an triptych in this case")
     }
   }
-  test("5-cap") {
+  test("5-cap a") {
     assert(None == findTriptych(Set(Set("green", "squiggle", "one", "solid"),
                                     Set("green", "oval", "two", "solid"),
                                     Set("green", "diamond", "two", "solid"),
                                     Set("purple", "oval", "one", "solid"),
                                     Set("red", "squiggle", "one", "solid"))))
+    assert(None == findTriptych(Set(Set("green","oval","one","solid"),
+                                    Set("green","oval","two","solid"),
+                                    Set("green","diamond","one","solid"),
+                                    Set("purple","oval","one","solid"),
+                                    Set("red","squiggle","two","solid"))))
+    assert(None != findTriptych(Set(Set("green","oval","one","solid"),
+                                    Set("green","oval","two","solid"),
+                                    Set("green","diamond","one","solid"),
+                                    Set("purple","oval","one","solid"),
+                                    Set("red","squiggle","one","solid"))))
+  }
+  test("5-cap b") {
+    assert(None == findTriptych(Set(Set("red", "squiggle", "one", "solid"),
+                                    Set("red", "squiggle", "three", "outlined"),
+                                    Set("red", "oval", "two", "striped"),
+                                    Set("green", "oval", "one", "solid"),
+                                    Set("purple", "oval", "two", "striped"))))
+  }
+  test("5-cap c") {
+    println(
+     findCap(Set(Set("red", "squiggle", "one", "solid"),
+                                    Set("red", "squiggle", "three", "outlined"),
+                                    Set("red", "oval", "two", "striped"),
+                                    Set("green", "oval", "one", "solid"),
+                                    Set("purple", "oval", "two", "striped"),
+                                    Set("red", "squiggle", "one", "solid"),
+                                    Set("red", "squiggle", "three", "outlined"),
+                                    Set("red", "oval", "two", "striped"),
+                                    Set("green", "oval", "one", "solid"),
+                                    Set("purple", "oval", "two", "striped")),
+                           3
+                                    ))
   }
 
-  def testTriptych(n: Int) = {
+  def testCap(n: Int) = {
     val cap: Option[Set[Card]] = findCap(deck, n)
     cap match {
       case None => assert(false, s"did not find a $n-cap from: deck")
@@ -195,25 +227,46 @@ class TriptychTestSuite extends FunSuite {
       }
     }
   }
-
+  test("triptych 5") {
+    testCap(5)
+  }
   test("triptych 15") {
-    testTriptych(15)
+    testCap(15)
   }
   test("triptych 16") {
-    testTriptych(16)
+    testCap(16)
   }
   test("triptych 17") {
-    testTriptych(17)
+    testCap(17)
   }
   test("triptych 18") {
-    testTriptych(18)
+    testCap(18)
   }
-//  test("triptych 19") {
-//    testTriptych(19)
-//  }
-//  test("triptych 20") {
-//    testTriptych(20)
-//  }
+  // TODO added tests
+  test("triptych 19") {
+    testCap(19)
+  }
+  test("triptych 20") {
+    testCap(20)
+  }
+
+  test("cap is subset") {
+    val smallDeck = Set(Set("oval", "red", "solid", "one"),
+                        Set("oval", "red", "solid", "two"),
+                        Set("oval", "red", "striped", "one"),
+                        Set("oval", "purple", "solid", "one"),
+                        Set("squiggle", "red", "solid", "one"))
+    val Some(cap1) = findCap(smallDeck, 3)
+    assert(cap1.subsetOf(smallDeck),
+           s"found $cap1 which is not a subset of $smallDeck"
+           )
+    for {targetSize <- (3 to 10)
+         d <- (targetSize + 1 to deck.size)
+         smallDeck = deck.take(d)
+         cap <- findCap(smallDeck, targetSize)
+         } assert(cap.subsetOf(smallDeck),
+                  s"found $cap is not a subset of $smallDeck")
+  }
 
   test("find cap") {
     findCap(Set(Set("red", "squiggle", "one", "solid"),
@@ -224,6 +277,6 @@ class TriptychTestSuite extends FunSuite {
       case Some(s) => assert(findTriptych(s).isEmpty)
     }
 
-    (3 to 14).foreach(testTriptych)
+    (3 to 14).foreach(testCap)
   }
 }

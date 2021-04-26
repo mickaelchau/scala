@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,9 +21,9 @@
 
 import homework.RunningAverage._
 import lecture.Calculus.almostEqual
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class RunningAverageTestSuite extends FunSuite {
+class RunningAverageTestSuite extends AnyFunSuite {
   test("almost equal 2 ") {
     val calculated = runAverage(2, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
     val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 4.0), (4.0, 5.0), (2.4, 3.2), (3.5, 2.95), (7.7, 5.6))

@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,9 +21,9 @@
 
 import homework.FixedPoint._
 import lecture.Calculus.almostEqual
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class FixedPointTestSuite extends FunSuite {
+class FixedPointTestSuite extends AnyFunSuite {
 
   test("fixed point") {
 

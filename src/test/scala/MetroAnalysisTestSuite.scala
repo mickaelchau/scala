@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -22,9 +22,9 @@
 import homework.MetroAnalysis._
 import lecture.Metro._
 import lecture.Path
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class MetroAnalysisTestSuite extends FunSuite {
+class MetroAnalysisTestSuite extends AnyFunSuite {
 
   val (dst, pred) = metroGraph.floydWarshall(legTimes)
   test("maximizeStationTransfers") {

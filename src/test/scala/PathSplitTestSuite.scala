@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,9 +21,9 @@
 
 import homework.PathSplit._
 import lecture.Path._
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
-class PathSplitTestSuite  extends FunSuite {
+class PathSplitTestSuite  extends AnyFunSuite {
   test("transfer at Place d'Italie") {
     // transfer at Place d'Italie
     val p1 = verticesToPath(List(260, 184, 352, 244, 243, 83, 128))

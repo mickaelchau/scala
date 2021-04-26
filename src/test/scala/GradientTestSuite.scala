@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,11 +21,11 @@
 
 import homework.Gradient._
 import lecture.Calculus.almostEqual
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 import scala.math._
 
-class GradientTestSuite extends FunSuite {
+class GradientTestSuite extends AnyFunSuite {
   def ae(z1:(Double,Double),z2:(Double,Double)):Boolean = {
     val (x1,y1) = z1
     val (x2,y2) = z2

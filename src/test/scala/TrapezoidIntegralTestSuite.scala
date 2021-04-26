@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -21,11 +21,11 @@
 
 import homework.TrapezoidIntegral._
 import lecture.Calculus.almostEqual
-import org.scalatest.FunSuite
+import org.scalatest.funsuite.AnyFunSuite
 
 import scala.math._
 
-class TrapezoidIntegralTestSuite extends FunSuite {
+class TrapezoidIntegralTestSuite extends AnyFunSuite {
   test("faster double integral 1") {
     assert(0.0 == fasterDoubleIntegral((x, y) => 0.0,
                                        -1.0, -1.0, 1.0, 1.0,
