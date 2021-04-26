@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -20,15 +20,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
-import org.scalatest._
+import org.scalatest.funsuite.AnyFunSuite
 import homework.Transcendentals._
 
-class TranscendentalsTestSuite extends FunSuite {
+class TranscendentalsTestSuite extends AnyFunSuite {
   test("constructor and equals") {
     assert(sqMatrix(Array(Array(1.0, 0.0), Array(0.0, 1.0))) == sqMatrix.identity(2))
     assert(sqMatrix(Array(Array(1.0,2.0),
                           Array(4.0,7.0))) == sqMatrix(Array(Array(1.0,2.0),
-                                                            Array(4.0,7.0))))
+                                                             Array(4.0,7.0))))
+    assert(sqMatrix(Array(Array(1.0,2.0),
+                          Array(4.0,7.0))) != sqMatrix(Array(Array(0.0,2.0),
+                                                             Array(4.0,7.0))))
+    assert(sqMatrix(Array(Array(1.0,2.0),
+                          Array(4.0,7.0))) != sqMatrix(Array(Array(1.0,2.0),
+                                                             Array(0.0,7.0))))
   }
   test("plus") {
     val m1 = sqMatrix(Array(Array(1.0, 1.0), Array(0.0, 1.0)))
@@ -120,16 +126,40 @@ class TranscendentalsTestSuite extends FunSuite {
       assert(m3 * e == m3 )
       assert(e * m3 == m3)}
   }
+  test("upper triangular") {
+    val ut = sqMatrix(Array(Array(1.0, 0.0),
+                            Array(0.0, 2.0)))
+    assert(ut.upperTriangularize() ==
+             ((ut, ut.identity), 1))
+    for {a <- Seq(Array(Array(0.0, 1.0),
+                        Array(1.0, 0.0)),
+                  Array(Array(0.0, 2.0),
+                        Array(4.0, 0.0)),
+                  Array(Array(-2.0, 1.0),
+                        Array(1.0, 0.0)),
+                  Array(Array(1.0, 0.0),
+                        Array(0.0, 2.0)),
+                  Array(Array(1.0, 1.0, -2.0),
+                        Array(0.0, 1.0, 0.0),
+                        Array(0.0, 12.0, 1.0)),
+                  Array(Array(1.0, -235.0, -10.0),
+                        Array(0.0, 1.0, 0.0),
+                        Array(0.0, 60.0, 1.0))
+                  )
+         m = sqMatrix(a)
+         ((m1, m2), sign) = m.upperTriangularize()
+         } assert(m1.isUpperTriangular, s"m1=$m1 computed from m=$m not upper triangular")
+  }
   test("find pivot row") {
     val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
                             Array(0.0, 1.0, 0.0),
                             Array(0.0, 12.0, 1.0)))
     val m2 = sqMatrix(Array(Array(-2.0, 1.0),
                             Array(1.0, 0.0)))
-    assert(0 == m3.findPivotRow(0))
-    assert(2 == m3.findPivotRow(1))
-    assert(0 == m2.findPivotRow(0))
-    assert(0 == m2.findPivotRow(1))
+    assert(0 == m3.findPivotRow(0,0))
+    assert(2 == m3.findPivotRow(1,0))
+    assert(0 == m2.findPivotRow(0,0))
+    assert(0 == m2.findPivotRow(1,0))
   }
   test("scale row") {
     val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
@@ -195,10 +225,10 @@ class TranscendentalsTestSuite extends FunSuite {
     //assert(math.abs(id.dist(m2) - 3.0) < 0.0001)
 
     for{ // triangle inequality
-      a <- (1 to 12 by 3)
-      b <- (-2 to 2)
-      c <- (-10 to 10 by 5)
-      d <- (-7 to -3)
+      a <- 1 to 12 by 3
+      b <- -2 to 2
+      c <- -10 to 10 by 5
+      d <- -7 to -3
       u = sqMatrix(Array(Array(a,b),
                              Array(c,d)))
       v = sqMatrix(Array(Array(a*b,c*d),
@@ -213,17 +243,51 @@ class TranscendentalsTestSuite extends FunSuite {
     val v = u * -1
     assert(u.inverse == v)
     assert(v.inverse == u)
-    val m2 = sqMatrix(Array(Array(1.0, 2.0),
-                            Array(-1.0, 3.0)))
-    assert(m2.inverse.dist(sqMatrix(Array(Array(3.0 / 5, -2.0 / 5),
-                                          Array(1.0 / 5, 1.0 / 5)))) < 0.0001)
-    assert((m2.inverse * m2).dist(sqMatrix.identity(2)) < 0.0001)
+
+    for {a <- Seq(Array(Array(1.0)),
+                  Array(Array(2.0)),
+                  Array(Array(1.0, 2.0),
+                        Array(-1.0, 3.0)),
+                  Array(Array(0.0, 1.0),
+                        Array(-1.0, 0.0)),
+                  Array(Array(0.0, 1.0, 0.0),
+                        Array(1.0, 1.0, -2.0),
+                        Array(0.0, 12.0, 1.0)),
+                  Array(Array(1.0, 1.0, -2.0),
+                        Array(0.0, 1.0, 0.0),
+                        Array(0.0, 12.0, 1.0)))
+         m = sqMatrix(a)
+         } {
+
+      assert((m.inverse * m).dist(m.identity) < 0.0001, s"failed for m=$m")
+     // assert((m.cos() * m.cos().inverse).dist(m.identity) < 0.001)
+    }
   }
-  test("upperTriangular"){
-    val ut = sqMatrix(Array(Array(1.0,0.0),
-                            Array(0.0,2.0)))
-    assert(ut.upperTriangularize() ==
-             ((ut, ut.identity), 1))
+
+  test("inverse 2"){
+    import scala.util.Random
+    for{dim <- 1 to 5
+        k <- 0 to 100 * dim*dim
+        m = sqMatrix((0 until dim).map{row =>
+          (0 until dim).map{col =>
+            Random.between(-1.0,1.0)
+          }.toArray
+        }.toArray)} {
+      assert(m.identity.dist(m * m.inverse) < 0.001,
+             s"(1) could not invert dim=$dim $m, got ${m.inverse} with dist=${m.dist(m.inverse)}")
+      assert(m.identity.dist(m.inverse * m) < 0.001,
+             s"(2) could not invert dim=$dim $m, got ${m.inverse} with dist=${m.dist(m.inverse)}")
+      assert(m.dist(m.inverse.inverse) < 0.001,
+             s"(3) could not invert dim=$dim $m, got ${m.inverse} with dist=${m.dist(m.inverse)}")
+    }
+  }
+  test("singular"){
+    assert(0.0 == sqMatrix(Array(Array(1.0,2.0),
+                                 Array(2.0,4.0))).determinant, "did not detect singular matrix")
+    // the inverse of this matrix is
+    // [[0.0,0.5],[Infinity,-Infinity]]
+    assert("[[0.0,0.5],[Infinity,-Infinity]]" == sqMatrix(Array(Array(1.0,2.0),
+                                                                Array(2.0,4.0))).inverse.toString)
   }
   test("diagonalize"){
     val m2 = sqMatrix(Array(Array(1.0,0.0),
@@ -358,7 +422,7 @@ class TranscendentalsTestSuite extends FunSuite {
     // cos(2x) = 1 - 2(sin(x)^2)
     for{
       m <- List(m2, m3, m4)
-    } yield assert( (m*2).cos.dist( m.identity - m.sin.pow(2)*2) < 0.001)
+    } yield assert( (m*2).cos().dist( m.identity - m.sin().pow(2)*2) < 0.001)
   }
   test("cos and sin diagonal") {
     import math.Pi
@@ -371,35 +435,31 @@ class TranscendentalsTestSuite extends FunSuite {
     println("sin diag= "+ (m2*2.0).sin())
   }
   test("sin and cos of sum"){
-    // sin(x+y) = sin(x)cos(y)+cos(x)sin(y)
-    val m2 = sqMatrix(Array(Array(1.0,0.8),
-                            Array(-0.5, 1.5)))
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(1.0, -2.0, 1.0),
-                            Array(2.0, -1.0, 1.0)))
-    val m4 = sqMatrix(Array(Array(1.0, 1.0, -2.0, 2.1),
-                            Array(-0.5, 1.0, 0.0, -1.0),
-                            Array(0.0, -2.0, 1.0, 0.0),
-                            Array(1.0, 2.0, -2.0, 3.0)))
-    for {
-      a <- List(m2, m3, m4)
-      b = a.identity - a
-      left = (a+b).sin()
-      right = (a.sin())*b.cos() + (a.cos())*b.sin()
-      dist = left.dist(right)
-    }
-      yield assert(dist < 0.001)
+    import scala.util.Random
+    for {dim <- Seq(1,2,3)
+         k <- 0 to 20
+         m = sqMatrix(dim, (_,_) => Random.between(-1.0, 1.0))
+         d1 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         d2 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         a = m * d1 * m.inverse
+         b = m * d2 * m.inverse
+         }{
+      locally{
+        /// cos(x+y) = cos(x)cos(y) - sin(x)sin(y)
+        val lhs = (a+b).cos()
+        val rhs = (a.cos())*(b.cos()) - (a.sin()) * (b.sin())
+        assert(lhs.dist(rhs) < 0.001, s"a=$a  b=$b")
+      }
+      locally{
+        // sin(x+y) = sin(x)cos(y)+cos(x)sin(y)
 
-    /// cos(x+y) = cos(x)cos(y) - sin(x)sin(y)
-    for {
-      a <- List(m2, m3, m4)
-      b = a.identity - a
-      left = (a+b).cos()
-      right = (a.cos())*b.cos() - (a.sin())*b.sin()
-      dist = left.dist(right)
+        val lhs = (a+b).sin()
+        val rhs = (a.sin())*(b.cos()) + (a.cos())*(b.sin())
+        assert(lhs.dist(rhs) < 0.001, s"a=$a b=$b")
+      }
     }
-      yield assert(dist < 0.001)
   }
+
   test("exp"){
     val m3 = sqMatrix(Array(Array(1.0,  1.0, -2.0),
                             Array(1.0, -2.0,  1.0),
@@ -420,7 +480,224 @@ class TranscendentalsTestSuite extends FunSuite {
 
     // exp(x)*exp(1-x) = e = exp(1)
     val e1 = m3.identity.exp()
-    val lh = (m3.exp())*((m3.identity - m3).exp())
+    val lh = m3.exp() * (m3.identity - m3).exp()
     assert(lh.dist(e1) < .001)
+  }
+  test("breeze verify svd"){
+    // verify the behavior of svd
+    import breeze.linalg._
+    import scala.util.Random
+    def maxabsnorm(dim:Int, m:DenseMatrix[Double]):Double = {
+      (0 until dim).foldLeft(math.abs(m(0,0))){(acc:Double,row:Int) =>
+        val x = (0 until dim).foldLeft(math.abs(m(0,0))){
+          (acc:Double,col:Int) => math.max(acc,math.abs(m(row,col)))}
+        math.max(acc,x)
+      }
+    }
+    for{dim <- 1 to 4} {
+      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
+      val svd.SVD(u, s, v) = svd(dm1)
+      val dm2 = u * diag(s) * v
+      val dist:Double = maxabsnorm(dim,dm2 - dm1)
+      assert(dist < 0.001, s"dist=$dist dm1=[$dm1] dm2=[$dm2] diff=[${dm2-dm1}]")
+    }
+  }
+
+  test("breeze verify eig"){
+    // verify the behavior of eigen decomposition
+    import breeze.linalg._
+    import breeze.math._
+    import scala.util.Random
+    val zero:Complex = Complex(0.0,0.0)
+    val one:Complex = Complex(1.0,0.0)
+    def cabs(c:Complex):Double = c.abs
+    def maxabsnorm[T](dim:Int, m:DenseMatrix[T],abs:T=>Double):Double = {
+      (0 until dim).foldLeft(abs(m(0,0))){(acc:Double,row:Int) =>
+        val x = (0 until dim).foldLeft(abs(m(0,0))){
+          (acc:Double,col:Int) => math.max(acc,abs(m(row,col)))}
+        math.max(acc,x)
+      }
+    }
+    def invc(dim:Int, vc:DenseMatrix[Complex]):DenseMatrix[Complex] = {
+      val w:DenseMatrix[Double] = DenseMatrix.tabulate(dim*2, dim*2) {
+        case (j,k) if j < dim && k < dim => vc(j,k).real
+        case (j,k) if j < dim => vc(j,k-dim).imag
+        case (j,k) if k < dim => -1 * vc(j-dim,k).imag
+        case (j,k) =>vc(j-dim,k-dim).real
+      }
+      val winv:DenseMatrix[Double]  = inv(w)
+      val vinvc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k) => Complex(winv(j,k),winv(j,k+dim)))
+      val identc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k) => if (j==k) one else zero)
+      assert(maxabsnorm(dim,vinvc * vc - identc,cabs) < 0.001,
+             s"failed to compute inverse vc=[$vc] vinvc=[$vinvc]")
+      vinvc
+    }
+
+    for{dim <- 1 to 4} {
+      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
+      val eig.Eig(er,ei,v) = eig(dm1)
+      val vc:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k)=>Complex(v(j,k),0.0))
+      def dia(k:Int,j:Int):Complex = if (k==j) Complex(er(j),ei(j)) else zero
+      val d:DenseMatrix[Complex] = DenseMatrix.tabulate(dim,dim)(dia)
+      val dm2:DenseMatrix[Complex] = vc * d * invc(dim,vc)
+      val dm1c:DenseMatrix[Complex] = DenseMatrix.tabulate(dim, dim)((j,k)=>Complex(dm1(j,k),0.0))
+      assert(maxabsnorm(dim,dm1c - dm2, cabs) < 0.001, s"dim=$dim failed to diagonalize dm1=[$dm1] d=[$d] vc=[$vc]")
+    }
+  }
+  test("breeze verify eig 2"){
+    // verify the behavior of eigen decomposition
+    import breeze.linalg._
+    import scala.util.Random
+    import breeze.linalg.eigSym.DenseEigSym
+
+    def maxabsnorm[T](dim:Int, m:DenseMatrix[T],abs:T=>Double):Double = {
+      (0 until dim).foldLeft(abs(m(0,0))){(acc:Double,row:Int) =>
+        val x = (0 until dim).foldLeft(abs(m(0,0))){
+          (acc:Double,col:Int) => math.max(acc,abs(m(row,col)))}
+        math.max(acc,x)
+      }
+    }
+
+    for{_ <- 1 to 10
+        dim <- 1 to 4} {
+      val dm1: DenseMatrix[Double] = DenseMatrix.tabulate(dim, dim)((_, _)=>Random.between(-10.0, 10.0))
+      val dm = dm1 + dm1.t // to create a symmetric matrix.
+      val e:DenseEigSym = eigSym(dm)
+      val lambda = e.eigenvalues
+      val v = e.eigenvectors
+
+      val dm2:DenseMatrix[Double] = v * diag(lambda) * inv(v)
+      assert(maxabsnorm(dim,dm - dm2, math.abs) < 0.001 )
+    }
+
+  }
+
+  test("exp vs breeze"){
+    import scala.util.Random
+    for {dim <- Seq( 2, 3, 4)
+         k <- 0 to 200 // 0 to 100 * dim * dim
+         m = sqMatrix((0 until dim).map { row =>
+           (0 until dim).map { col =>
+             Random.between(-10.0, 10.0)
+           }.toArray
+         }.toArray)
+         } {
+      val mine = m.exp()
+      val bre = m.expB()
+      assert(m.determinant < 0 || mine.dist(bre) < 0.001, s"m=$m  m.exp=$mine   breeze=$bre")
+    }
+  }
+
+  test("exp 2") {
+    import scala.util.Random
+    for {dim <- Seq(1,2,3)
+         k <- 0 to 20// 0 to 100 * dim * dim
+         m = sqMatrix((0 until dim).map { row =>
+           (0 until dim).map { col =>
+             Random.between(-1.0, 0.50)
+           }.toArray
+         }.toArray)
+         j <- 1 to 4
+         } {
+      locally {
+        // exp(m*j) = exp(m) ^ j
+        val lhs = (m*j).exp()
+        val rhs = m.exp().pow(j)
+
+        assert(lhs.dist(rhs) < 0.01, s"dim=$dim j=$j m=$m  lhs=$lhs  rhs=$rhs")
+      }
+    }
+  }
+  test("exp 3") {
+    import scala.util.Random
+    for {dim <- Seq(1,2,3)
+         k <- 0 to 20// 0 to 100 * dim * dim
+         m = sqMatrix(dim, (_,_) => Random.between(-1.0, 1.0))
+         d1 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         d2 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         a = m * d1 * m.inverse
+         b = m * d2 * m.inverse
+         } {
+      locally {
+        assert((a*b).dist(b*a) < 0.001, s"a and be should commute, a=$a b=$b")
+        // exp(a+b) = exp(a) * exp(b)  when a and b commute
+        val lhs = (a+b).exp()
+        val rhs = a.exp() * b.exp()
+
+        assert(lhs.dist(rhs) < 0.01, s"dim=$dim a=$a b=$b  lhs=$lhs  rhs=$rhs")
+      }
+    }
+  }
+
+  test("tan") {
+    //    val m1 = sqMatrix(Array(Array(0.5,  0.5, -.20),
+    //                            Array(1.0, -0.125,  1.0),
+    //                            Array(0.2, -1.0,  1.0)))
+    //    val m2 = sqMatrix(Array(Array(1.0,  1.0, -1.0),
+    //                            Array(1.0, -2.0,  1.0),
+    //                            Array(0.2, 1.0,  1.0)))
+    //    val m3 = sqMatrix(Array(Array(0.5,  0.25, -0.125),
+    //                            Array(1.0, -0.5,  1.0),
+    //                            Array(0.2, -1.0,  -0.5)))
+
+    val m0 = sqMatrix(Array(Array(math.Pi / 4, 0),
+                            Array(0, math.Pi / 4.0)))
+
+    assert(m0.tan().dist(m0.identity) < 0.001)
+
+    val m1 = sqMatrix(Array(Array(0.5, 0.5),
+                            Array(0.0, -0.125)))
+    val m2 = sqMatrix(Array(Array(1.0, 0.0),
+                            Array(0.5, 1.0)))
+    val m3 = sqMatrix(Array(Array(0.5, 0.0),
+                            Array(0.0, -0.5)))
+
+    // tan x/2 = sin x / ( 1 + cos x)
+    for {x <- Seq(m0, m1, m3, m2)
+         lhs = (x * 0.5).tan()
+         c = x.cos()
+         s = x.sin()
+         rhs = s / (x.identity + c)
+         } assert(lhs.dist(rhs) < 0.001, s"lhs=$lhs   rhs=$rhs   x=$x")
+
+    // tan x/2 = (1 - cos x) / sin x
+    for {x <- Seq(m1, m3, m2)
+         lhs = (x * 0.5).tan()
+         c = x.cos()
+         s = x.sin()
+         rhs = (x.identity - c) / s
+         } assert(lhs.dist(rhs) < 0.001, s"lhs=$lhs   rhs=$rhs   x=$x")
+  }
+  test("tan 2x and tan x+y"){
+    import scala.util.Random
+
+    // tan 2x = 2tanx / (1-tan^2 x)
+    for{dim <- Seq(1,2,3,4)
+        k <- 0 to 20// 0 to 100 * dim * dim
+        x = sqMatrix(dim, (_,_) => Random.between(-1.0, 1.0))
+        t = x.tan()
+        t2 = (x*2).tan()
+        lhs = t2
+        rhs = (t*2)/(x.identity - t*t)}{
+      assert( lhs.dist(rhs) < 0.001)
+    }
+
+    for {dim <- Seq(1,2,3)
+         k <- 0 to 20// 0 to 100 * dim * dim
+         m = sqMatrix(dim, (_,_) => Random.between(-1.0, 1.0))
+         d1 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         d2 = sqMatrix(dim, (i,j) => if (i==j) Random.between(-1.0, 1.0) else 0.0)
+         a = m * d1 * m.inverse
+         b = m * d2 * m.inverse
+         } {
+      locally {
+        assert((a * b).dist(b * a) < 0.001, s"a and be should commute, a=$a b=$b")
+        // tan(a+b) = (tan a + tan b)/(1 - tan x tan y)  when a and b commute
+        val lhs = (a + b).tan()
+        val rhs = (a.tan() + b.tan()) / (a.identity - a.tan() * b.tan())
+
+        assert(lhs.dist(rhs) < 0.01)
+      }
+    }
   }
 }
