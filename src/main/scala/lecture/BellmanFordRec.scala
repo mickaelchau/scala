@@ -21,19 +21,18 @@
 
 package lecture
 
-trait BellmanFord[A] extends ProtoGraph[A] {
-  type DP = (Map[A, Int], Map[A, A])
+trait BellmanFordRec[A] extends ProtoGraph[A] {
 
   ///////////////////
-  // Bellman-Ford single source shortest path
+  // Bellman-Ford shortest path
   ///////////////////
 
-  def bellmanFord(source: A, weight: Edge[A] => Int): DP = {
+  def bellmanFord(source: A, weight: Edge[A] => Int): (Map[A, Int], Map[A, A]) = {
     // DP is a pair of two Maps.
     //   1) the total weight calculated so far from source to a given vertex.
     //   2) the predecessors (u -> v) where the shortest path yet calculated
     //        from source to v, has u as the penultimate vertex.
-    //type DP = (Map[A, Int], Map[A, A])
+    type DP = (Map[A, Int], Map[A, A])
 
     def relax(edge: Edge[A], dp: DP): DP = {
       val (distance, predecessor) = dp
@@ -65,19 +64,20 @@ trait BellmanFord[A] extends ProtoGraph[A] {
       }
     }
 
-    // The outer foldLeft, effectively loops |Vertices|-1 times,
-    //   as required by the Bellman-Ford algorithm.
-    //   The inner foldLeft relaxes each of the edges.
-    (1 until Vertices.size).foldLeft((Map(source -> 0), Map()): DP) {
-      (dp: DP, _: Int) => {
-        edges.foldLeft(dp) {
+    @scala.annotation.tailrec
+    def relaxationPass(i: Int, dp: DP): DP = {
+      if (i == 0)
+        dp
+      else
+        relaxationPass(i - 1, edges.foldLeft(dp) {
           (dp: DP, edge: Edge[A]) => relax(edge, dp)
-        }
-      }
+        })
     }
+
+    relaxationPass(Vertices.size, (Map(source -> 0), Map()))
   }
 
-  def BFshortestPath(src: A, dst: A)( weight: Edge[A] => Int): Option[List[A]] = {
+  def shortestPath(src: A, dst: A)( weight: Edge[A] => Int): Option[Path[A]] = {
     val (_, predecessor) = bellmanFord(src, weight)
 
     // If there is a path from src to dst, then its trace is now in the
@@ -85,17 +85,19 @@ trait BellmanFord[A] extends ProtoGraph[A] {
     // at dst, and work our way back.  If there is no such path, we return
     // None, otherwise we return Some(path)
     @scala.annotation.tailrec
-    def tracePredecessors(path: List[A]): Option[List[A]] = {
+    def tracePredecessors(path: Path[A]): Option[Path[A]] = {
       path match {
-        case v1 :: _ if src == v1 => Some(path)
-        case v1 :: _ =>
+        case Path(v1 :: _, _) if src == v1 => Some(path)
+        case Path(v1 :: _, _) =>
           predecessor.get(v1) match { // is there a predecessor of v1?
             case None => None
-            case Some(v2) => tracePredecessors(v2::path)
+            case Some(v2) => tracePredecessors(v2 :: path)
           }
         case _ => None // won't happen because tracePredecessors is called with Path(List(dst)...)
       }
     }
-    tracePredecessors(List(dst))
+
+    tracePredecessors(Path.verticesToPath(List(dst)))
   }
 }
+

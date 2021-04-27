@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,45 +19,29 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// fix pattern matching error with sealed class
+package homework
 
-package lecture_e
+import lecture.Calculus._
 
-sealed abstract class Tree[A]
+// Assignment name: Implement double integral
+//
+// This homework assignment accompanies section "Convergence".
+// The test cases can be found in the file DoubleIntegralTestSuite.scala
+// You should complete the function, replacing ??? with correct Scala
+// code so that the tests pass.
 
-case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
-  override def toString:String = {
-    branches.map(_.toString).mkString("[",", ","]")
-  }
-}
+object DoubleIntegral {
+  def slowDoubleIntegral(f:(Double,Double)=>Double,
+                         xmin:Double, ymin:Double, xmax:Double, ymax:Double,
+                         test:(Double,Double)=>Boolean):Double = {
 
-case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString:String = data.toString
-}
-
-object Tree {
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-        // RUNTIME error because of missing case, pattern match not exhaustive
-      // case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
+    def single(x:Double):Double = {
+      integral(y => ???,???,???,???)  // a function of y uses right and left bounds on y
     }
+    integral(single,???,???,???) // a function of x uses right and left bounds on x
   }
 
-  def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3.0)
-    val t4 = TreeLeaf(4.0)
-    val t5 = TreeLeaf(5.0)
-    val t6 = TreeLeaf(6.0)
+  def main(argv:Array[String]): Unit = {
 
-    val t3456 = TreeNode(List(
-      TreeNode(List(t3,t4)),
-      TreeNode(List(t5,t6))))
-
-    val t = TreeNode(List(t3456,t3456,t6,t3))
-
-    println(contains(t,6.0))
-    println(contains(t,7.0))
   }
 }

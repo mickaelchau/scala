@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,46 +19,42 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// implement contains function in companion object,
-//   but allow runtime error because of non exhaustive pattern match
+package homework
 
-package lecture_d
+import scala.annotation.tailrec
 
-abstract class Tree[A]
+// Assignment name: Binary search for Boolean function
+//
+// This homework assignment accompanies section "Binary Search".
+// The test cases can be found in the file BinarySearchTestSuite.scala
+// You should complete the function, replacing ??? with correct Scala
+// code so that the tests pass.
+object BinarySearch {
 
-case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
-  override def toString:String = {
-    branches.map(_.toString).mkString("[",", ","]")
-  }
-}
+  def binSearchByBoolean(left:Double, right:Double, f:Double=>Boolean, delta:Double, maxDepth:Int):Option[Double] = {
+    // takes a function, f, for which f(left) = false, and f(right) = true,
+    // finds an x such that f(x)=false, and f(x+threshold)= true
+    @tailrec
+    def recur(left:Double,right:Double,depth:Int):Option[Double] = {
+      val mid = ???
 
-case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString():String = data.toString
-}
+      if ( ??? )  // ??? < ???
+        Some(???)
+      else if (depth >= maxDepth)
+        None
+      else if ( f(mid))
+        recur(???,???,???)
+      else
+        recur(???,???,???)
 
-object Tree {
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-        // RUNTIME error because of missing case, pattern match not exhaustive
-      // case TreeLeaf(data) => data == target
-      case TreeNode(branches) =>
-        branches.exists(b => contains(b,target))
     }
+    if ( !f(left) && f(right))
+      recur(???,???,???)
+    else
+      ???
   }
 
   def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3.0)
-    val t4 = TreeLeaf(4.0)
-    val t5 = TreeLeaf(5.0)
-    val t6 = TreeLeaf(6.0)
 
-    val t3456 = TreeNode(List(
-      TreeNode(List(t3,t4)),
-      TreeNode(List(t5,t6))))
-
-    val t = TreeNode(List(t3456,t3456,t6,t3))
-
-    println(contains(t,6.0))
-    println(contains(t,7.0))
   }
 }

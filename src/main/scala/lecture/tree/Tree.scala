@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,21 +19,51 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture_a
+package lecture.tree
 
-abstract class Tree
+sealed abstract class Tree[A] {
+  def leafData():List[A]
 
-case class TreeNode(branches:List[Tree]) extends Tree
+  def apply(a:Int):Int = {
+    a
+  }
+}
 
-case class TreeLeaf(data:Int) extends Tree
+case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
+  override def toString:String = {
+    branches.map(_.toString).mkString("[", ",", "]")
+  }
+  def leafData():List[A] = {
+    branches.flatMap{b => b.leafData()}
+  }
+}
+
+case class TreeLeaf[A](data:A) extends Tree[A] {
+  override def toString:String = {
+    data.toString
+  }
+  def leafData():List[A] = {
+    List(data)
+  }
+}
 
 object Tree {
 
+  def apply[A](x:Int):TreeLeaf[A] = {
+    ???
+  }
+  def contains[A](t:Tree[A],target:A):Boolean = {
+    t match {
+      case TreeLeaf(data) => target == data
+      case TreeNode(branches) => branches.exists{ b=> contains(b,target)}
+    }
+  }
+
   def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3)
-    val t4 = TreeLeaf(4)
-    val t5 = TreeLeaf(5)
-    val t6 = TreeLeaf(6)
+    val t3 = TreeLeaf(3.0)
+    val t4 = TreeLeaf(4.0)
+    val t5 = TreeLeaf(5.0)
+    val t6 = TreeLeaf(6.0)
 
     val t3456 = TreeNode(List(
       TreeNode(List(t3,t4)),
@@ -41,6 +71,12 @@ object Tree {
 
     val t = TreeNode(List(t3456,t3456,t6,t3))
 
-    println(t)
+    println(contains(t,6.0))
+    println(contains(t,7.0))
+    println(t.leafData())
+
+    t(1)
+
   }
 }
+

@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,30 +19,26 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-// generalize from Tree of Int to Tree of any type
+package homework
 
-package lecture_b
+import lecture.Calculus.almostEqual
+import lecture.FixedPoint._
 
-abstract class Tree[A]
+// Assignment name: Square-root in a special way
+//
+// This homework assignment accompanies section "Fixed point".
+// The test cases can be found in the file FixedPointTestSuite.scala
+// You should complete the function, replacing ??? with correct Scala
+// code so that the tests pass.
 
-case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A]
-
-case class TreeLeaf[A](data:A) extends Tree[A]
-
-object Tree {
-  
-  def main(argv:Array[String]):Unit = {
-    val t3 = TreeLeaf(3.0)
-    val t4 = TreeLeaf(4.0)
-    val t5 = TreeLeaf(5.0)
-    val t6 = TreeLeaf(6.0)
-
-    val t3456 = TreeNode(List(
-      TreeNode(List(t3,t4)),
-      TreeNode(List(t5,t6))))
-
-    val t = TreeNode(List(t3456,t3456,t6,t3))
-
-    println(t)
+object FixedPoint {
+  def average(x:Double, y:Double):Double  = {
+    ???
   }
+  def squareRoot(x:Double):Double = {
+    fixedPoint(???,
+               ???, // y => average(???,???),
+               almostEqual(???))
+  }
+
 }

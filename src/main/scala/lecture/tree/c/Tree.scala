@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,45 +19,23 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture
+// implement toString for more readable representation of a Tree
 
-sealed abstract class Tree[A] {
-  def leafData():List[A]
+package lecture.tree.c
 
-  def apply(a:Int):Int = {
-    a
-  }
-}
+abstract class Tree[A]
 
 case class TreeNode[A](branches:List[Tree[A]]) extends Tree[A] {
   override def toString:String = {
-    branches.map(_.toString).mkString("[", ",", "]")
-  }
-  def leafData():List[A] = {
-    branches.flatMap{b => b.leafData()}
+    branches.map(_.toString).mkString("[",", ","]")
   }
 }
 
 case class TreeLeaf[A](data:A) extends Tree[A] {
-  override def toString:String = {
-    data.toString
-  }
-  def leafData():List[A] = {
-    List(data)
-  }
+  override def toString:String = data.toString
 }
 
 object Tree {
-
-  def apply[A](x:Int):TreeLeaf[A] = {
-    ???
-  }
-  def contains[A](t:Tree[A],target:A):Boolean = {
-    t match {
-      case TreeLeaf(data) => target == data
-      case TreeNode(branches) => branches.exists{ b=> contains(b,target)}
-    }
-  }
 
   def main(argv:Array[String]):Unit = {
     val t3 = TreeLeaf(3.0)
@@ -71,12 +49,6 @@ object Tree {
 
     val t = TreeNode(List(t3456,t3456,t6,t3))
 
-    println(contains(t,6.0))
-    println(contains(t,7.0))
-    println(t.leafData())
-
-    t(1)
-
+    println(t)
   }
 }
-

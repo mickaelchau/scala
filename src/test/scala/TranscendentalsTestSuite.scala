@@ -483,7 +483,7 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     val lh = m3.exp() * (m3.identity - m3).exp()
     assert(lh.dist(e1) < .001)
   }
-  
+
   test("exp 2") {
     import scala.util.Random
     for {dim <- Seq(1,2,3)

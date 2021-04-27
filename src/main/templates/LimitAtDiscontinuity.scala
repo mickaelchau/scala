@@ -1,4 +1,4 @@
-// Copyright (c) 2020 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -19,34 +19,32 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-package lecture
+package homework
 
-abstract class ProtoGraph[A](val Vertices: Set[A], val Edges: Set[(A, A)]) {
-  val edges: Set[Edge[A]] = Edges.map(Edge.pairToEdge)
+import lecture.Calculus._
 
-  val Adj: Map[A, Set[A]] = {
-    // vertices which can be reached from v1 with one step
-    def successors(v1: A): Set[A] = {
-      Vertices.filter { v2: A => edges.contains(Edge(v1, v2)) }
-    }
+// Assignment name: Evaluate limit at a discontinuity
+//
+// This homework assignment accompanies section "Convergence".
+// The test cases can be found in the file LimitTestSuite.scala
+// You should complete the functions, replacing ??? with correct Scala
+// code so that the tests pass.
 
-    Vertices.map(v => (v, successors(v))).toMap
-  }
-}
+object LimitAtDiscontinuity {
+  def f(x:Double):Double = {
+    // implementation of the polynomial
 
-case class Graph[A](override val Vertices: Set[A], override val Edges: Set[(A, A)])
-  extends ProtoGraph[A](Vertices, Edges)
-    with BellmanFord[A]
-    with FloydWarshall[A]{
-}
-
-object Graph {
-  def verticesToEdges[A](vertices:List[A]):Set[Edge[A]] = {
-    val Path(_,edges) = Path.verticesToPath(vertices)
-    edges
+    //
+    //    2
+    //  x  + 2x - 3
+    //  -------------
+    //     x - 1
+    //
+    ???
   }
 
-  def main(args: Array[String]): Unit = {
-
+  def evalLimitAtDiscontinuity():Double = {
+    limit(???, 0.1, ???)(???)
   }
+
 }
