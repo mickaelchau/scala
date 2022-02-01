@@ -59,7 +59,7 @@ class RunningAverageTestSuite extends AnyFunSuite {
       assert(almostEqual(0.001)(b1, b2))
     }
   }
-  
+
   test("almost equal 5 ") {
     val calculated = runAverage(5, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
     val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 3.0), (4.0, 3.25), (2.4, 3.08), (3.5, 3.58), (7.7, 4.72))
