@@ -21,8 +21,10 @@
 
 package homework
 
+import scala.math.abs
+
 object Polynomial {
-  import scala.math.{pow,sqrt}
+  import scala.math.pow
 
   // We represent a polynomial such as 4x^3 - 2x +4
   //    as Map(3->4.0, 1->-1.0, 0->4.0)
@@ -59,6 +61,7 @@ object Polynomial {
     // this can be done with scale and plus
     ???
   }
+
 
   // multiply two polynomials by multiplying two given polynomials.
   // You may find this function challenging to write.  It is not

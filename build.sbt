@@ -8,6 +8,13 @@ libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.0"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
 libraryDependencies += "org.scalafx" %% "scalafx" % "15.0.1-R21"
 libraryDependencies += "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0"
+libraryDependencies += "org.typelevel" %% "cats-core" % "2.7.0"
+
+scalacOptions ++= Seq(
+  "-Ytasty-reader", "-deprecation"
+  )
+
+
 
 // added the following lines as per advice from
 // https://stackoverflow.com/questions/57628274/sbt-wont-compile-helloworld-scalafx-example-complains-about-javafx-missing-fro/57628433#57628433
@@ -26,8 +33,6 @@ libraryDependencies ++= javaFXModules.map{ m=>
 }
 // end
 
-
-
 val circeVersion = "0.12.3"
 
 libraryDependencies ++= Seq(
@@ -36,3 +41,8 @@ libraryDependencies ++= Seq(
   "io.circe" %% "circe-parser"
   ).map(_ % circeVersion)
 
+
+
+resolvers += "4 jvm repr" at "https://maven.scijava.org/content/repositories/public/"
+
+libraryDependencies += ("io.github.quafadas" %% "dedav4s" % "0.1.2").cross(CrossVersion.for2_13Use3)

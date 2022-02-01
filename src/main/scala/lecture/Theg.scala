@@ -36,15 +36,15 @@ object Theg {
 
   // tail recursive function
   //   iterates on List input
-  //   produces Array output
+  //   produces Vector output
   //   uses .isEmpty, .head, and .tail to examine List and terminate recursion
-  //   uses .updated to extend Array
+  //   uses .updated to extend Vector
   //   uses + to extend Set
-  def makeAdj_1(n: Int, edges: List[(Int, Int)]): Array[Set[Int]] = {
-    val adj = Array.fill(n)(Set[Int]())
+  def makeAdj_1(n: Int, edges: List[(Int, Int)]): Vector[Set[Int]] = {
+    val adj = Vector.fill(n)(Set[Int]())
 
     @scala.annotation.tailrec
-    def recur(edges: List[(Int, Int)], adj: Array[Set[Int]]): Array[Set[Int]] = {
+    def recur(edges: List[(Int, Int)], adj: Vector[Set[Int]]): Vector[Set[Int]] = {
       if (edges.isEmpty) // if (edges == List())
         adj
       else {
@@ -60,15 +60,15 @@ object Theg {
 
   // tail recursive function
   //   iterates on List input
-  //   produces Array output
+  //   produces Vector output
   //   * uses pattern matching to examine list and terminate recursion
-  //   uses .updated to extend Array
+  //   uses .updated to extend Vector
   //   uses + to extend Set
-  def makeAdj_2(n: Int, edges: List[(Int, Int)]): Array[Set[Int]] = {
-    val adj = Array.fill(n)(Set[Int]())
+  def makeAdj_2(n: Int, edges: List[(Int, Int)]): Vector[Set[Int]] = {
+    val adj = Vector.fill(n)(Set[Int]())
 
     @scala.annotation.tailrec
-    def recur(edges: List[(Int, Int)], adj: Array[Set[Int]]): Array[Set[Int]] = {
+    def recur(edges: List[(Int, Int)], adj: Vector[Set[Int]]): Vector[Set[Int]] = {
       edges match {
         case (src, dst) :: tail =>
           checkEdge(n, src, dst)
@@ -83,16 +83,16 @@ object Theg {
   }
 
   // tail recursive function
-  //   * iterates on Array input
-  //   produces Array output
-  //   * uses .size and Array access by index to examine input Array
-  //   uses .updated to extend Array
+  //   * iterates on Vector input
+  //   produces Vector output
+  //   * uses .size and Vector access by index to examine input Vector
+  //   uses .updated to extend Vector
   //   uses + to extend Set
-  def makeAdj_3(n: Int, edges: Array[(Int, Int)]): Array[Set[Int]] = {
-    val adj = Array.fill(n)(Set[Int]())
+  def makeAdj_3(n: Int, edges: Vector[(Int, Int)]): Vector[Set[Int]] = {
+    val adj = Vector.fill(n)(Set[Int]())
 
     @scala.annotation.tailrec
-    def recur(i: Int, adj: Array[Set[Int]]): Array[Set[Int]] = {
+    def recur(i: Int, adj: Vector[Set[Int]]): Vector[Set[Int]] = {
       if (i == edges.size)
         adj
       else {
@@ -128,33 +128,33 @@ object Theg {
   }
 
   // * uses tabulate to iterate
-  //   * iterates on Array input
-  //   * produces Array output
-  //   * computes Array once, not iteratively, not recursively
+  //   * iterates on Vector input
+  //   * produces Vector output
+  //   * computes Vector once, not iteratively, not recursively
   //   * uses .filter .toSet to compute set of destination vertices
-  def makeAdj_5(n: Int, edges: Array[(Int, Int)]): Array[Set[Int]] = {
+  def makeAdj_5(n: Int, edges: Vector[(Int, Int)]): Vector[Set[Int]] = {
     def connectionsTo(i: Int): Set[Int] = {
       (0 until n).filter {
         j => edges.exists { case (src, dst) => src == i && dst == j }
       }.toSet
     }
 
-    Array.tabulate(n)(connectionsTo)
+    Vector.tabulate(n)(connectionsTo)
   }
 
   // uses tabulate to iterate
-  //   iterates on Array input
-  //   produces Array output
-  //   computes Array once, not iteratively, not recursively
+  //   iterates on Vector input
+  //   produces Vector output
+  //   computes Vector once, not iteratively, not recursively
   //   * uses .contains .toSet to compute set of destination vertices
-  def makeAdj_6(n: Int, edges: Array[(Int, Int)]): Array[Set[Int]] = {
+  def makeAdj_6(n: Int, edges: Vector[(Int, Int)]): Vector[Set[Int]] = {
     def connectionsTo(i: Int): Set[Int] = {
       (0 until n).filter {
         j => edges.contains(i -> j)
       }.toSet
     }
 
-    Array.tabulate(n)(connectionsTo)
+    Vector.tabulate(n)(connectionsTo)
   }
 
   // tail recursive function
@@ -194,14 +194,14 @@ object Theg {
   }
 
   // uses .foldLeft
-  //   * iterates on Array input
+  //   * iterates on Vector input
   //   * code copied exactly from makeAdj_8
   //   produces Map output
   //   uses + to extend Map
   //   uses + to extend Set
   //   omits initialization of Map, just uses Map()
   //   uses .withDefaultValue rather than  .getOrElse
-  def makeAdj_9(edges: Array[(Int, Int)]): Map[Int, Set[Int]] = {
+  def makeAdj_9(edges: Vector[(Int, Int)]): Map[Int, Set[Int]] = {
     edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
@@ -263,19 +263,19 @@ object Theg {
 
   def main(args: Array[String]): Unit = {
     println("1: " + makeAdj_1(3, List((0, 1), (1, 2))))
-    println("1: " + makeAdj_1(3, List((0, 1), (1, 2))).mkString("Array[",",","]"))
+    println("1: " + makeAdj_1(3, List((0, 1), (1, 2))).mkString("Vector[",",","]"))
     println("2: " + makeAdj_2(3, List((0, 1), (1, 2))).mkString(","))
-    println("3: " + makeAdj_3(3, Array((0, 1), (1, 2))).mkString(","))
+    println("3: " + makeAdj_3(3, Vector((0, 1), (1, 2))).mkString(","))
     println("4: " + makeAdj_4(3, List((0, 1), (1, 6), (0, 2))))
-    println("5: " + makeAdj_5(3, Array((0, 1), (1, 2), (0, 2))).mkString(","))
-    println("6: " + makeAdj_6(3, Array((0, 1), (1, 2), (0, 2))).mkString(","))
+    println("5: " + makeAdj_5(3, Vector((0, 1), (1, 2), (0, 2))).mkString(","))
+    println("6: " + makeAdj_6(3, Vector((0, 1), (1, 2), (0, 2))).mkString(","))
     println("7: " + makeAdj_7(List((0, 1), (1, 6), (0, 2))))
     println("8: " + makeAdj_8(List((0, 1), (1, 6), (0, 2))))
-    println("9: " + makeAdj_9(Array((0, 1), (1, 6), (0, 2))))
+    println("9: " + makeAdj_9(Vector((0, 1), (1, 6), (0, 2))))
     println("10: " + makeAdj_10(List((0, 1), (1, 6), (0, 2))))
-    println("10: " + makeAdj_10(Array((0, 1), (1, 6), (0, 2))))
-    println("11: " + makeAdj_11(Array((0, 1), (1, 6), (0, 2))))
-    println("11: " + makeAdj_11(Array(("fred", "jane"), ("sally", "rita"), ("rita", "fred"))))
+    println("10: " + makeAdj_10(Vector((0, 1), (1, 6), (0, 2))))
+    println("11: " + makeAdj_11(Vector((0, 1), (1, 6), (0, 2))))
+    println("11: " + makeAdj_11(Vector(("fred", "jane"), ("sally", "rita"), ("rita", "fred"))))
     println("11: " + makeAdj_11(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred"))))
     println("12: " + makeAdj_12(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred"))))
     println("13a: " + makeAdj_13(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred")), true))
