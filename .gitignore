@@ -4,3 +4,5 @@ src/main/scala/hwSolution
 src/main/scala/homework
 *~
 .bsp/sbt.json
+.metals
+.DS_Store
