@@ -89,8 +89,5 @@ class RecursionTestSuite extends AnyFunSuite {
     assert(0.0 == productDoublesByFold(List(1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0)))
     // we should actually have exact equality
     assert(12.0 == productDoublesByFold(List(2.0, 3.0, 4.0, 0.5)))
-
-
   }
-
 }

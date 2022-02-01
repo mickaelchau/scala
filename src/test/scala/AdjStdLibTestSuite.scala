@@ -37,8 +37,8 @@ class AdjStdLibTestSuite extends AnyFunSuite {
   }
 
   test("building adjacency list") {
-    assert(makeAdj(Array((1,2)),false).get(2) == Some(Set(1)))
-    assert(makeAdj(Array((1,2)),true).get(2) == None)
+    assert(makeAdj(Array((1, 2)), false).get(2).contains(Set(1)))
+    assert(makeAdj(Array((1, 2)), true).get(2).isEmpty)
 
     assert(makeAdj(Array((1,2)),false)
              == Map(1 -> Set(2),

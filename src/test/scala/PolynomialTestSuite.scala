@@ -20,24 +20,57 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 import org.scalatest.funsuite.AnyFunSuite
+
 import scala.math._
+import scala.util.Random
 
 class PolynomialTestSuite extends AnyFunSuite {
 
   import homework.Polynomial._
 
-  val polynomials: Array[POLY] = Array(one,
-                                       zero,
-                                       Map(0 -> 3, 1 -> 0.1, 2 -> -0.5),
-                                       Map(1 -> 1.0, 2 -> 2.0),
-                                       Map(2 -> -2.0, 3 -> 0.125, 1 -> 1.0),
-                                       Map(2 -> -2.1, 3 -> 0.125, 1 -> 1.0, 0 -> -0.5),
-                                       Map(2 -> -2.2, 3 -> 0.125, 1 -> 1.0),
-                                       Map(2 -> -2.3, 3 -> 0.125, 1 -> 1.0, 0 -> -0.25),
-                                       Map(2 -> -2.4, 3 -> 0.125, 1 -> 1.0),
-                                       Map(2 -> -2.3, 3 -> 0.125, 1 -> -0.5, 0 -> -0.25))
-  val xs: Array[Double] = Array(1.0, 0.5, 0.25, -0.8, 0.75)
+  val r: Random.type = scala.util.Random
 
+  def randomPolynomial(order: Int): POLY = {
+    (for {n <- 0 to order
+          if r.nextBoolean()
+          } yield n -> r.nextDouble()).toMap
+  }
+
+  val fixedPolynomials: Vector[POLY] = Vector(one,
+                                              zero,
+                                              Map(0 -> 3, 1 -> 0.1, 2 -> -0.5),
+                                              Map(1 -> 1.0, 2 -> 2.0),
+                                              Map(2 -> -2.0, 3 -> 0.125, 1 -> 1.0),
+                                              Map(2 -> -2.1, 3 -> 0.125, 1 -> 1.0, 0 -> -0.5),
+                                              Map(2 -> -2.2, 3 -> 0.125, 1 -> 1.0),
+                                              Map(2 -> -2.3, 3 -> 0.125, 1 -> 1.0, 0 -> -0.25),
+                                              Map(2 -> -2.4, 3 -> 0.125, 1 -> 1.0),
+                                              Map(2 -> -2.3, 3 -> 0.125, 1 -> -0.5, 0 -> -0.25))
+  val randomPolynomials = for {_ <- 1 to 50} yield randomPolynomial(5)
+
+  val polynomials: Vector[POLY] = fixedPolynomials ++ randomPolynomials
+
+  val xs: Vector[Double] = Vector(1.0, 0.5, 0.25, -0.8, 0.75)
+
+  test("almostEqual") {
+    assert(almostEqual(0.001)(Map(1 -> 0.1, 2 -> 0.2),
+                              Map(1 -> 0.1000000001, 2 -> 0.2)))
+
+    assert(almostEqual(0.001)(Map(1 -> 0.1, 2 -> 0.2),
+                              Map(1 -> 0.1, 2 -> 0.20000001)))
+
+    assert(almostEqual(0.001)(Map(1 -> 0.1, 2 -> 0.2),
+                              Map(1 -> 0.1000000001, 2 -> 0.20000001)))
+    assert(!almostEqual(0.00001)(Map(1 -> 0.1),
+                                 Map(1 -> 0.11)))
+    assert(!almostEqual(0.00001)(Map(1 -> 1.0),
+                                 Map(1 -> 2.0)))
+    assert(!almostEqual(0.00001)(Map(1 -> 1.0, 2 -> 2.0),
+                                 Map(1 -> 2.0, 2 -> 2.0)))
+    assert(!almostEqual(0.00001)(Map(0 -> 1.0, 1 -> 1.0, 2 -> 2.0),
+                                 Map(0 -> 1.0, 1 -> 2.0, 2 -> 2.0)))
+
+  }
   test("evaluate") {
     for {p <- polynomials
          x <- xs}
@@ -71,7 +104,7 @@ class PolynomialTestSuite extends AnyFunSuite {
     for {p1 <- polynomials
          p2 <- polynomials
          p3 <- polynomials
-         } assert(almostEqual(0.001)(plus(plus(p1, p2),p3), plus(p1,plus(p2, p3))))
+         } assert(almostEqual(0.001)(plus(plus(p1, p2), p3), plus(p1, plus(p2, p3))))
 
     for {x <- xs
          p1 <- polynomials
@@ -91,9 +124,9 @@ class PolynomialTestSuite extends AnyFunSuite {
     for {p <- polynomials
          s <- Array(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
          x <- xs
-         spx = evaluate(scale(s,p),x)
-         px = evaluate(p,x)
-         } assert(abs(spx - s*px) < 0.0001)
+         spx = evaluate(scale(s, p), x)
+         px = evaluate(p, x)
+         } assert(abs(spx - s * px) < 0.0001)
   }
 
   test("subtract") {
@@ -111,24 +144,30 @@ class PolynomialTestSuite extends AnyFunSuite {
     for {p1 <- polynomials
          p2 <- polynomials
          p12a = subtract(p1, p2)
-         p12b = plus(p1,scale(-1.0,p2))
-         }  assert(almostEqual(0.0001)(p12a,p12b))
+         p12b = plus(p1, scale(-1.0, p2))
+         } assert(almostEqual(0.0001)(p12a, p12b))
   }
 
   test("times") {
     for {p1 <- polynomials
          p2 <- polynomials
          } times(p1, p2)
+  }
+  test("times commutative") {
     // check commutativity
     for {p1 <- polynomials
          p2 <- polynomials
          } assert(almostEqual(0.001)(times(p1, p2), times(p2, p1)))
+  }
+  test("times associative") {
     // check associativity
     for {p1 <- polynomials
          p2 <- polynomials
          p3 <- polynomials
-         } assert(almostEqual(0.001)(times(times(p1, p2),p3), times(p1,times(p2, p3))))
+         } assert(almostEqual(0.001)(times(times(p1, p2), p3), times(p1, times(p2, p3))))
+  }
 
+  test("times evaluate product") {
     for {x <- xs
          p1 <- polynomials
          p2 <- polynomials
@@ -137,25 +176,24 @@ class PolynomialTestSuite extends AnyFunSuite {
          p2x = evaluate(p2, x)
          p12x = evaluate(p12, x)
          } assert(abs(p1x * p2x - p12x) < 0.0001, s"p1=$p1 p2=$p2 p12=$p12 x=$x p1x=$p1x p2x=$p2x  p12x=$p12x")
-
   }
 
   test("one") {
     for {p <- polynomials
          } assert(almostEqual(0.0001)(p, times(one, p)))
     for {p <- polynomials
-         } assert(almostEqual(0.0001)(p, times(p,one)))
+         } assert(almostEqual(0.0001)(p, times(p, one)))
   }
 
   test("zero") {
     for {p <- polynomials
          } assert(almostEqual(0.0001)(p, plus(zero, p)))
     for {p <- polynomials
-         } assert(almostEqual(0.0001)(p, plus(p,zero)))
+         } assert(almostEqual(0.0001)(p, plus(p, zero)))
     for {p <- polynomials
          } assert(almostEqual(0.0001)(zero, times(zero, p)))
     for {p <- polynomials
-         } assert(almostEqual(0.0001)(zero, times(p,zero)))
+         } assert(almostEqual(0.0001)(zero, times(p, zero)))
   }
 
   test("power") {
@@ -172,9 +210,9 @@ class PolynomialTestSuite extends AnyFunSuite {
          poly <- polynomials
          n <- 0 to 4
          p1 = power(poly, n)
-         polyx = evaluate(poly, x) // Double
+         poly_x = evaluate(poly, x) // Double
          p1x = evaluate(p1, x) // Double
-         polyxn = pow(polyx, n) // Double
-         } assert(abs(p1x - polyxn) < 0.0001, s"poly=$poly n=$n x=$x")
+         poly_xn = pow(poly_x, n) // Double
+         } assert(abs(p1x - poly_xn) < 0.0001, s"poly=$poly n=$n x=$x")
   }
 }

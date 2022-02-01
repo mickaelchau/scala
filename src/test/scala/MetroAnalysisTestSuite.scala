@@ -60,9 +60,7 @@ class MetroAnalysisTestSuite extends AnyFunSuite {
       name <- stations
       Some(index) = stationIndex(name)
       _ = assert(metroGraph.Vertices.contains(index), "no such station [$name] $index")
-      m = metroGraph.Vertices.filter {
-        stationName(_) == name
-      }.size
+      m = metroGraph.Vertices.count(stationName(_) == name)
       _ = assert(n == m, s"expecting $m stations, got $n")
     }
       yield name).toSet

@@ -27,46 +27,48 @@ class RunningAverageTestSuite extends AnyFunSuite {
   test("almost equal 2 ") {
     val calculated = runAverage(2, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
     val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 4.0), (4.0, 5.0), (2.4, 3.2), (3.5, 2.95), (7.7, 5.6))
-    for((cal,con) <- calculated.zip(control)){
-      val (a1,b1) = cal
-      val (a2,b2) = con
+    for ((cal, con) <- calculated.zip(control)) {
+      val (a1, b1) = cal
+      val (a2, b2) = con
       assert(a1 == a2)
-      assert(almostEqual(0.001)(b1,b2))
+      assert(almostEqual(0.001)(b1, b2))
     }
   }
 
   test("almost equal 3 ") {
-    val calculated = runAverage(3,List(1.0,2.0,6.0,4.0,2.4,3.5,7.7))
-    val control=List((1.0,1.0),(2.0,1.5),(6.0,3.0),(4.0,4.0),(2.4,4.133333333333334),
-                     (3.5,3.3),(7.7,4.533333333333333))
+    val calculated = runAverage(3, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
+    val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 3.0), (4.0, 4.0), (2.4, 4.133333333333334),
+                       (3.5, 3.3), (7.7, 4.533333333333333))
 
-    for((cal,con) <- calculated.zip(control)){
-      val (a1,b1) = cal
-      val (a2,b2) = con
+    for ((cal, con) <- calculated.zip(control)) {
+      val (a1, b1) = cal
+      val (a2, b2) = con
       assert(a1 == a2)
-      assert(almostEqual(0.001)(b1,b2))
+      assert(almostEqual(0.001)(b1, b2))
     }
   }
+
   test("almost equal 4 ") {
-    val calculated = runAverage(4,List(1.0,2.0,6.0,4.0,2.4,3.5,7.7))
-    val control = List((1.0,1.0),(2.0,1.5),(6.0,3.0),(4.0,3.25),(2.4,3.6),(3.5,3.975),(7.7,4.4))
+    val calculated = runAverage(4, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
+    val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 3.0), (4.0, 3.25), (2.4, 3.6), (3.5, 3.975), (7.7, 4.4))
 
-    for((cal,con) <- calculated.zip(control)){
-      val (a1,b1) = cal
-      val (a2,b2) = con
+    for ((cal, con) <- calculated.zip(control)) {
+      val (a1, b1) = cal
+      val (a2, b2) = con
       assert(a1 == a2)
-      assert(almostEqual(0.001)(b1,b2))
+      assert(almostEqual(0.001)(b1, b2))
     }
   }
+  
   test("almost equal 5 ") {
-    val calculated = runAverage(5, List(1.0,2.0,6.0,4.0,2.4,3.5,7.7))
-    val control = List((1.0,1.0), (2.0,1.5), (6.0,3.0), (4.0,3.25), (2.4,3.08), (3.5,3.58), (7.7,4.72))
+    val calculated = runAverage(5, List(1.0, 2.0, 6.0, 4.0, 2.4, 3.5, 7.7))
+    val control = List((1.0, 1.0), (2.0, 1.5), (6.0, 3.0), (4.0, 3.25), (2.4, 3.08), (3.5, 3.58), (7.7, 4.72))
 
-    for((cal,con) <- calculated.zip(control)){
-      val (a1,b1) = cal
-      val (a2,b2) = con
+    for ((cal, con) <- calculated.zip(control)) {
+      val (a1, b1) = cal
+      val (a2, b2) = con
       assert(a1 == a2)
-      assert(almostEqual(0.001)(b1,b2))
+      assert(almostEqual(0.001)(b1, b2))
     }
   }
 }
