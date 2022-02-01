@@ -55,7 +55,6 @@ object Recursion {
   }
 
   def sumDoublesByTailRecursion(doubles: List[Double]): Double = {
-    @tailrec
     def sumRest(acc: Double, rest: List[Double]): Double = {
       ???
     }

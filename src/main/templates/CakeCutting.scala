@@ -42,7 +42,6 @@ object CakeCutting {
     // returns a list of (k,value) where value is the size of the kth piece of pie
     // the list runs from n ... 1
     // The returned list is sorted into order of decreasing slice size.
-    @tailrec
     def recur(n: Int, remainingSize: Double, acc: List[(Int, Double)]): List[(Int, Double)] = {
       ???
     }
