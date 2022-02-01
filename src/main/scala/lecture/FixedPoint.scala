@@ -21,6 +21,8 @@
 
 package lecture
 
+
+
 import scala.annotation.tailrec
 
 object FixedPoint {
@@ -34,6 +36,19 @@ object FixedPoint {
         improve(nextResult)
     }
     improve(initial)
+  }
+
+  def fixedPointM[A](initial:A, f:A=>A, goodEnough:(A,A)=>Boolean):A = {
+    import cats._
+    import cats.syntax.all._
+
+    LazyList.continually(()).foldM(initial) { (acc:A, _:Unit) =>
+      val next: A = f(acc)
+      if (goodEnough(acc, next))
+        Left(next) // finished, return next
+      else
+        Right(next) // not yet finished, compute next iteration
+    }.merge
   }
 
   def main(argv:Array[String]):Unit = {

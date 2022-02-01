@@ -1,4 +1,4 @@
-// Copyright (c) 2020,21 EPITA Research and Development Laboratory
+// Copyright (c) 2020,21,22 EPITA Research and Development Laboratory
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation
@@ -83,7 +83,7 @@ object Polynomial {
 
   // raise a polynomial to a positive integer (or 0) power.
   def power(a:POLY,pow:Int):POLY = {
-    assert(pow >= 0, s"power is not and should not be implemented for pow$pow")
+    assert(pow >= 0, s"power is not and should not be implemented for pow < 0: pow=$pow")
     // warning if pow = 100, don't try to do 99 calls to times,
     //   Hint x^(2n) = (x^n)^2, and x^(2n+1) = x * x^(2n), what is x^0 ?, what is x^1 ?
     pow match {
@@ -97,13 +97,13 @@ object Polynomial {
   }
 
   // detect whether two polynomials are close enough to qualify
-  // as equal,  i.e., their RMS is less than epsilon
+  // as equal,  i.e., their maximum distance of the cooef of a power is less than epsilon
   def almostEqual(epsilon:Double)(a:POLY,b:POLY):Boolean = {
-    // RMS mean of difference
-    sqrt((a.keys ++ b.keys).foldLeft(0.0) { (acc, e) =>
+    val distance = (a.keys ++ b.keys).foldLeft(0.0) { (acc, e) =>
       val diff = a.getOrElse(e, 0.0) - b.getOrElse(e, 0.0)
-      diff * diff
-    }) < epsilon
+      acc.max(abs(diff))
+    }
+    distance < epsilon
   }
 
   def main(argv:Array[String]):Unit = {
