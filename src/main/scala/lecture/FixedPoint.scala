@@ -38,11 +38,13 @@ object FixedPoint {
     improve(initial)
   }
 
+  val maxIterations:Int = 1000
   def fixedPointM[A](initial:A, f:A=>A, goodEnough:(A,A)=>Boolean):A = {
     import cats._
     import cats.syntax.all._
 
-    LazyList.continually(()).foldM(initial) { (acc:A, _:Unit) =>
+    LazyList.from(1).foldM(initial) { (acc:A, n:Int) =>
+      assert(n < maxIterations, "maximum iterations $maxIterations exceeded")
       val next: A = f(acc)
       if (goodEnough(acc, next))
         Left(next) // finished, return next
