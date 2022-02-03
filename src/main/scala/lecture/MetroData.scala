@@ -22,7 +22,7 @@
 package lecture
 
 object MetroData {
-  val stationPositions:Array[(String,Int,Int)] = Array(
+  val stationPositions:Vector[(String,Int,Int)] = Vector(
     // station-name, x-position, y-position, useful for drawing a metro map
     ("Abbesses", 308, 536 ),
     ("Alexandre Dumas", 472, 386 ),
@@ -403,7 +403,7 @@ object MetroData {
 
   val legData = List(
     // (source, destination, time-in-seconds)
-    // source and destination are indices into stationPositions Array
+    // source and destination are indices into stationPositions Vector
     (0, 238, 41 ),
     (0, 159, 46 ),
     (1, 12, 36 ),

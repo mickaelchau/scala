@@ -8,12 +8,12 @@ val data = List.fill(32){r.nextInt(50)}
 
 data.map{i => 2*i}
 data.map{i => List(i+0.0,i+0.1, i-0.1) }
-data.flatMap{i => Array(i+0.0,i+.1, i-0.1)}
+data.flatMap{i => Vector(i+0.0,i+.1, i-0.1)}
 data.flatMap{i => if (isEven(i)) List(i) else List()}
 
 data.toSet.map{i:Int => 2*i}
-data.toSet.map{i:Int => Array(i+0.0,i+.1, i-0.1)}
-data.toSet.flatMap{i:Int => Array(i+0.0,i+.1, i-0.1)}
+data.toSet.map{i:Int => Vector(i+0.0,i+.1, i-0.1)}
+data.toSet.flatMap{i:Int => Vector(i+0.0,i+.1, i-0.1)}
 
 import scala.math._
 

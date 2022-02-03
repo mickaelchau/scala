@@ -33,7 +33,7 @@ object MetroAnalysis {
     // to count how many metros serve a named station, count how many
     //   times it appears in the stationPositions array.
     stationPositions.groupBy(???).toList.filter {
-      ??? // case (name: String, v: Array[(String, Int, Int)]) => ???
+      ??? // case (name: String, v: Vector[(String, Int, Int)]) => ???
     }.map(???).toSet
   }
 

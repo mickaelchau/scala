@@ -26,7 +26,7 @@ object Transcendentals {
   // Because sqMatrix is a case class, we can construct a new sqMatrix instance,
   //   by specifying a dimension, dim, and a function mapping (Int,Int) to Double.
   case class sqMatrix(dim: Int, tabulate: (Int, Int) => Double) {
-    val arr: Array[Double] = Array.tabulate(dim * dim)((i: Int) => tabulate(i / dim, i % dim))
+    val arr: Vector[Double] = Vector.tabulate(dim * dim)((i: Int) => tabulate(i / dim, i % dim))
 
     override def toString: String = {
       (0 until dim).map { row => {
@@ -315,8 +315,8 @@ object Transcendentals {
   }
 
   object sqMatrix {
-    // we can construct an sqMatrix, by providing an Array of Arrays of Double
-    def apply(entries: Array[Array[Double]]): sqMatrix = {
+    // we can construct an sqMatrix, by providing an Vector of Vectors of Double
+    def apply(entries: Vector[Vector[Double]]): sqMatrix = {
       // don't allow arrays of different size in the same sqMatrix,
       //  and force the length of the outer array = length of inner arrays
       //  I.e., the matrix is square.

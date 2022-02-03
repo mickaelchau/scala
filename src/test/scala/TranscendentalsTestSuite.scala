@@ -25,31 +25,31 @@ import homework.Transcendentals._
 
 class TranscendentalsTestSuite extends AnyFunSuite {
   test("constructor and equals") {
-    assert(sqMatrix(Array(Array(1.0, 0.0), Array(0.0, 1.0))) == sqMatrix.identity(2))
-    assert(sqMatrix(Array(Array(1.0,2.0),
-                          Array(4.0,7.0))) == sqMatrix(Array(Array(1.0,2.0),
-                                                             Array(4.0,7.0))))
-    assert(sqMatrix(Array(Array(1.0,2.0),
-                          Array(4.0,7.0))) != sqMatrix(Array(Array(0.0,2.0),
-                                                             Array(4.0,7.0))))
-    assert(sqMatrix(Array(Array(1.0,2.0),
-                          Array(4.0,7.0))) != sqMatrix(Array(Array(1.0,2.0),
-                                                             Array(0.0,7.0))))
+    assert(sqMatrix(Vector(Vector(1.0, 0.0), Vector(0.0, 1.0))) == sqMatrix.identity(2))
+    assert(sqMatrix(Vector(Vector(1.0,2.0),
+                          Vector(4.0,7.0))) == sqMatrix(Vector(Vector(1.0,2.0),
+                                                             Vector(4.0,7.0))))
+    assert(sqMatrix(Vector(Vector(1.0,2.0),
+                          Vector(4.0,7.0))) != sqMatrix(Vector(Vector(0.0,2.0),
+                                                             Vector(4.0,7.0))))
+    assert(sqMatrix(Vector(Vector(1.0,2.0),
+                          Vector(4.0,7.0))) != sqMatrix(Vector(Vector(1.0,2.0),
+                                                             Vector(0.0,7.0))))
   }
   test("plus") {
-    val m1 = sqMatrix(Array(Array(1.0, 1.0), Array(0.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(1.0, 1.0), Array(1.0, 0.0)))
+    val m1 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(0.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(1.0, 0.0)))
     val zero = sqMatrix(2, (row, col) => 0.0)
     assert(m1 + m2 == m2 + m1)
     assert(m1 + zero == m1)
     assert(m1 == m1 + zero)
     assert(m1 + zero == zero + m1)
     assert(m1 == m1)
-    assert(m1 + m2 == sqMatrix(Array(Array(2.0, 2.0), Array(1.0, 1.0))))
+    assert(m1 + m2 == sqMatrix(Vector(Vector(2.0, 2.0), Vector(1.0, 1.0))))
   }
   test("subtract"){
-    val m1 = sqMatrix(Array(Array(1.0, 1.0), Array(0.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(1.0, 1.0), Array(1.0, 0.0)))
+    val m1 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(0.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(1.0, 0.0)))
     val zero = sqMatrix(2, (row, col) => 0.0)
     val ident = zero.identity
     assert(m1 - m1 == zero)
@@ -61,11 +61,11 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     assert((m1 - zero) + (zero - m1) == zero)
     assert((m1 - ident) + (ident - m1) == zero)
     assert(m1 == m1)
-    assert(m1 + m2 == sqMatrix(Array(Array(2.0, 2.0), Array(1.0, 1.0))))
+    assert(m1 + m2 == sqMatrix(Vector(Vector(2.0, 2.0), Vector(1.0, 1.0))))
   }
   test("additive inverse") {
-    val m1 = sqMatrix(Array(Array(1.0, 1.0), Array(0.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(1.0, 1.0), Array(1.0, 0.0)))
+    val m1 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(0.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(1.0, 0.0)))
     assert((m1 - m2) == (m2 - m1) * -1)
     assert((m1 - m2) == (m2 - m1) * -1.0)
     assert((m2 - m1) == (m1 - m2) * -1)
@@ -74,8 +74,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
 
   test("times vs pow") {
     for{ dim <- 2 to 5
-         row = Array.tabulate(dim){ n => -1.0 + dim + math.pow(n%3,dim%3)}
-         grid = Array.tabulate(dim){_ => row}
+         row = Vector.tabulate(dim){ n => -1.0 + dim + math.pow(n%3,dim%3)}
+         grid = Vector.tabulate(dim){_ => row}
          m1 = sqMatrix(grid)
          i = sqMatrix.identity(dim)
          }{
@@ -88,8 +88,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
   }
   test("add vs times") {
     for{ dim <- 2 to 5
-         row = Array.tabulate(dim){ n => -1.0 + dim + math.pow(n%3,dim%3)}
-         grid = Array.tabulate(dim){_ => row}
+         row = Vector.tabulate(dim){ n => -1.0 + dim + math.pow(n%3,dim%3)}
+         grid = Vector.tabulate(dim){_ => row}
          m1 = sqMatrix(grid)
          zero = sqMatrix.zero(dim)
          }{
@@ -102,8 +102,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
   }
 
   test("times") {
-    val m1 = sqMatrix(Array(Array(1.0, 1.0), Array(0.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(1.0, 1.0), Array(1.0, 0.0)))
+    val m1 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(0.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 1.0), Vector(1.0, 0.0)))
     val zero = sqMatrix(2, (row, col) => 0.0)
     val e = sqMatrix.identity(2)
 
@@ -115,70 +115,70 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     assert(e * m1 == m1)
     assert(e * e == e)
     assert(zero * zero == zero)
-    assert(m1 * m2 == sqMatrix(Array(Array(2.0, 1.0), Array(1.0, 0.0))))
+    assert(m1 * m2 == sqMatrix(Vector(Vector(2.0, 1.0), Vector(1.0, 0.0))))
 
-    List(sqMatrix(Array(Array(0.0,1.0),
-                        Array(0.0,0.0))),
-         sqMatrix(Array(Array(0.0,0.0),
-                        Array(1.0,0.0))),
-         sqMatrix(Array(Array(1.0,-1.0),
-                        Array(3.0,7.0)))).foreach{m3:sqMatrix =>
+    List(sqMatrix(Vector(Vector(0.0,1.0),
+                        Vector(0.0,0.0))),
+         sqMatrix(Vector(Vector(0.0,0.0),
+                        Vector(1.0,0.0))),
+         sqMatrix(Vector(Vector(1.0,-1.0),
+                        Vector(3.0,7.0)))).foreach{m3:sqMatrix =>
       assert(m3 * e == m3 )
       assert(e * m3 == m3)}
   }
   test("upper triangular") {
-    val ut = sqMatrix(Array(Array(1.0, 0.0),
-                            Array(0.0, 2.0)))
+    val ut = sqMatrix(Vector(Vector(1.0, 0.0),
+                            Vector(0.0, 2.0)))
     assert(ut.upperTriangularize() ==
              ((ut, ut.identity), 1))
-    for {a <- Seq(Array(Array(0.0, 1.0),
-                        Array(1.0, 0.0)),
-                  Array(Array(0.0, 2.0),
-                        Array(4.0, 0.0)),
-                  Array(Array(-2.0, 1.0),
-                        Array(1.0, 0.0)),
-                  Array(Array(1.0, 0.0),
-                        Array(0.0, 2.0)),
-                  Array(Array(1.0, 1.0, -2.0),
-                        Array(0.0, 1.0, 0.0),
-                        Array(0.0, 12.0, 1.0)),
-                  Array(Array(1.0, -235.0, -10.0),
-                        Array(0.0, 1.0, 0.0),
-                        Array(0.0, 60.0, 1.0))
+    for {a <- Seq(Vector(Vector(0.0, 1.0),
+                        Vector(1.0, 0.0)),
+                  Vector(Vector(0.0, 2.0),
+                        Vector(4.0, 0.0)),
+                  Vector(Vector(-2.0, 1.0),
+                        Vector(1.0, 0.0)),
+                  Vector(Vector(1.0, 0.0),
+                        Vector(0.0, 2.0)),
+                  Vector(Vector(1.0, 1.0, -2.0),
+                        Vector(0.0, 1.0, 0.0),
+                        Vector(0.0, 12.0, 1.0)),
+                  Vector(Vector(1.0, -235.0, -10.0),
+                        Vector(0.0, 1.0, 0.0),
+                        Vector(0.0, 60.0, 1.0))
                   )
          m = sqMatrix(a)
          ((m1, m2), sign) = m.upperTriangularize()
          } assert(m1.isUpperTriangular, s"m1=$m1 computed from m=$m not upper triangular")
   }
   test("find pivot row") {
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(-2.0, 1.0),
-                            Array(1.0, 0.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(-2.0, 1.0),
+                            Vector(1.0, 0.0)))
     assert(0 == m3.findPivotRow(0,0))
     assert(2 == m3.findPivotRow(1,0))
     assert(0 == m2.findPivotRow(0,0))
     assert(0 == m2.findPivotRow(1,0))
   }
   test("scale row") {
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
-    assert(m3.scaleRow(-1.0, 0) == sqMatrix(Array(Array(-1.0, -1.0, 2.0),
-                                                  Array(0.0, 1.0, 0.0),
-                                                  Array(0.0, 12.0, 1.0))))
-    assert(m3.scaleRow(0.0, 1) == sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                                                 Array(0.0, 0.0, 0.0),
-                                                 Array(0.0, 12.0, 1.0))))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
+    assert(m3.scaleRow(-1.0, 0) == sqMatrix(Vector(Vector(-1.0, -1.0, 2.0),
+                                                  Vector(0.0, 1.0, 0.0),
+                                                  Vector(0.0, 12.0, 1.0))))
+    assert(m3.scaleRow(0.0, 1) == sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                                                 Vector(0.0, 0.0, 0.0),
+                                                 Vector(0.0, 12.0, 1.0))))
   }
   test("swap rows") {
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
-    assert(m3.swapRows(0, 1) == sqMatrix(Array(Array(0.0, 1.0, 0.0),
-                                               Array(1.0, 1.0, -2.0),
-                                               Array(0.0, 12.0, 1.0))))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
+    assert(m3.swapRows(0, 1) == sqMatrix(Vector(Vector(0.0, 1.0, 0.0),
+                                               Vector(1.0, 1.0, -2.0),
+                                               Vector(0.0, 12.0, 1.0))))
     (0 until 3).foreach { j => {
       (0 until 3).foreach { i => {
         val m = m3.swapRows(i, j)
@@ -193,17 +193,17 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     }
   }
   test("row operation") {
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
     assert(m3.rowOperation(1.0, 0, -1.0, 1) ==
-             sqMatrix(Array(Array(1.0, 2.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0))))
+             sqMatrix(Vector(Vector(1.0, 2.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0))))
     assert(m3.rowOperation(4.0, 1, 1.0, 2) ==
-             sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0,-2.0,-0.25),
-                            Array(0.0, 12.0, 1.0))))
+             sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0,-2.0,-0.25),
+                            Vector(0.0, 12.0, 1.0))))
   }
   test("norm") {
     val zero = sqMatrix.zero(3)
@@ -213,8 +213,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     assert(id.norm == 1.0)
   }
   test("dist") {
-    val m2 = sqMatrix(Array(Array(1.0, 2.0),
-                            Array(-1.0, 3.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 2.0),
+                            Vector(-1.0, 3.0)))
     val id = sqMatrix.identity(2)
     val zero = sqMatrix.zero(2)
     assert(id.dist(id) == 0.0)
@@ -229,33 +229,33 @@ class TranscendentalsTestSuite extends AnyFunSuite {
       b <- -2 to 2
       c <- -10 to 10 by 5
       d <- -7 to -3
-      u = sqMatrix(Array(Array(a,b),
-                             Array(c,d)))
-      v = sqMatrix(Array(Array(a*b,c*d),
-                              Array(-a*d+b,a+b-c*d)))
+      u = sqMatrix(Vector(Vector(a,b),
+                             Vector(c,d)))
+      v = sqMatrix(Vector(Vector(a*b,c*d),
+                              Vector(-a*d+b,a+b-c*d)))
     } yield assert(u.dist(u.identity) + u.identity.dist(v) >= u.dist(v))
   }
   test("inverse") {
     // inverse of identity is identity
     assert(sqMatrix.identity(2) == sqMatrix.identity(2).inverse)
-    val u = sqMatrix(Array(Array(0.0, 1.0),
-                           Array(-1.0, 0.0)))
+    val u = sqMatrix(Vector(Vector(0.0, 1.0),
+                           Vector(-1.0, 0.0)))
     val v = u * -1
     assert(u.inverse == v)
     assert(v.inverse == u)
 
-    for {a <- Seq(Array(Array(1.0)),
-                  Array(Array(2.0)),
-                  Array(Array(1.0, 2.0),
-                        Array(-1.0, 3.0)),
-                  Array(Array(0.0, 1.0),
-                        Array(-1.0, 0.0)),
-                  Array(Array(0.0, 1.0, 0.0),
-                        Array(1.0, 1.0, -2.0),
-                        Array(0.0, 12.0, 1.0)),
-                  Array(Array(1.0, 1.0, -2.0),
-                        Array(0.0, 1.0, 0.0),
-                        Array(0.0, 12.0, 1.0)))
+    for {a <- Seq(Vector(Vector(1.0)),
+                  Vector(Vector(2.0)),
+                  Vector(Vector(1.0, 2.0),
+                        Vector(-1.0, 3.0)),
+                  Vector(Vector(0.0, 1.0),
+                        Vector(-1.0, 0.0)),
+                  Vector(Vector(0.0, 1.0, 0.0),
+                        Vector(1.0, 1.0, -2.0),
+                        Vector(0.0, 12.0, 1.0)),
+                  Vector(Vector(1.0, 1.0, -2.0),
+                        Vector(0.0, 1.0, 0.0),
+                        Vector(0.0, 12.0, 1.0)))
          m = sqMatrix(a)
          } {
 
@@ -271,8 +271,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
         m = sqMatrix((0 until dim).map{row =>
           (0 until dim).map{col =>
             Random.between(-1.0,1.0)
-          }.toArray
-        }.toArray)} {
+          }.toVector
+        }.toVector)} {
       assert(m.identity.dist(m * m.inverse) < 0.001,
              s"(1) could not invert dim=$dim $m, got ${m.inverse} with dist=${m.dist(m.inverse)}")
       assert(m.identity.dist(m.inverse * m) < 0.001,
@@ -282,50 +282,50 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     }
   }
   test("singular"){
-    assert(0.0 == sqMatrix(Array(Array(1.0,2.0),
-                                 Array(2.0,4.0))).determinant, "did not detect singular matrix")
+    assert(0.0 == sqMatrix(Vector(Vector(1.0,2.0),
+                                 Vector(2.0,4.0))).determinant, "did not detect singular matrix")
     // the inverse of this matrix is
     // [[0.0,0.5],[Infinity,-Infinity]]
-    assert("[[0.0,0.5],[Infinity,-Infinity]]" == sqMatrix(Array(Array(1.0,2.0),
-                                                                Array(2.0,4.0))).inverse.toString)
+    assert("[[0.0,0.5],[Infinity,-Infinity]]" == sqMatrix(Vector(Vector(1.0,2.0),
+                                                                Vector(2.0,4.0))).inverse.toString)
   }
   test("diagonalize"){
-    val m2 = sqMatrix(Array(Array(1.0,0.0),
-                            Array(0.0,2.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0,0.0),
+                            Vector(0.0,2.0)))
     assert(m2.diagonalize(m2,m2) == (m2,m2))
 
-    val ut = sqMatrix(Array(Array(1.0,0.0),Array(0.0,2.0)))
+    val ut = sqMatrix(Vector(Vector(1.0,0.0),Vector(0.0,2.0)))
     assert(ut.diagonalize(ut,ut.identity) == (ut,ut.identity))
   }
   test("determinant") {
     assert(1.0 == sqMatrix.identity(2).determinant)
     assert(1.0 == sqMatrix.identity(3).determinant)
     assert(1.0 == sqMatrix.identity(4).determinant)
-    assert(-1.0 == sqMatrix(Array(Array(0.0, 1.0),
-                                  Array(1.0, 0.0))).determinant)
+    assert(-1.0 == sqMatrix(Vector(Vector(0.0, 1.0),
+                                  Vector(1.0, 0.0))).determinant)
 
-    assert(2.0 == sqMatrix(Array(Array(1.0, 0.0),
-                                 Array(0.0, 2.0))).determinant )
+    assert(2.0 == sqMatrix(Vector(Vector(1.0, 0.0),
+                                 Vector(0.0, 2.0))).determinant )
 
-    assert(4 == sqMatrix(Array(Array(2.0, 0.0),
-                                 Array(0.0, 2.0))).determinant )
-    val m2 = sqMatrix(Array(Array(1.0, 2.0),
-                            Array(-1.0, 3.0)))
+    assert(4 == sqMatrix(Vector(Vector(2.0, 0.0),
+                                 Vector(0.0, 2.0))).determinant )
+    val m2 = sqMatrix(Vector(Vector(1.0, 2.0),
+                            Vector(-1.0, 3.0)))
     assert(m2.determinant == 5.0)
 
-    val m2i = sqMatrix(Array(Array(3.0/5, -2.0/5),
-                             Array(1.0/5, 1.0/5)))
+    val m2i = sqMatrix(Vector(Vector(3.0/5, -2.0/5),
+                             Vector(1.0/5, 1.0/5)))
     assert(math.abs(m2i.determinant - 0.2) < 0.0001)
 
     assert(m2.determinant == 1 / m2.inverse.determinant)
   }
   test("annihilate"){
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
-    val m2 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, -1.0, 0.0),
-                            Array(0.0, 7.0, 1.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, -1.0, 0.0),
+                            Vector(0.0, 7.0, 1.0)))
     val zero = sqMatrix(3, (row, col) => 0.0)
     assert(m3 * zero == zero)
     assert(zero * m3  == zero)
@@ -345,9 +345,9 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     }
     }
 
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(0.0, 1.0, 0.0),
-                            Array(0.0, 12.0, 1.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(0.0, 1.0, 0.0),
+                            Vector(0.0, 12.0, 1.0)))
     assert(m3.pow(1).dist(m3) < 0.001)
     assert(m3.pow(2).dist(m3*m3) < 0.001)
     assert(m3.pow(0).dist(sqMatrix.identity(3)) < 0.001)
@@ -387,34 +387,34 @@ class TranscendentalsTestSuite extends AnyFunSuite {
     assert((identity*(  math.Pi/6)).sin().dist(identity * 0.5) < .0001)
   }
   test("pythagoras"){
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(1.0, -2.0, 1.0),
-                            Array(2.0, -1.0, 1.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(1.0, -2.0, 1.0),
+                            Vector(2.0, -1.0, 1.0)))
 
     // sin^2 + cos^2 == 1
     val v3 = m3.cos().pow(2)+m3.sin().pow(2)
     assert( v3.identity.dist(v3) < 0.0001)
     assert( v3.dist(v3.identity) < 0.0001)
 
-    val m4 = sqMatrix(Array(Array(1.0, 1.0, -2.0, 2.1),
-                            Array(-0.5, 1.0, 0.0, -1.0),
-                            Array(0.0, -2.0, 1.0, 0.0),
-                            Array(1.0, 2.0, -2.0, 3.0)))
+    val m4 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0, 2.1),
+                            Vector(-0.5, 1.0, 0.0, -1.0),
+                            Vector(0.0, -2.0, 1.0, 0.0),
+                            Vector(1.0, 2.0, -2.0, 3.0)))
     val v4 = m4.cos().pow(2)+m4.sin().pow(2)
     assert( v4.identity.dist(v4) < 0.0001)
     assert( v4.dist(v4.identity) < 0.0001)
   }
   test("double angle"){
     // sin(2x) = 2sin(x)cos(x)
-    val m2 = sqMatrix(Array(Array(1.0,0.8),
-                            Array(-0.5, 1.5)))
-    val m3 = sqMatrix(Array(Array(1.0, 1.0, -2.0),
-                            Array(1.0, -2.0, 1.0),
-                            Array(2.0, -1.0, 1.0)))
-    val m4 = sqMatrix(Array(Array(1.0, 1.0, -2.0, 2.1),
-                            Array(-0.5, 1.0, 0.0, -1.0),
-                            Array(0.0, -2.0, 1.0, 0.0),
-                            Array(1.0, 2.0, -2.0, 3.0)))
+    val m2 = sqMatrix(Vector(Vector(1.0,0.8),
+                            Vector(-0.5, 1.5)))
+    val m3 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0),
+                            Vector(1.0, -2.0, 1.0),
+                            Vector(2.0, -1.0, 1.0)))
+    val m4 = sqMatrix(Vector(Vector(1.0, 1.0, -2.0, 2.1),
+                            Vector(-0.5, 1.0, 0.0, -1.0),
+                            Vector(0.0, -2.0, 1.0, 0.0),
+                            Vector(1.0, 2.0, -2.0, 3.0)))
     for{
       m <- List(m2, m3, m4)
     } yield assert( (m*2).sin().dist(m.sin()*m.cos()*2) < 0.001 )
@@ -426,9 +426,9 @@ class TranscendentalsTestSuite extends AnyFunSuite {
   }
   test("cos and sin diagonal") {
     import math.Pi
-    val m2 = sqMatrix(Array(Array(Pi / 2, 0.0, 0.0),
-                            Array(0.0, Pi / 2, 0.0),
-                            Array(0.0, 0.0, Pi / 2)))
+    val m2 = sqMatrix(Vector(Vector(Pi / 2, 0.0, 0.0),
+                            Vector(0.0, Pi / 2, 0.0),
+                            Vector(0.0, 0.0, Pi / 2)))
     println("cos diag= " + m2.cos())
     assert(m2.cos().dist(m2.zero) < 0.001)
 
@@ -461,9 +461,9 @@ class TranscendentalsTestSuite extends AnyFunSuite {
   }
 
   test("exp"){
-    val m3 = sqMatrix(Array(Array(1.0,  1.0, -2.0),
-                            Array(1.0, -2.0,  1.0),
-                            Array(2.0, -1.0,  1.0)))
+    val m3 = sqMatrix(Vector(Vector(1.0,  1.0, -2.0),
+                            Vector(1.0, -2.0,  1.0),
+                            Vector(2.0, -1.0,  1.0)))
     val e2 = (m3.identity * 2).exp()
     // matrix with e^2 on the diagonal
     assert(math.abs(math.exp(2) - e2(0,0)) < 0.001)
@@ -491,8 +491,8 @@ class TranscendentalsTestSuite extends AnyFunSuite {
          m = sqMatrix((0 until dim).map { row =>
            (0 until dim).map { col =>
              Random.between(-1.0, 0.50)
-           }.toArray
-         }.toArray)
+           }.toVector
+         }.toVector)
          j <- 1 to 4
          } {
       locally {
@@ -527,27 +527,27 @@ class TranscendentalsTestSuite extends AnyFunSuite {
   }
 
   test("tan") {
-    //    val m1 = sqMatrix(Array(Array(0.5,  0.5, -.20),
-    //                            Array(1.0, -0.125,  1.0),
-    //                            Array(0.2, -1.0,  1.0)))
-    //    val m2 = sqMatrix(Array(Array(1.0,  1.0, -1.0),
-    //                            Array(1.0, -2.0,  1.0),
-    //                            Array(0.2, 1.0,  1.0)))
-    //    val m3 = sqMatrix(Array(Array(0.5,  0.25, -0.125),
-    //                            Array(1.0, -0.5,  1.0),
-    //                            Array(0.2, -1.0,  -0.5)))
+    //    val m1 = sqMatrix(Vector(Vector(0.5,  0.5, -.20),
+    //                            Vector(1.0, -0.125,  1.0),
+    //                            Vector(0.2, -1.0,  1.0)))
+    //    val m2 = sqMatrix(Vector(Vector(1.0,  1.0, -1.0),
+    //                            Vector(1.0, -2.0,  1.0),
+    //                            Vector(0.2, 1.0,  1.0)))
+    //    val m3 = sqMatrix(Vector(Vector(0.5,  0.25, -0.125),
+    //                            Vector(1.0, -0.5,  1.0),
+    //                            Vector(0.2, -1.0,  -0.5)))
 
-    val m0 = sqMatrix(Array(Array(math.Pi / 4, 0),
-                            Array(0, math.Pi / 4.0)))
+    val m0 = sqMatrix(Vector(Vector(math.Pi / 4, 0),
+                            Vector(0, math.Pi / 4.0)))
 
     assert(m0.tan().dist(m0.identity) < 0.001)
 
-    val m1 = sqMatrix(Array(Array(0.5, 0.5),
-                            Array(0.0, -0.125)))
-    val m2 = sqMatrix(Array(Array(1.0, 0.0),
-                            Array(0.5, 1.0)))
-    val m3 = sqMatrix(Array(Array(0.5, 0.0),
-                            Array(0.0, -0.5)))
+    val m1 = sqMatrix(Vector(Vector(0.5, 0.5),
+                            Vector(0.0, -0.125)))
+    val m2 = sqMatrix(Vector(Vector(1.0, 0.0),
+                            Vector(0.5, 1.0)))
+    val m3 = sqMatrix(Vector(Vector(0.5, 0.0),
+                            Vector(0.0, -0.5)))
 
     // tan x/2 = sin x / ( 1 + cos x)
     for {x <- Seq(m0, m1, m3, m2)

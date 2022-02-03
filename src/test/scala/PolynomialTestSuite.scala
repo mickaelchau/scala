@@ -118,11 +118,11 @@ class PolynomialTestSuite extends AnyFunSuite {
 
   test("scale") {
     for {p <- polynomials
-         s <- Array(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
+         s <- Vector(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
          } scale(s, p)
 
     for {p <- polynomials
-         s <- Array(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
+         s <- Vector(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
          x <- xs
          spx = evaluate(scale(s, p), x)
          px = evaluate(p, x)
