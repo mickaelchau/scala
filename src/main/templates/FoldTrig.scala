@@ -28,7 +28,7 @@ object FoldTrig {
   // the larger nTerms, the slower the computation, but the more
   // accurate the results. Suggestion, start with 5 and increase it until the
   // tests pass.
-  val nTerms = ???
+  lazy val nTerms = ???
 
   //           1    x^1   x^2   x^3
   // exp(x) = --- + --- + --- + --- + ...
