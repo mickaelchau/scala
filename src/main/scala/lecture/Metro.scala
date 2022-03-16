@@ -25,7 +25,7 @@ object Metro {
 
   import lecture.MetroData._
 
-  val stationName: Array[String] = stationPositions.map(_._1)
+  val stationName: Vector[String] = stationPositions.map(_._1)
 
   def stationIndex(name: String): Option[Int] = {
     stationName.indexOf(name) match {
@@ -55,7 +55,7 @@ object Metro {
   val stations: Set[Station] = sources.union(destinations) // the vertices of the metro graph
   val legs: Set[(Station, Station)] = (legData map getLeg).toSet // the edges of the metro graph
 
-  val stationToXY: Array[(String, (Station, Station))] = stationPositions map {
+  val stationToXY: Vector[(String, (Station, Station))] = stationPositions map {
     case (name, x, y) => name -> (x, y)
   }
 

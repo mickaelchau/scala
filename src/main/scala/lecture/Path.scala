@@ -36,7 +36,7 @@ import scala.annotation.tailrec
 //   type alias (reminder)
 //   using map to transform data
 //   map vs flatMap vs for-comprehension
-//   Array.tabulate(dim)((i: Int) => i*(i+1))
+//   Vector.tabulate(dim)((i: Int) => i*(i+1))
 
 case class Path[A](vertices: List[A], edges: Set[Edge[A]]) {
   require(vertices.size > 0, "Path with no vertices is not supported")

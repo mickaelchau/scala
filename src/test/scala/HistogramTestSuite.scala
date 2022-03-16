@@ -54,7 +54,7 @@ class HistogramTestSuite extends AnyFunSuite {
 
                           , (Histogram(List()), "[]")
 
-                          , (Histogram(Array(4.0, 4.0, 3.0, 4.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)),
+                          , (Histogram(Vector(4.0, 4.0, 3.0, 4.0, 3.0, 2.0, 4.0, 3.0, 4.0, 3.0, 2.0, 1.0, 4.0)),
                             "[1 of 1.0 & 2 of 2.0 & 4 of 3.0 & 6 of 4.0]"   )
                           )} assert(s"$h" == str)
   }
@@ -74,10 +74,10 @@ class HistogramTestSuite extends AnyFunSuite {
 
   test("same elements"){
     assert(Histogram(List(1,2,3,4)) sameElements Histogram(List(1,2,3,4)))
-    assert(Histogram(List(1,2,3,4)) sameElements Histogram(Array(1,2,3,4)))
-    assert(Histogram(List(1,2,3,4)) sameElements Histogram(Array(2,1,3,4)))
-    assert(! (Histogram(List(1, 1,2,3,4)) sameElements Histogram(Array(2,1,3,4))))
-    assert(! (Histogram(List(1, 1,2,3,4)) sameElements Histogram(Array(2,2,1,3,4))))
+    assert(Histogram(List(1,2,3,4)) sameElements Histogram(Vector(1,2,3,4)))
+    assert(Histogram(List(1,2,3,4)) sameElements Histogram(Vector(2,1,3,4)))
+    assert(! (Histogram(List(1, 1,2,3,4)) sameElements Histogram(Vector(2,1,3,4))))
+    assert(! (Histogram(List(1, 1,2,3,4)) sameElements Histogram(Vector(2,2,1,3,4))))
   }
 
   test("from set") {

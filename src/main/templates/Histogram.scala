@@ -36,7 +36,6 @@ case class Histogram[A](items:Seq[A]) {
   // A Histogram instance may be created using either of the following syntactical forms:
   //    Histogram(List(...))
   //    Histogram(Vector(...))
-  //    Histogram(Array(...))
 
   // When a Histogram is printed, it is surrounded by square brackets [...]
   // Histogram(List("a")) printed as "[1 of a]"

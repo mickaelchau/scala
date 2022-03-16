@@ -31,30 +31,31 @@ import scala.annotation.tailrec
 // code so that the tests pass.
 object BinarySearch {
 
-  def binSearchByBoolean(left:Double, right:Double, f:Double=>Boolean, delta:Double, maxDepth:Int):Option[Double] = {
+  def binSearchByBoolean(left: Double, right: Double, f: Double => Boolean, delta: Double, maxDepth: Int): Option[Double] = {
     // takes a function, f, for which f(left) = false, and f(right) = true,
     // finds an x such that f(x)=false, and f(x+threshold)= true
     @tailrec
-    def recur(left:Double,right:Double,depth:Int):Option[Double] = {
+    def recur(left: Double, right: Double, depth: Int): Option[Double] = {
       val mid = ???
 
-      if ( ??? )  // ??? < ???
+      if (???) // ??? < ???
         Some(???)
       else if (depth >= maxDepth)
         None
-      else if ( f(mid))
-        recur(???,???,???)
+      else if (f(mid))
+        recur(???, ???, ???)
       else
-        recur(???,???,???)
+        recur(???, ???, ???)
 
     }
-    if ( !f(left) && f(right))
-      recur(???,???,???)
+
+    if (!f(left) && f(right))
+      recur(???, ???, ???)
     else
       ???
   }
 
-  def main(argv:Array[String]):Unit = {
+  def main(argv: Array[String]): Unit = {
 
   }
 }

@@ -125,13 +125,13 @@ class MetroAnalysisTestSuite extends AnyFunSuite {
   }
 
   test("stationDistanceTransfers") {
-    for {(dist, st1, st2) <- Array((2, "Saint-Marcel", "Péreire"),
+    for {(dist, st1, st2) <- Vector((2, "Saint-Marcel", "Péreire"),
                                    (5, "Bercy", "Danube")
                                    )}
       assert(stationDistanceTransfers(st1, st2) == dist)
 
     val (dst, pred) = metroGraph.floydWarshall(legTimes)
-    for {(dist, st1, st2) <- Array((1, "Duroc", "Vaneau"),
+    for {(dist, st1, st2) <- Vector((1, "Duroc", "Vaneau"),
                                    (2, "Saint-Marcel", "Péreire"),
                                    (3, "Jasmin", "Rue du Bac"),
                                    (2, "Passy", "Boucicaut"),

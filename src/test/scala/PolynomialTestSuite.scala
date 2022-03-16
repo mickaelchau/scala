@@ -36,7 +36,7 @@ class PolynomialTestSuite extends AnyFunSuite {
           } yield n -> r.nextDouble()).toMap
   }
 
-  val fixedPolynomials: Vector[POLY] = Vector(one,
+  lazy val fixedPolynomials: Vector[POLY] = Vector(one,
                                               zero,
                                               Map(0 -> 3, 1 -> 0.1, 2 -> -0.5),
                                               Map(1 -> 1.0, 2 -> 2.0),
@@ -46,11 +46,11 @@ class PolynomialTestSuite extends AnyFunSuite {
                                               Map(2 -> -2.3, 3 -> 0.125, 1 -> 1.0, 0 -> -0.25),
                                               Map(2 -> -2.4, 3 -> 0.125, 1 -> 1.0),
                                               Map(2 -> -2.3, 3 -> 0.125, 1 -> -0.5, 0 -> -0.25))
-  val randomPolynomials = for {_ <- 1 to 50} yield randomPolynomial(5)
+  lazy val randomPolynomials = for {_ <- 1 to 50} yield randomPolynomial(5)
 
-  val polynomials: Vector[POLY] = fixedPolynomials ++ randomPolynomials
+  lazy val polynomials: Vector[POLY] = fixedPolynomials ++ randomPolynomials
 
-  val xs: Vector[Double] = Vector(1.0, 0.5, 0.25, -0.8, 0.75)
+  lazy val xs: Vector[Double] = Vector(1.0, 0.5, 0.25, -0.8, 0.75)
 
   test("almostEqual") {
     assert(almostEqual(0.001)(Map(1 -> 0.1, 2 -> 0.2),
@@ -118,11 +118,11 @@ class PolynomialTestSuite extends AnyFunSuite {
 
   test("scale") {
     for {p <- polynomials
-         s <- Array(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
+         s <- Vector(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
          } scale(s, p)
 
     for {p <- polynomials
-         s <- Array(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
+         s <- Vector(0.0, 1.0, -1.0, 0.5, 0.25, 0.125)
          x <- xs
          spx = evaluate(scale(s, p), x)
          px = evaluate(p, x)

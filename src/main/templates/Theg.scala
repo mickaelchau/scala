@@ -48,9 +48,9 @@ import scala.annotation.tailrec
 //    directed is a boolean indicating whether the edges should
 //    be interpreted as directed or undirected.
 //    edges should be a parameter capable of receiving a List of any
-//    type or an Array of any type.  I.e., edges specifies a *collection*
+//    type or an Vector of any type.  I.e., edges specifies a *collection*
 //    of pairs of vertices.  And the vertices may be String, Integer, Double,
-//    List, Array, any type at all, but all vertices are the same type
+//    List, Vector, any type at all, but all vertices are the same type
 //    on any one call to makeAdj.
 //    In the case that the graph is DIRECTED, there may be vertices
 //    which have no successors.  For example there might be an edge from 1 to 2
