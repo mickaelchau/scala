@@ -30,8 +30,8 @@ object Theg {
     assert(dst < n, s"edge dst=$dst must be < n=$n")
   }
 
-  // we begin assuming the edges are DIRECTED. this makes the code
-  //   simpler.   Later we will parameterize the function to all
+  // we begin assuming the edges are DIRECTED. This makes the code
+  //   simpler.   Later we will parameterize the function to allow
   //   directed or undirected graphs.
 
   // tail recursive function
@@ -133,6 +133,7 @@ object Theg {
   //   * computes Vector once, not iteratively, not recursively
   //   * uses .filter .toSet to compute set of destination vertices
   def makeAdj_5(n: Int, edges: Vector[(Int, Int)]): Vector[Set[Int]] = {
+    // compute the set of neighbors of vertex i
     def connectionsTo(i: Int): Set[Int] = {
       (0 until n).filter {
         j => edges.exists { case (src, dst) => src == i && dst == j }
@@ -148,6 +149,7 @@ object Theg {
   //   computes Vector once, not iteratively, not recursively
   //   * uses .contains .toSet to compute set of destination vertices
   def makeAdj_6(n: Int, edges: Vector[(Int, Int)]): Vector[Set[Int]] = {
+    // compute the set of neighbors of vertex i
     def connectionsTo(i: Int): Set[Int] = {
       (0 until n).filter {
         j => edges.contains(i -> j)
@@ -187,7 +189,9 @@ object Theg {
   //   omits initialization of Map, just uses Map()
   //   * uses .withDefaultValue rather than  .getOrElse
   def makeAdj_8(edges: List[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
+    val initial = Map[Int, Set[Int]]().withDefaultValue(Set())
+    
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
     }
@@ -202,7 +206,9 @@ object Theg {
   //   omits initialization of Map, just uses Map()
   //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_9(edges: Vector[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
+    val initial = Map[Int, Set[Int]]().withDefaultValue(Set())
+
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
     }
@@ -217,7 +223,9 @@ object Theg {
   //   omits initialization of Map, just uses Map()
   //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_10(edges: Seq[(Int, Int)]): Map[Int, Set[Int]] = {
-    edges.foldLeft(Map[Int, Set[Int]]().withDefaultValue(Set())) {
+    val initial = Map[Int, Set[Int]]().withDefaultValue(Set())
+
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
     }
@@ -232,7 +240,8 @@ object Theg {
   //   omits initialization of Map, just uses Map()
   //   uses .withDefaultValue rather than  .getOrElse
   def makeAdj_11[V](edges: Seq[(V, V)]): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
+    val initial = Map[V, Set[V]]().withDefaultValue(Set())
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
     }
@@ -240,7 +249,8 @@ object Theg {
 
   // same as makeAdj_11, but assumes UNDIRECTED edges
   def makeAdj_12[V](edges: Seq[(V, V)]): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
+    val initial = Map[V, Set[V]]().withDefaultValue(Set())
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj +
           (src -> (adj(src) + dst)) +
@@ -251,7 +261,8 @@ object Theg {
   // combine makeAdj_11 and makeAdj_12 with a Boolean indicating
   // whether edges are interpreted as DIRECTED or UNDIRECTED
   def makeAdj_13[V](edges: Seq[(V, V)], directed: Boolean): Map[V, Set[V]] = {
-    edges.foldLeft(Map[V, Set[V]]().withDefaultValue(Set())) {
+    val initial = Map[V, Set[V]]().withDefaultValue(Set())
+    edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         val m1 = adj + (src -> (adj(src) + dst))
         if (directed)

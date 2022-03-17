@@ -1,4 +1,4 @@
-# lecture notes for Scala introduction
+# Lecture notes for Scala introduction
 
 # Unit 1
 [Unit 1 lecture notes](unit-1.md)

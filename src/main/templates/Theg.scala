@@ -45,7 +45,7 @@ import scala.annotation.tailrec
 //   The graph is not guaranteed to be connected.
 //
 // The function makeAdj should take 2 arguments, edges and directed.
-//    directed is a boolean indicating whether the edges should
+//    directed is a Boolean indicating whether the edges should
 //    be interpreted as directed or undirected.
 //    edges should be a parameter capable of receiving a List of any
 //    type or an Vector of any type.  I.e., edges specifies a *collection*
