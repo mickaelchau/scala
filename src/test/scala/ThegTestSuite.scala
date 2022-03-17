@@ -121,4 +121,7 @@ class ThegTestSuite extends AnyFunSuite {
     assert(reachableVertices(Vector(("rosalie","gilbert"),("rosalie","theophile"),("rosalie","fred"),("fred","rosalie"),
                                   ("germaine","john"),("germaine","emilienne"),("john","emilienne")),"rosalie",true) == Set("rosalie","gilbert","theophile","fred"))
   }
+  test("partitionVerticesByDistance"){
+    assert(false) // finish test case
+  }
 }

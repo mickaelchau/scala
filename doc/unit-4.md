@@ -1,14 +1,21 @@
-Unit 4
+Unit 4 -- Higher order functions
+
+Passing functions as parameters
+
+Option[] type
+
+Partial predicate problem
 
 
 ## Support files
 
 ### Lecture files
-src/main/scala/lecture/
+src/main/scala/lecture/BinarySearch.scala
+
  
 ### Homework files
-src/main/templates/
+src/main/templates/BinarySearch.scala
 
 ### Test files
-test/scala/
+test/scala/BinarySearchTestSuite.scala
 

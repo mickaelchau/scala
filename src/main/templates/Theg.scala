@@ -88,7 +88,9 @@ object Theg {
     ???
   }
 
-  def reachableVertices[V](edges: Seq[(V, V)], vStart: V, directed: Boolean): Set[V] = {
+  def reachableVertices[V](edges: Seq[(V, V)],
+                           vStart: V,
+                           directed: Boolean): Set[V] = {
     val adj: Map[V, Set[V]]  = makeAdj(???, ???)
     @tailrec
     def collectVertices(done: Set[V], toDo: Set[V]): Set[V] = {
@@ -112,5 +114,14 @@ object Theg {
     }
 
     collectVertices(???, ???)
+  }
+
+  // This function computes a Map which assoicates with each integer, the set of
+  // vertices which are that distance from the given vertex vStart.
+  // Vertices which are not reachable do not appear anywhere in this return value.
+  def partitionVeritcesByDistance[V](edges:Seq[(V,V)],
+                                     vState:V,
+                                     directed:Boolean):Map[Int,Set[V]] = {
+    ???
   }
 }

@@ -26,15 +26,30 @@ import scala.annotation.tailrec
 object BinarySearch {
   import scala.math._
 
-  def binSearch(left:Double, right:Double, f:Double=>Double, target:Double, threshold:Double,maxDepth:Int):Option[Double] = {
+  def binSearch(left:Double,
+                right:Double,
+                f:Double=>Double,
+                target:Double,
+                threshold:Double,
+                maxDepth:Int
+               ):Option[Double] = {
     // find where f(x) = target +/- threshold
     binSearch(left, right, x=>f(x)-target, threshold,maxDepth)
   }
-  def binSearch(left:Double, right:Double, f:Double=>Double, threshold:Double ,maxDepth:Int):Option[Double] = {
+
+  def binSearch(left:Double,
+                right:Double,
+                f:Double=>Double,
+                threshold:Double ,
+                maxDepth:Int
+               ):Option[Double] = {
     // find where f(x) = 0.0 +/- epsilon
     val epsilon = abs(threshold * (f(left)-f(right)))
     @tailrec
-    def recur(left:Double, right:Double, depth:Int):Option[Double] = {
+    def recur(left:Double,
+              right:Double,
+              depth:Int
+             ):Option[Double] = {
       val mid = (left + right)/2.0
       val fm = f(mid)
 

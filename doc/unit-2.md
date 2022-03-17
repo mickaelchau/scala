@@ -14,12 +14,9 @@ def main(argv:Array[String]):Unit = {
 
 ### Lecture files
 src/main/scala/lecture/Recursion.scala
-src/main/scala/lecture/BinarySearch.scala
  
 ### Homework files
 src/main/templates/Recursion.scala
-src/main/templates/BinarySearch.scala
 
 ### Test files
 test/scala/RecursionTestSuite.scala
-test/scala/BinarySearchTestSuite.scala

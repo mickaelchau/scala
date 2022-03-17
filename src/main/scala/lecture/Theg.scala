@@ -190,7 +190,7 @@ object Theg {
   //   * uses .withDefaultValue rather than  .getOrElse
   def makeAdj_8(edges: List[(Int, Int)]): Map[Int, Set[Int]] = {
     val initial = Map[Int, Set[Int]]().withDefaultValue(Set())
-    
+
     edges.foldLeft(initial) {
       case (adj, (src, dst)) =>
         adj + (src -> (adj(src) + dst))
