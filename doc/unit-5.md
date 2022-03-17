@@ -1,6 +1,6 @@
-Unit 5 -- Calculus as application of higher order functions
+Unit 5 -- Higher order functions (cont)
 
-
+Calculus as application of higher order functions
 
 ## Support files
 
