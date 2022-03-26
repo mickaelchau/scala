@@ -33,11 +33,14 @@ class RecursionTestSuite extends AnyFunSuite {
     assert(0 == sumIntegersBySimpleRecursion(List(0,0,0,0,0,0,0,0,0,0)))
     assert(15 == sumIntegersBySimpleRecursion(List(1,2,3,4,5)))
     assert(try {
-      sumIntegersBySimpleRecursion(List.tabulate(10000)(_ => 0))
+      sumIntegersBySimpleRecursion(List.tabulate(100000)(_ => 0))
       false}
     catch {
       case e:StackOverflowError =>
         true
+      case e =>
+        assert(false,s"was not expecting $e")
+        false
     })
   }
 
@@ -45,14 +48,14 @@ class RecursionTestSuite extends AnyFunSuite {
     assert(0 == sumIntegersByTailRecursion(List()))
     assert(0 == sumIntegersByTailRecursion(List(0,0,0,0,0,0,0,0,0,0)))
     assert(15 == sumIntegersByTailRecursion(List(1,2,3,4,5)))
-    assert(0 == sumIntegersByTailRecursion(List.tabulate(10000)(_ => 0)))
+    assert(0 == sumIntegersByTailRecursion(List.tabulate(100000)(_ => 0)))
   }
 
   test("folding"){
     assert(0 == sumIntegersByFold(List()))
     assert(0 == sumIntegersByFold(List(0,0,0,0,0,0,0,0,0,0)))
     assert(15 == sumIntegersByFold(List(1,2,3,4,5)))
-    assert(0 == sumIntegersByFold(List.tabulate(10000)(_ => 0)))
+    assert(0 == sumIntegersByFold(List.tabulate(100000)(_ => 0)))
   }
 
   test("HW sum doubles"){
@@ -74,13 +77,16 @@ class RecursionTestSuite extends AnyFunSuite {
     assert(16.5 == sumDoublesByFold(List(1.5,2.0,3.25,4.0,5.75)))
 
     assert(try {
-      sumDoublesBySimpleRecursion(List.tabulate(10000)(_ => 0.0))
+      sumDoublesBySimpleRecursion(List.tabulate(100000)(_ => 0.0))
       false}
            catch {
              case e:StackOverflowError =>
                true
+             case e =>
+               assert(false,s"was not expecting $e")
+               false
            })
-    assert(0.0 == sumDoublesByFold(List.tabulate(10000)(_ => 0.0)))
+    assert(0.0 == sumDoublesByFold(List.tabulate(100000)(_ => 0.0)))
   }
 
   test("HW product doubles"){
@@ -92,11 +98,14 @@ class RecursionTestSuite extends AnyFunSuite {
     // we should actually have exact equality
     assert(12.0 == productDoublesBySimpleRecursion(List(2.0, 3.0, 4.0, 0.5)))
     assert(try {
-      productDoublesBySimpleRecursion(List.tabulate(10000)(_ => 0.0))
+      productDoublesBySimpleRecursion(List.tabulate(100000)(_ => 0.0))
       false}
            catch {
              case e:StackOverflowError =>
                true
+             case e =>
+               assert(false,s"was not expecting $e")
+               false
            })
 
     assert(1.0 == productDoublesByTailRecursion(List()))
@@ -113,6 +122,6 @@ class RecursionTestSuite extends AnyFunSuite {
     assert(0.0 == productDoublesByFold(List(1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,1.0,0.0)))
     // we should actually have exact equality
     assert(12.0 == productDoublesByFold(List(2.0, 3.0, 4.0, 0.5)))
-    assert(0.0 == productDoublesByFold(List.tabulate(10000)(_ => 0.0)))
+    assert(0.0 == productDoublesByFold(List.tabulate(100000)(_ => 0.0)))
   }
 }
