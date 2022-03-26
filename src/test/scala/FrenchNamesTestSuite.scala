@@ -24,6 +24,11 @@ import homework.FrenchNames._
 
 class FrenchNamesTestSuite extends AnyFunSuite {
 
+  test("prenoms rares"){
+    assert(babyNamesPerYear("_prenoms_rares","M") == Map())
+    assert(babyNamesPerYear("_prenoms_rares","F") == Map())
+  }
+
   test("baby names per year") {
     val aaron = babyNamesPerYear("aaron","M")
     assert(aaron(2019) == 2443)
