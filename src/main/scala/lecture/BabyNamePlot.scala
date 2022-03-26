@@ -103,8 +103,7 @@ object BabyNames2 {
     plotBabyNames("Baby Names", Seq(("Blanche", "F", "MS"),
                                     ("Minnie", "F", "MS")))
     plotBabyNames("Baby Names", Seq(("John","M","NY")))
-
-
+    
   }
 }
 
