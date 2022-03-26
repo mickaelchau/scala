@@ -28,9 +28,9 @@ import java.io.InputStream
 import scala.annotation.tailrec
 import scala.io.Source
 
-// Assignment name: TBNL
+// Assignment name: French baby names
 //
-// This homework assignment accompanies section "TBNL".
+// This homework assignment accompanies section "for comprehensions".
 // The test cases can be found in the file FrenchNamesTestSuite.scala
 // You should complete the function, replacing ??? with correct Scala
 // code so that the tests pass.
