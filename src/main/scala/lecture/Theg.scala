@@ -21,6 +21,8 @@
 
 package lecture
 
+import scala.annotation.tailrec
+
 object Theg {
 
   def checkEdge(n: Int, src: Int, dst: Int): Unit = {
@@ -272,7 +274,34 @@ object Theg {
     }
   }
 
-  def main(args: Array[String]): Unit = {
+  def listPaths[V](edges:Seq[(V,V)],
+                   directed:Boolean,
+                   startV:V,
+                   targetLength:Int
+                  ):Seq[List[V]] = {
+    val adj = makeAdj_13(edges, directed)
+
+    def extend1(paths:Seq[List[V]]):Seq[List[V]] = {
+      // extend all of the given paths by 1 vertex, as many ways as is possible
+      for {path <- paths
+           v::vs = path
+           neighbor <- adj(v)
+           if ! vs.contains(neighbor)
+           } yield neighbor :: path
+    }
+
+    @tailrec
+    def extend(paths:Seq[List[V]], length:Int):Seq[List[V]] = {
+      if (length == targetLength)
+        paths
+      else
+        extend(extend1(paths), length+1)
+    }
+
+    extend(Seq(List(startV)),0)
+  }
+
+  def mainMakeAdj() = {
     println("1: " + makeAdj_1(3, List((0, 1), (1, 2))))
     println("1: " + makeAdj_1(3, List((0, 1), (1, 2))).mkString("Vector[",",","]"))
     println("2: " + makeAdj_2(3, List((0, 1), (1, 2))).mkString(","))
@@ -291,5 +320,14 @@ object Theg {
     println("12: " + makeAdj_12(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred"))))
     println("13a: " + makeAdj_13(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred")), true))
     println("13b: " + makeAdj_13(List(("fred", "jane"), ("sally", "rita"), ("rita", "fred")), false))
+  }
+  def main(args: Array[String]): Unit = {
+    println(getClass.getResource("/README.md"))
+    //mainMakeAdj()
+
+    println(listPaths(Seq((0,1),(1,2),(0,2),(1,3),(2,4),(3,5),(4,6),(5,0)),
+                           directed=false,
+                           0,
+                           5))
   }
 }
