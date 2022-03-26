@@ -121,7 +121,141 @@ class ThegTestSuite extends AnyFunSuite {
     assert(reachableVertices(Vector(("rosalie","gilbert"),("rosalie","theophile"),("rosalie","fred"),("fred","rosalie"),
                                   ("germaine","john"),("germaine","emilienne"),("john","emilienne")),"rosalie",true) == Set("rosalie","gilbert","theophile","fred"))
   }
-  test("partitionVerticesByDistance"){
-    assert(false) // finish test case
+
+  test("partitionVerticesByDistance directed"){
+    assert(vertexDistribution[Int](Seq((0,1),(0,2)),
+                                   directed=true,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (0,2),
+                                       (1,2),
+                                       (1,3)),
+                                   directed=true,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2),
+                  2 -> Set(3)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (0,2),
+                                       (1,2),
+                                       (1,3),
+                                       (2,4)),
+                                   directed=true,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2),
+                  2 -> Set(3,4)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (1,2),
+                                       (2,3),
+                                       (3,4),
+                                       (4,5)),
+                                   directed=true,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1),
+                  2 -> Set(2),
+                  3 -> Set(3),
+                  4 -> Set(4),
+                  5 -> Set(5)))
+
+    assert(vertexDistribution[Int](Seq((0,1), (0,5),
+                                       (1,2),
+                                       (2,3),
+                                       (3,4),
+                                       (4,5)),
+                                   directed=true,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,5),
+                  2 -> Set(2),
+                  3 -> Set(3),
+                  4 -> Set(4)))
+
+    assert(vertexDistribution[Int](Seq((0,1), (0,5),
+                                       (1,2), (1,6),
+                                       (2,3), (2,6),
+                                       (3,4), (3,7),
+                                       (4,5),
+                                       (6,7)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,5),
+                  2 -> Set(2,4,6),
+                  3 -> Set(3,7)))
+  }
+
+  test("partitionVerticesByDistance non-directed"){
+
+    assert(vertexDistribution[Int](Seq((0,1),(0,2)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (0,2),
+                                       (1,2),
+                                       (1,3)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2),
+                  2 -> Set(3)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (0,2),
+                                       (1,2),
+                                       (1,3),
+                                       (2,4)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,2),
+                  2 -> Set(3,4)))
+
+    assert(vertexDistribution[Int](Seq((0,1),
+                                       (1,2),
+                                       (2,3),
+                                       (3,4),
+                                       (4,5),
+                                       (5,1)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1),
+                  2 -> Set(2,5),
+                  3 -> Set(3,4)))
+
+    assert(vertexDistribution[Int](Seq((0,1), (0,5),
+                                       (1,2),
+                                       (2,3),
+                                       (3,4),
+                                       (4,5)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,5),
+                  2 -> Set(2,4),
+                  3 -> Set(3)))
+
+    assert(vertexDistribution[Int](Seq((0,1), (0,5),
+                                       (1,2), (1,6),
+                                       (2,3), (2,6),
+                                       (3,4), (3,7),
+                                       (4,5),
+                                       (6,7)),
+                                   directed=false,
+                                   startV=0)
+           == Map(0 -> Set(0),
+                  1 -> Set(1,5),
+                  2 -> Set(2,4,6),
+                  3 -> Set(3,7)))
   }
 }

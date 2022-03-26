@@ -285,7 +285,7 @@ object Theg {
       // extend all of the given paths by 1 vertex, as many ways as is possible
       for {path <- paths
            v::vs = path
-           neighbor <- adj(v)
+           neighbor <- adj.getOrElse(v,Set())
            if ! vs.contains(neighbor)
            } yield neighbor :: path
     }
