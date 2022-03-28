@@ -1,15 +1,26 @@
 Unit 1 -- basics
 
+This unit covers Moodle https://moodle.cri.epita.fr/course/view.php?id=749
+
 ## Environment setup
 
-Install IntelliJ
-Install Scala plugin
+- Install IntelliJ
+= Install Scala plugin
 
 ## Course intro
 
-Integrity
-git repository
-Homework policy
+- Integrity
+- git repository [scala-e-student](https://gitlab.lrde.epita.fr/jnewton/scala-e-student)
+- Homework policy
+
+```mermaid
+graph TD;
+  A-->B;
+  A-->C;
+  B-->D;
+  C-->D;
+```
+
 
 
 ## Hello world
