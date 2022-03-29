@@ -22,7 +22,7 @@
 package lecture
 
 import java.io.InputStream
-import scala.io.Source
+import scala.io.{BufferedSource, Source}
 
 
 
@@ -58,8 +58,9 @@ object BabyNames2 {
   def babyNames(nameTarget: String, genderTarget: String, stateTarget: String):Seq[(Double,Double)] = {
     //val fp = Source.fromFile(s"/Users/jnewton/Repos/data-set/US-baby-names/namesbystate/$stateTarget.TXT")
     val s: InputStream = getClass.getResourceAsStream(s"/US-baby-names/namesbystate/$stateTarget.TXT")
-    val fp = Source.createBufferedSource(s)
-    val triples = for {line <- fp.getLines()
+    val fp: BufferedSource = Source.createBufferedSource(s)
+    val x: Iterator[String] = fp.getLines()
+    val triples = for {line: String <- fp.getLines()
                        Vector(state, gender, year_raw, name, count_raw) = line.split(",").toVector
                        if state == stateTarget
                        if gender == genderTarget

@@ -32,6 +32,16 @@ object Recursion {
     }
   }
 
+  def sumIntegersBySimpleRecursion(ints: Vector[Int]): Int = {
+    def recur(n:Int): Int = {
+      if (n == ints.size)
+        0
+      else
+        ints(n) + recur(n+1)
+    }
+    recur(0)
+  }
+
   def sumIntegersByTailRecursion(ints: List[Int]): Int = {
     @scala.annotation.tailrec
     def sumRest(acc: Int, rest: List[Int]): Int = {
@@ -44,7 +54,23 @@ object Recursion {
     sumRest(0, ints)
   }
 
+  def sumIntegersByTailRecursion(ints: Vector[Int]): Int = {
+    @scala.annotation.tailrec
+    def sumRest(acc: Int, n: Int): Int = {
+      if (n == ints.size)
+        acc
+      else
+        sumRest(acc + ints(n), n+1)
+    }
+
+    sumRest(0, 0)
+  }
+
   def sumIntegersByFold(ints: List[Int]): Int = {
+    ints.fold(0)(_ + _)
+  }
+
+  def sumIntegersByFold(ints: Vector[Int]): Int = {
     ints.fold(0)(_ + _)
   }
 
@@ -53,7 +79,13 @@ object Recursion {
   }
 
   def main(argv: Array[String]): Unit = {
-    val longList = List.tabulate(12)(n => 0) // List.fill(...)(...)
-    println(s"sum = ${sumIntegersBySimpleRecursion(longList)}")
+    val longList = List.tabulate(12)(n => n) // List.fill(...)(...)
+    val longVector = Vector.tabulate(12)(n => n)
+    println(s"1 sum = ${sumIntegersBySimpleRecursion(longList)}")
+    println(s"2 sum = ${sumIntegersBySimpleRecursion(longVector)}")
+    println(s"3 sum = ${sumIntegersByTailRecursion(longList)}")
+    println(s"4 sum = ${sumIntegersByTailRecursion(longVector)}")
+    println(s"5 sum = ${sumIntegersByFold(longList)}")
+    println(s"6 sum = ${sumIntegersByFold(longVector)}")
   }
 }

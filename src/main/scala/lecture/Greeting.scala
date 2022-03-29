@@ -28,7 +28,8 @@ object Greeting {
     println("hello world ")
   }
 
+  // this is the main function
   def main(argv:Array[String]):Unit = {
-
+    hello()
   }
 }

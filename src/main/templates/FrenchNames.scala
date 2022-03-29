@@ -36,6 +36,11 @@ import scala.io.Source
 // code so that the tests pass.
 object FrenchNames {
 
+  // replace characters having diacritical marks with simple characters
+  // E.g.,  'æ' => "ae"
+  //        'â' | 'ä' | 'à' => "a"
+  //        'è' | 'é' | 'ë' | 'ê' => "e"
+  // etc for every special character in the file
   def elideString(name:String):String = {
     name.flatMap{ c =>
       if (c.toInt >= 'a' && c.toInt <= 'z'
