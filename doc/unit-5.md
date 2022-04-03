@@ -90,10 +90,8 @@ Other interesting methods:
 - `src/main/templates/FoldTrig.scala`
 - `src/main/AdjStdLib.scala`
 - `src/main/RunningAverage.scala`
-
-## Test files
-- `test/scala/FrenchNamesTestSuite.scala`
-- `test/scala/CakeCuttingTestSuite.scala`
-- `test/scala/FoldTestSuite.scala`
-- `test/scala/FoldTrigTestSuite.scala`
-- `test/scala/RunningAverageTestSuite.scala`
+- `src/test/scala/FrenchNamesTestSuite.scala`
+- `src/test/scala/CakeCuttingTestSuite.scala`
+- `src/test/waiting/FoldTestSuite.scala`
+- `src/test/waiting/FoldTrigTestSuite.scala`
+- `src/test/waiting/RunningAverageTestSuite.scala`

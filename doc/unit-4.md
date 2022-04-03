@@ -25,7 +25,6 @@ function as argument.
  
 ## Homework files
 - `src/main/templates/BinarySearch.scala`
+- `src/test/waiting/BinarySearchTestSuite.scala`
 
-## Test files
-- `test/scala/BinarySearchTestSuite.scala`
 

@@ -67,8 +67,7 @@ The lecture will cover the following topics:
 ## Homework files
 - `src/main/templates/Theg.scala`
 - `src/main/templates/AdjStdLib.scala`
+- `src/test/waiting/ThegTestSuite.scala`
+- `src/test/waiting/AdjStdLibTestSuite.scala`
 
-## Test files
-- `test/scala/ThegTestSuite.scala`
-- `test/scala/AdjStdLibTestSuite.scala`
 

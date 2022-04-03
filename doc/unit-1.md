@@ -184,8 +184,5 @@ class GreetingTestSuite extends AnyFunSuite {
 `src/main/templates/Greeting.scala`
 `src/test/waiting/GreetingTestSuite.scala`
 
-## Test files
-`src/test/scala/GreetingTestSuite.scala`
-
 <!--  LocalWords:  IntelliJ Scala
  -->

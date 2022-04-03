@@ -148,6 +148,4 @@ preserving on the computation but not the recursion pattern itself.
  
 ## Homework files
 - `src/main/templates/Recursion.scala`
-
-## Test files
-- `test/scala/RecursionTestSuite.scala`
+- `src/test/waiting/RecursionTestSuite.scala`

@@ -31,9 +31,8 @@ integral from the limit definition.
 - `src/main/templates/Gradient.scala`
 - `src/main/templates/TrapezoidIntegral.scala`
 - `src/main/templates/DoubleIntegral.scala` (optional)
+- `src/test/waiting/CalculusTestSuite.scala`
+- `src/test/waiting/LimitAtDiscontinuityTestSuite.scala`
+- `src/test/waiting/TrapezoidIntegralTestSuite.scala`
 
-### Test files
-- `test/scala/CalculusTestSuite.scala`
-- `test/scala/LimitAtDiscontinuityTestSuite.scala`
-- `test/scala/TrapezoidIntegralTestSuite.scala`
 
