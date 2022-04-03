@@ -182,9 +182,10 @@ class GreetingTestSuite extends AnyFunSuite {
  
 ## Homework files
 `src/main/templates/Greeting.scala`
+`src/test/waiting/GreetingTestSuite.scala`
 
 ## Test files
-`test/scala/GreetingTestSuite.scala`
+`src/test/scala/GreetingTestSuite.scala`
 
 <!--  LocalWords:  IntelliJ Scala
  -->
