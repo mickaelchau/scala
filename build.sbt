@@ -1,4 +1,4 @@
-name := "scalain-e-course-code"
+name := "scalain-e-student"
 
 version := "0.1"
 
