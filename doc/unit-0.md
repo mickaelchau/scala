@@ -60,29 +60,41 @@ This repository contains
 - the test cases which will be used to grade your submissions.
 
 # Homework
-All student excercises can be found
-`src/main/templates`, called the `template` directory, 
- in [scala-e-student](https://gitlab.lrde.epita.fr/jnewton/scala-e-student)
+All student excercises can be found `src/main/templates`, called the
+`templates` directory, in
+[scala-e-student](https://gitlab.lrde.epita.fr/jnewton/scala-e-student)
+and in `src/main/templates`, called the `templates` directory.  There
+are corresponding test case files in the `src/test/waiting` directory,
+called the `waiting` directory.
 
 On the day of the lecture (if not before), a set of deliverables
-becomes available on the Moodle. Students have until the designated
+becomes available and visible on the Moodle. Students have until the designated
 time/day to finish and attach a solution file and submit to the Moodle
 question.  I (the instructor) will attempt to have the exercises
 graded before the next lecture begins.
 
-Whenever you find an assignment in the Moodle, there is an
-associated template file.  You'll need to find the template file in
-the directory named templates in your project; `git pull` may be
-necessary.  The file will have a name such as `Something.scala` you
-should copy this file into your `src/main/scala/homework` directory of
-your project without renaming, so that it is visible to IntelliJ and
-to the Scala compiler.  
+Whenever you find an assignment in the Moodle, there is an associated
+template homework file in the `templates` directory and an associated
+test case file in the `waiting` directory.  You'll need to find *both*
+files and copy them into the correct directory in your project.
 
-NEVER EDIT THE CONTENT OF THE FILES IN THE `templates` DIRECTORY!
+Make sure to go a `git pull` as necessary.  The homework file will have a name such as `Something.scala` you
+should copy this file from `src/mail/templates` into your `src/main/scala/homework` directory of
+your project without renaming, so that it is visible to IntelliJ and
+to the Scala compiler.  You must also copy the test case file named `SomethingTestSuite.scala` from
+the `src/test/waiting` directory to the `src/test/scala` directory.
+
+NEVER EDIT THE CONTENT OF THE FILES IN THE `templates` DIRECTORY OR THE `waiting` DIRECTORY!
 
 Why? Because this may cause conflicts on the next `git pull`
 operation.  Only edit the files after copying them to the `homework`
 directory.
+
+You are free to add *additional tests* in the test suite file
+`SomethingTestSuite.scala`, but you should not remove tests, because
+your grade will depend on the test originally in the file.  The
+auto-grader does not know about your edits.
+
 
 Your task is to find all the occurrences of `???` within the
 student-template file and replace with the correct Scala incantation
@@ -90,9 +102,14 @@ so that the corresponding tests pass.  When you have finished updating
 the file to work correctly, submit the file via the Moodle 
 `Add Submission` button at the bottom of each assignment page.
 
+Submit only the homework file onto the Moodle, from your `homework`
+directory.  Never submit the `...TestSuite.scala` file onto the
+Moodle.
+y
+
 If some part of this process is unclear, or if you find instructions
 which you know or believe to be wrong, please let me know so I can fix
-it.  In such a case I will update the `template` directory (or other
+it.  In such a case I will update the `templates` directory (or other
 directories as necessary), and the students will need to again: `git pull`.
 
 If you have problems with the exercises please contact me either in
@@ -128,21 +145,19 @@ structures.
 
 # How to run the test suites
 
-Please assure that you do a git pull to make sure you the newest
+Please assure that you do a `git pull` to make sure you the newest
 version of each of the files.
 
 Test suites are provided for all the homework assignments in this
-course. Relative to the project directory, the files must be placed at
-the following path `src/test/scala/`.  To run any one of the tests, you
+course.  Relative to the project directory, the test case files must be placed at
+the path `src/test/scala/`.  You can find the original test suite files
+in the `src/test/waiting/` directory.
+To run any one of the tests, you
 may point the mouse to the name of the suite, and use the `Run` menu
 item, as shown in the following image.
 
 
-
 <img src="img/howto-run-test-suite.png" width="300" alt="How to run test suite">
-
-
-
 
 After the test has completed successfully, you should see something
 like the following image displaying the tests which were successful in
