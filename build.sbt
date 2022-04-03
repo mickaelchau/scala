@@ -2,7 +2,7 @@ name := "scalain-e-student"
 
 version := "0.1"
 
-scalaVersion := "2.13.7"
+scalaVersion := "2.13.8"
 libraryDependencies += "junit" % "junit" % "4.10" % "test"
 libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.0"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.0" % "test"
