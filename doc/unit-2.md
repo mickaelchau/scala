@@ -30,9 +30,27 @@ There are several current and historical functional programming languages:
 
 
 
-# `Array` vs `Vector`
 
-We will not using `Array`.  The `Array` type is a type inherited from Java and is a mutable data structure.  We will avoid mutable data structure.   There are some exceptions when we cannot avoid `Array`.
+
+# Accessing `Vector` and `List`
+
+- Constructors: `Vector(1,3,4)`, `List(2,3,5,7,11)`
+- Accessing `Vector`:   `v(3)`
+- Accessing `List`: `v.head`, `v.tail`
+- Pattern matching:
+```scala
+v match {
+  case Nil => ...
+  case v::Nil => ...
+  case v::vs => ...
+}
+```
+
+## WARNING: `Array` vs `Vector`
+
+We will not using `Array`.  The `Array` type is a type inherited from
+Java and is a mutable data structure.  We will avoid mutable data
+structure.  There are some exceptions when we cannot avoid `Array`.
 - The argument of `main` must by of type `Array[String]`
 
 ```scala

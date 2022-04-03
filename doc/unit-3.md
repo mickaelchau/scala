@@ -19,10 +19,10 @@ connections per vertex in a graph.
 Various ways to extract components from `Tuple` and `List`.
 
 ```scala
+// Tuples
 val (a,b,c) = (1,2,3)
 
 val t = (1,2,3)
-val m = List(1,2,3)
 
 t match {
   case (_,b,c) => println(s"b=$b  c=$c")
@@ -31,12 +31,15 @@ t match {
 val b = t._2
 val c = t._3
 
+// Lists
+
+val m = List(1,2,3)
+
 m match {
   case Nil => ... // or case List() =>
   case a::Nil => ...
   case a::as => ...
 }
-
 ```
 
 # Overivew
