@@ -78,11 +78,73 @@ template homework file in the `templates` directory and an associated
 test case file in the `waiting` directory.  You'll need to find *both*
 files and copy them into the correct directory in your project.
 
+## Copy the homework template file
+
 Make sure to go a `git pull` as necessary.  The homework file will have a name such as `Something.scala` you
 should copy this file from `src/mail/templates` into your `src/main/scala/homework` directory of
 your project without renaming, so that it is visible to IntelliJ and
 to the Scala compiler.  You must also copy the test case file named `SomethingTestSuite.scala` from
 the `src/test/waiting` directory to the `src/test/scala` directory.
+
+
+You may copy the files simply from your OS (Linux, MacOS, etc),
+or you can use the file browser in IntelliJ.
+
+Find the file to copy.
+
+<img src="img/greeting1.png" width="300" alt="File to copy">
+
+Activate the Copy menu item.
+
+<img src="img/copy-greeting.png" width="300" alt="copy">
+
+
+Find the destination where you want to copy the file to, and
+activate the Paste menu item.
+
+<img src="img/paste-greeting.png" width="300" alt="copy">
+
+
+Press OK on the dialog box.
+
+<img src="img/paste-dialog.png" width="300" alt="copy">
+
+See that the file has been copied into the correct place.
+
+<img src="img/after-copy-greeting.png" width="300" alt="copy">
+
+
+## Copy the test suite file
+
+You must also copy the test case file named `SomethingTestSuite.scala` from
+the `src/test/waiting` directory to the `src/test/scala` directory.
+
+
+You may copy the files simply from your OS (Linux, MacOS, etc),
+or you can use the file browser in IntelliJ.
+
+Find the file to copy.
+
+<img src="img/find-test-suite.png" width="300" alt="copy">
+
+
+Activate the Copy menu item.
+
+<img src="img/copy-test-suite.png" width="300" alt="copy">
+
+Locate the destination and active the Paste menu item.
+
+<img src="img/paste-test-suite.png" width="300" alt="copy">
+
+Press OK on the dialog pop up.
+
+<img src="img/OK-test-suite.png" width="300" alt="copy">
+
+You should be able to verify that the copy was successful.
+
+<img src="img/after-copy-test-suite.png" width="300" alt="copy">
+
+## How to complete the homework assignment
 
 NEVER EDIT THE CONTENT OF THE FILES IN THE `templates` DIRECTORY OR THE `waiting` DIRECTORY!
 
@@ -95,17 +157,21 @@ You are free to add *additional tests* in the test suite file
 your grade will depend on the test originally in the file.  The
 auto-grader does not know about your edits.
 
-
 Your task is to find all the occurrences of `???` within the
 student-template file and replace with the correct Scala incantation
-so that the corresponding tests pass.  When you have finished updating
+so that the corresponding tests pass. 
+
+<img src="img/find-the-blanks.png" width="300" alt="copy">
+
+ When you have finished updating
 the file to work correctly, submit the file via the Moodle 
 `Add Submission` button at the bottom of each assignment page.
+
 
 Submit only the homework file onto the Moodle, from your `homework`
 directory.  Never submit the `...TestSuite.scala` file onto the
 Moodle.
-y
+
 
 If some part of this process is unclear, or if you find instructions
 which you know or believe to be wrong, please let me know so I can fix
