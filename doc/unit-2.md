@@ -159,6 +159,53 @@ preserving on the computation but not the recursion pattern itself.
   }
 ```
 
+# Other `fold` examples
+
+- `fold`
+- `foldLeft`
+- `reduce`
+
+
+# `fold` the simple case
+
+How to `fold` with binary function vs unary function accepting a 2-tuple.
+
+Suppose 
+- `A` is some type
+- `f` is a binary function taking two objects of type `A` 
+- `seq` is a _collection_ of whose elements are of type `A`, e.g., `List[A]`, `Vector[A]`
+- `z` is an object of type `A`, typically the zero but not necessarily.
+
+Then `fold` returns an element of type `A`, even if `seq` has length 0 or 1.
+
+```scala
+  seq.fold(0)(f)
+```
+
+Now suppose there is no such _zero_, or suppose we know `seq` is not empty.
+
+```scala
+  seq.reduce(0)(f)
+```
+
+Now suppose your input and output types are different.  E.g., suppose
+you have a sequence, `List[String]`, and you want to sum the string
+lengths.  I.e,. the input type is `String` and output type is `Int`.
+So not `f` must be a function which takes a `String` and returns an
+`Int`; e.g., perhaps it is the function which returns the string
+length.  `(str:String)=>str.length`
+
+You cannot use `fold` because the input and output types are different.
+You may, however, use `foldLeft`.
+
+```scala
+  seq.foldLeft(0)(str=>str.length)
+```
+
+
+Other examples using binary function.
+
+
 # Support files
 
 ## Lecture files
