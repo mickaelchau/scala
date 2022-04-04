@@ -178,11 +178,11 @@ class GreetingTestSuite extends AnyFunSuite {
 
 
 ## Lecture files
-`src/main/scala/lecture/Greeting.scala`
+- `src/main/scala/lecture/Greeting.scala`
  
 ## Homework files
-`src/main/templates/Greeting.scala`
-`src/test/waiting/GreetingTestSuite.scala`
+- `src/main/templates/Greeting.scala`
+- `src/test/waiting/GreetingTestSuite.scala`
 
-<!--  LocalWords:  IntelliJ Scala
+<!--  LocalWords:  IntelliJ Scala GreetingTestSuite
  -->
